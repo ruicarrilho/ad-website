@@ -1,0 +1,139 @@
+{
+  "design_system": {
+    "typography": {
+      "font_family": {
+        "heading": "Outfit, sans-serif",
+        "body": "Public Sans, sans-serif",
+        "mono": "JetBrains Mono, monospace"
+      },
+      "scale": {
+        "h1": "text-5xl md:text-6xl font-bold tracking-tight leading-none",
+        "h2": "text-4xl md:text-5xl font-semibold tracking-tight",
+        "h3": "text-2xl md:text-3xl font-semibold tracking-normal",
+        "body_lg": "text-lg leading-relaxed",
+        "body_base": "text-base leading-relaxed",
+        "caption": "text-sm text-muted-foreground uppercase tracking-wider"
+      }
+    },
+    "colors": {
+      "palette": {
+        "primary": {
+          "DEFAULT": "#1e1b4b",
+          "foreground": "#ffffff",
+          "description": "Deep Indigo - Used for primary actions, headers, and branding."
+        },
+        "secondary": {
+          "DEFAULT": "#f1f5f9",
+          "foreground": "#0f172a",
+          "description": "Slate 100 - Used for secondary buttons and backgrounds."
+        },
+        "accent": {
+          "DEFAULT": "#f97316",
+          "foreground": "#ffffff",
+          "description": "Vibrant Orange - Used for high-priority CTAs (Post Ad, Buy Now)."
+        },
+        "background": {
+          "DEFAULT": "#ffffff",
+          "alt": "#f8fafc"
+        },
+        "surface": {
+          "card": "#ffffff",
+          "border": "#e2e8f0"
+        }
+      },
+      "gradients": {
+        "hero": "bg-gradient-to-b from-slate-50 to-white",
+        "subtle": "bg-gradient-to-br from-white to-slate-50"
+      }
+    },
+    "spacing": {
+      "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+      "section_padding": "py-16 md:py-24",
+      "element_gap": "gap-6 md:gap-8"
+    },
+    "visual_enhancers": {
+      "radius": "rounded-xl",
+      "shadows": {
+        "card": "shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-shadow duration-300",
+        "dropdown": "shadow-xl border border-slate-100"
+      },
+      "borders": "border border-slate-200"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-[#1e1b4b] text-white hover:bg-[#1e1b4b]/90 h-11 px-8 rounded-full font-medium transition-all active:scale-95",
+      "secondary": "bg-slate-100 text-slate-900 hover:bg-slate-200 h-11 px-8 rounded-full font-medium transition-all active:scale-95",
+      "outline": "border-2 border-slate-200 bg-transparent hover:border-slate-900 hover:text-slate-900 h-11 px-8 rounded-full font-medium transition-all"
+    },
+    "cards": {
+      "ad_listing": "group relative bg-white rounded-2xl border border-slate-100 overflow-hidden hover:border-slate-300 transition-all duration-300",
+      "category": "flex flex-col items-center justify-center p-8 bg-slate-50 rounded-2xl hover:bg-white hover:shadow-lg hover:scale-[1.02] transition-all cursor-pointer border border-transparent hover:border-slate-100"
+    },
+    "inputs": {
+      "default": "h-12 rounded-lg border-slate-200 focus:border-[#1e1b4b] focus:ring-1 focus:ring-[#1e1b4b] bg-white"
+    }
+  },
+  "layout_strategies": {
+    "landing_page": {
+      "hero": "Split layout: Left side typography + Search, Right side 'Bento' grid of category images.",
+      "featured_ads": "Masonry grid or 4-column grid. Cards should focus on image first, price second.",
+      "categories": "Horizontal scroll or 6-column grid of icons/minimal cards."
+    },
+    "dashboard": {
+      "structure": "Sidebar navigation (fixed left) + Main Content Area.",
+      "grid": "Control Room Grid: 3-4 columns. Stats on top, recent activity list below.",
+      "tables": "Clean rows, no vertical borders, generous padding (py-4)."
+    }
+  },
+  "image_assets": {
+    "categories": {
+      "real_estate": {
+        "url": "https://images.unsplash.com/photo-1607756844432-f4849943f199?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "alt": "Modern minimalist yellow and white building",
+        "usage": "Category card or Hero section bento grid"
+      },
+      "vehicles": {
+        "url": "https://images.unsplash.com/photo-1600709928175-83626df9883d?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "alt": "Black BMW M3 coupe side view",
+        "usage": "Category card or Hero section bento grid"
+      },
+      "jobs": {
+        "url": "https://images.unsplash.com/photo-1661169398420-e8d229fb39f4?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "alt": "Office desk workspace with monitor and laptop",
+        "usage": "Category card or Hero section bento grid"
+      },
+      "services": {
+        "url": "https://images.unsplash.com/photo-1758599543152-a73184816eba?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "alt": "Two businessmen shaking hands outdoors",
+        "usage": "Category card or Hero section bento grid"
+      },
+      "products": {
+        "url": "https://images.unsplash.com/photo-1727093493740-90af54b99738?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "alt": "iPhone 16 Pro on textured surface",
+        "usage": "Category card or Hero section bento grid"
+      }
+    },
+    "placeholders": {
+      "user_avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix",
+      "ad_fallback": "https://images.unsplash.com/photo-1557683316-973673baf926?w=800&auto=format&fit=crop&q=60"
+    }
+  },
+  "instructions_to_main_agent": [
+    "1. INSTALL FONTS: Add '@fontsource/outfit' and '@fontsource/public-sans' to package.json immediately.",
+    "2. TAILWIND CONFIG: Update tailwind.config.js to include the new colors (primary: #1e1b4b, accent: #f97316) and fonts.",
+    "3. SHADCN OVERRIDES: When using Shadcn components, force 'rounded-xl' instead of 'rounded-md' to match the friendly/modern aesthetic.",
+    "4. NO GRADIENT TEXT: Do not use gradient text for headings. Use solid #1e1b4b for maximum contrast and trust.",
+    "5. BENTO GRID: Implement the 'Mode A: Tetris Grid' for the Hero section using the category images provided.",
+    "6. FORMS: Use 'react-hook-form' with 'zod' for all ad posting forms. Style inputs with 'h-12' for better touch targets.",
+    "7. DATA-TESTID: Every button, input, and link MUST have a data-testid attribute (e.g., 'submit-ad-btn', 'price-input').",
+    "8. DARK MODE: Implement a toggle, but prioritize the Light Mode experience as defined in the palette."
+  ],
+  "universal_guidelines": [
+    "Avoid generic centered layouts. Use asymmetry where possible.",
+    "Use 2-3x more spacing than standard (e.g., p-8 instead of p-4).",
+    "Micro-animations on hover are mandatory (scale, shadow lift).",
+    "Never use pure black (#000000). Use #0f172a or #1e1b4b.",
+    "Images must have 'object-cover' and proper aspect ratios."
+  ]
+}
