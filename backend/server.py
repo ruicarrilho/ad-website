@@ -370,10 +370,16 @@ async def create_ad(ad_data: AdCreate, request: Request, authorization: Optional
     
     await db.ads.insert_one(ad_doc)
     
-    ad_doc["created_at"] = created_at
-    ad_doc["expires_at"] = expires_at
+    # Get the inserted ad without MongoDB _id field
+    inserted_ad = await db.ads.find_one({"ad_id": ad_id}, {"_id": 0})
     
-    return ad_doc
+    # Convert datetime strings back to datetime objects for response
+    if isinstance(inserted_ad.get("created_at"), str):
+        inserted_ad["created_at"] = datetime.fromisoformat(inserted_ad["created_at"])
+    if isinstance(inserted_ad.get("expires_at"), str):
+        inserted_ad["expires_at"] = datetime.fromisoformat(inserted_ad["expires_at"])
+    
+    return inserted_ad
 
 @api_router.put("/ads/{ad_id}")
 async def update_ad(ad_id: str, ad_data: AdUpdate, request: Request, authorization: Optional[str] = Header(None)):
