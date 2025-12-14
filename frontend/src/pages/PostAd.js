@@ -219,8 +219,8 @@ const PostAd = () => {
             />
           </div>
 
-          {/* Category and Price */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Category, Subcategory and Price */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-2">
               <Label data-testid="category-label">Category *</Label>
               <Select value={formData.category} onValueChange={handleCategoryChange}>
@@ -231,6 +231,26 @@ const PostAd = () => {
                   {categories.map((cat) => (
                     <SelectItem key={cat.id} value={cat.id} data-testid={`category-option-${cat.id}`}>
                       {cat.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label data-testid="subcategory-label">Subcategory</Label>
+              <Select 
+                value={formData.subcategory} 
+                onValueChange={handleSubcategoryChange}
+                disabled={!formData.category}
+              >
+                <SelectTrigger data-testid="subcategory-select" className="h-12 rounded-lg">
+                  <SelectValue placeholder={formData.category ? "Select subcategory" : "Select category first"} />
+                </SelectTrigger>
+                <SelectContent>
+                  {subcategories.map((subcat) => (
+                    <SelectItem key={subcat} value={subcat} data-testid={`subcategory-option-${subcat}`}>
+                      {subcat}
                     </SelectItem>
                   ))}
                 </SelectContent>
