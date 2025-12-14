@@ -432,6 +432,12 @@ async def update_ad(ad_id: str, ad_data: AdUpdate, request: Request, authorizati
         update_data["description"] = ad_data.description
     if ad_data.category and ad_data.category in AD_CATEGORIES:
         update_data["category"] = ad_data.category
+    if ad_data.subcategory:
+        # Validate subcategory against category
+        category = ad_data.category if ad_data.category else ad["category"]
+        if ad_data.subcategory not in AD_CATEGORIES[category]["subcategories"]:
+            raise HTTPException(status_code=400, detail="Invalid subcategory for selected category")
+        update_data["subcategory"] = ad_data.subcategory
     if ad_data.price is not None:
         update_data["price"] = ad_data.price
     if ad_data.images is not None:
