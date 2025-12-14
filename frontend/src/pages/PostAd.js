@@ -287,8 +287,14 @@ const PostAd = () => {
             </div>
           </div>
 
+          {/* Location */}
+          <div className="space-y-4 border-t border-slate-200 pt-6">
+            <h3 className="font-heading text-xl font-semibold text-primary">Location</h3>
+            <MapPicker location={location} onLocationChange={setLocation} />
+          </div>
+
           {/* Images */}
-          <div className="space-y-4">
+          <div className="space-y-4 border-t border-slate-200 pt-6">
             <div className="flex items-center justify-between">
               <Label data-testid="images-label">Images {!formData.is_paid && `(Max 5 for free ads)`}</Label>
               <Button
