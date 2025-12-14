@@ -23,10 +23,12 @@ const PostAd = () => {
     title: '',
     description: '',
     category: '',
+    subcategory: '',
     price: '',
     images: [],
     is_paid: false
   });
+  const [subcategories, setSubcategories] = useState([]);
 
   useEffect(() => {
     if (!user) {
