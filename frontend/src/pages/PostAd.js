@@ -120,6 +120,7 @@ const PostAd = () => {
         title: formData.title,
         description: formData.description,
         category: formData.category,
+        subcategory: formData.subcategory || null,
         price: parseFloat(formData.price),
         images: formData.images,
         is_paid: formData.is_paid
