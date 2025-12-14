@@ -59,6 +59,9 @@ const Browse = () => {
       if (selectedCategory && selectedCategory !== 'all') {
         url += `&category=${selectedCategory}`;
       }
+      if (selectedSubcategory && selectedSubcategory !== 'all') {
+        url += `&subcategory=${encodeURIComponent(selectedSubcategory)}`;
+      }
       if (searchQuery) {
         url += `&search=${encodeURIComponent(searchQuery)}`;
       }
