@@ -646,14 +646,14 @@ async def stripe_webhook(request: Request):
 
 @api_router.get("/categories")
 async def get_categories():
-    return [
-        {"id": "jobs", "name": "Jobs"},
-        {"id": "real_estate_renting", "name": "Real Estate Renting"},
-        {"id": "real_estate_selling", "name": "Real Estate Selling"},
-        {"id": "vehicles", "name": "Vehicles"},
-        {"id": "sales_of_products", "name": "Sales of Products"},
-        {"id": "services", "name": "Services"}
-    ]
+    categories = []
+    for cat_id, cat_data in AD_CATEGORIES.items():
+        categories.append({
+            "id": cat_id,
+            "name": cat_data["name"],
+            "subcategories": cat_data["subcategories"]
+        })
+    return categories
 
 app.include_router(api_router)
 
