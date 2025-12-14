@@ -342,22 +342,17 @@ const PostAd = () => {
                   onChange={handleImageUpload}
                   className="hidden"
                 />
-                <label htmlFor="image-upload">
-                  <Button
-                    type="button"
-                    data-testid="add-image-btn"
-                    onClick={() => document.getElementById('image-upload').click()}
-                    variant="outline"
-                    size="sm"
-                    className="rounded-full"
-                    asChild
-                  >
-                    <span className="cursor-pointer inline-flex items-center">
-                      <ImagePlus className="w-4 h-4 mr-2" />
-                      Upload Images
-                    </span>
-                  </Button>
-                </label>
+                <Button
+                  type="button"
+                  data-testid="add-image-btn"
+                  onClick={() => document.getElementById('image-upload').click()}
+                  variant="outline"
+                  size="sm"
+                  className="rounded-full cursor-pointer"
+                >
+                  <ImagePlus className="w-4 h-4 mr-2" />
+                  Upload Images
+                </Button>
               </div>
             </div>
             {formData.images.length === 0 ? (
