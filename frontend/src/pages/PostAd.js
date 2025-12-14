@@ -332,37 +332,67 @@ const PostAd = () => {
           <div className="space-y-4 border-t border-slate-200 pt-6">
             <div className="flex items-center justify-between">
               <Label data-testid="images-label">Images {!formData.is_paid && `(Max 5 for free ads)`}</Label>
-              <Button
-                type="button"
-                data-testid="add-image-btn"
-                onClick={handleImageUrlAdd}
-                variant="outline"
-                size="sm"
-                className="rounded-full"
-              >
-                <ImagePlus className="w-4 h-4 mr-2" />
-                Add Image URL
-              </Button>
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              {formData.images.map((url, index) => (
-                <div key={index} className="relative group" data-testid={`image-preview-${index}`}>
-                  <img
-                    src={url}
-                    alt={`Preview ${index + 1}`}
-                    className="w-full h-32 object-cover rounded-lg border border-slate-200"
-                  />
-                  <button
+              <div className="relative">
+                <input
+                  type="file"
+                  id="image-upload"
+                  data-testid="image-upload-input"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+                <label htmlFor="image-upload">
+                  <Button
                     type="button"
-                    data-testid={`remove-image-btn-${index}`}
-                    onClick={() => handleImageRemove(index)}
-                    className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    data-testid="add-image-btn"
+                    onClick={() => document.getElementById('image-upload').click()}
+                    variant="outline"
+                    size="sm"
+                    className="rounded-full"
+                    asChild
                   >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-              ))}
+                    <span className="cursor-pointer inline-flex items-center">
+                      <ImagePlus className="w-4 h-4 mr-2" />
+                      Upload Images
+                    </span>
+                  </Button>
+                </label>
+              </div>
             </div>
+            {formData.images.length === 0 ? (
+              <div className="border-2 border-dashed border-slate-200 rounded-xl p-12 text-center">
+                <ImagePlus className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+                <p className="text-slate-600 mb-2">No images uploaded yet</p>
+                <p className="text-sm text-slate-500">Click "Upload Images" to add photos</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {formData.images.map((imageData, index) => (
+                  <div key={index} className="relative group" data-testid={`image-preview-${index}`}>
+                    <img
+                      src={imageData}
+                      alt={`Preview ${index + 1}`}
+                      className="w-full h-40 object-cover rounded-lg border border-slate-200"
+                    />
+                    <button
+                      type="button"
+                      data-testid={`remove-image-btn-${index}`}
+                      onClick={() => handleImageRemove(index)}
+                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                    <div className="absolute bottom-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
+                      Image {index + 1}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            <p className="text-xs text-slate-500">
+              Accepted formats: JPG, PNG, GIF, WebP. Max size: 5MB per image
+            </p>
           </div>
 
           {/* Premium Option */}
