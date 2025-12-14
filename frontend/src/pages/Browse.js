@@ -30,7 +30,7 @@ const Browse = () => {
 
   useEffect(() => {
     fetchAds();
-  }, [selectedCategory, selectedSubcategory]);
+  }, [selectedCategory, selectedSubcategory, locationFilter]);
 
   useEffect(() => {
     // Update subcategories when category changes
