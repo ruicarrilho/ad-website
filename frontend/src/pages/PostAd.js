@@ -53,7 +53,18 @@ const PostAd = () => {
   };
 
   const handleCategoryChange = (value) => {
-    setFormData(prev => ({ ...prev, category: value }));
+    setFormData(prev => ({ ...prev, category: value, subcategory: '' }));
+    // Update subcategories based on selected category
+    const selectedCategory = categories.find(cat => cat.id === value);
+    if (selectedCategory) {
+      setSubcategories(selectedCategory.subcategories || []);
+    } else {
+      setSubcategories([]);
+    }
+  };
+
+  const handleSubcategoryChange = (value) => {
+    setFormData(prev => ({ ...prev, subcategory: value }));
   };
 
   const handleImageUrlAdd = () => {
