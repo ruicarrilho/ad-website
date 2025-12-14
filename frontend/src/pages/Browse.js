@@ -168,6 +168,14 @@ const Browse = () => {
               </Button>
             </div>
           </div>
+
+          {/* Map Search Section */}
+          {showMapSearch && (
+            <div className="mt-6 pt-6 border-t border-slate-200">
+              <h3 className="font-medium text-slate-900 mb-4">Search by Location</h3>
+              <MapSearch onLocationChange={setLocationFilter} />
+            </div>
+          )}
         </div>
 
         {/* Results */}
