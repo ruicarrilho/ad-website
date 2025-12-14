@@ -115,6 +115,15 @@ const PostAd = () => {
       return;
     }
 
+    if (!location || !location.country || !location.address) {
+      toast({
+        title: 'Validation Error',
+        description: 'Please provide location details',
+        variant: 'destructive'
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
