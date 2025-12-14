@@ -197,9 +197,12 @@ const Dashboard = () => {
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center gap-6 text-sm text-slate-600 mb-4">
+                      <div className="flex items-center gap-6 text-sm text-slate-600 mb-4 flex-wrap">
                         <span className="font-semibold text-2xl text-accent">${ad.price}</span>
-                        <span className="capitalize">{ad.category.replace(/_/g, ' ')}</span>
+                        <span className="capitalize">
+                          {ad.category.replace(/_/g, ' ')}
+                          {ad.subcategory && ` • ${ad.subcategory}`}
+                        </span>
                         <span>{getDaysRemaining(ad.expires_at)} days left</span>
                       </div>
                       <div className="flex gap-3">
