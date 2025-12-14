@@ -197,7 +197,12 @@ const Browse = () => {
                     <p className="text-sm text-slate-600 line-clamp-2">{ad.description}</p>
                     <div className="flex justify-between items-center pt-2">
                       <span className="text-2xl font-bold text-accent">${ad.price}</span>
-                      <span className="text-xs text-slate-500 capitalize">{ad.category.replace(/_/g, ' ')}</span>
+                      <div className="text-right">
+                        <span className="text-xs text-slate-500 capitalize block">{ad.category.replace(/_/g, ' ')}</span>
+                        {ad.subcategory && (
+                          <span className="text-xs text-slate-400 block">{ad.subcategory}</span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
