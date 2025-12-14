@@ -30,6 +30,7 @@ const PostAd = () => {
     is_paid: false
   });
   const [subcategories, setSubcategories] = useState([]);
+  const [location, setLocation] = useState(null);
 
   useEffect(() => {
     if (!user) {
