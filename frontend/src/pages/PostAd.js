@@ -134,6 +134,7 @@ const PostAd = () => {
         subcategory: formData.subcategory || null,
         price: parseFloat(formData.price),
         images: formData.images,
+        location: location,
         is_paid: formData.is_paid
       };
 
