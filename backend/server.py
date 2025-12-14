@@ -319,11 +319,14 @@ async def logout(request: Request, authorization: Optional[str] = Header(None)):
 
 # Ad endpoints
 @api_router.get("/ads")
-async def get_ads(category: Optional[str] = None, search: Optional[str] = None, limit: int = 20):
+async def get_ads(category: Optional[str] = None, subcategory: Optional[str] = None, search: Optional[str] = None, limit: int = 20):
     query = {"status": "active"}
     
     if category and category in AD_CATEGORIES:
         query["category"] = category
+    
+    if subcategory:
+        query["subcategory"] = subcategory
     
     if search:
         query["$or"] = [
