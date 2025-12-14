@@ -96,9 +96,20 @@ const Browse = () => {
 
         {/* Filters */}
         <div className="bg-white rounded-2xl border border-slate-100 p-6 mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <SlidersHorizontal className="w-5 h-5 text-slate-600" />
-            <span className="font-medium text-slate-900">Filters</span>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <SlidersHorizontal className="w-5 h-5 text-slate-600" />
+              <span className="font-medium text-slate-900">Filters</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowMapSearch(!showMapSearch)}
+              data-testid="toggle-map-search-btn"
+              className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 font-medium"
+            >
+              <Map className="w-4 h-4" />
+              {showMapSearch ? 'Hide' : 'Show'} Map Search
+            </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
             <div className="md:col-span-3">
