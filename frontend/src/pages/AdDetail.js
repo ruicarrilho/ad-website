@@ -146,12 +146,42 @@ const AdDetail = () => {
               <p className="text-slate-600">Price</p>
             </div>
 
-            <div className="bg-white rounded-2xl border border-slate-100 p-8">
+            <div className="bg-white rounded-2xl border border-slate-100 p-8 mb-6">
               <h2 className="font-heading text-2xl font-semibold text-primary mb-4">Description</h2>
               <p className="text-slate-700 leading-relaxed whitespace-pre-wrap" data-testid="ad-description">
                 {ad.description}
               </p>
             </div>
+
+            {/* Location */}
+            {ad.location && (
+              <div className="bg-white rounded-2xl border border-slate-100 p-8">
+                <h2 className="font-heading text-2xl font-semibold text-primary mb-4">Location</h2>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <MapPin className="w-5 h-5 text-slate-600 mt-1" />
+                    <div>
+                      <p className="text-slate-900 font-medium" data-testid="ad-location-address">{ad.location.address}</p>
+                      <p className="text-sm text-slate-600" data-testid="ad-location-country">{ad.location.country}</p>
+                    </div>
+                  </div>
+                  <div className="h-[300px] rounded-xl overflow-hidden border border-slate-200" data-testid="ad-location-map">
+                    <MapContainer
+                      center={[ad.location.latitude, ad.location.longitude]}
+                      zoom={13}
+                      style={{ height: '100%', width: '100%' }}
+                      scrollWheelZoom={false}
+                    >
+                      <TileLayer
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      />
+                      <Marker position={[ad.location.latitude, ad.location.longitude]} />
+                    </MapContainer>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
