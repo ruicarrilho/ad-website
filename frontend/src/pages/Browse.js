@@ -26,7 +26,22 @@ const Browse = () => {
 
   useEffect(() => {
     fetchAds();
-  }, [selectedCategory]);
+  }, [selectedCategory, selectedSubcategory]);
+
+  useEffect(() => {
+    // Update subcategories when category changes
+    if (selectedCategory && selectedCategory !== 'all') {
+      const category = categories.find(cat => cat.id === selectedCategory);
+      if (category && category.subcategories) {
+        setSubcategories(category.subcategories);
+      } else {
+        setSubcategories([]);
+      }
+    } else {
+      setSubcategories([]);
+      setSelectedSubcategory('all');
+    }
+  }, [selectedCategory, categories]);
 
   const fetchCategories = async () => {
     try {
