@@ -17,6 +17,8 @@ const Browse = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'all');
+  const [selectedSubcategory, setSelectedSubcategory] = useState(searchParams.get('subcategory') || 'all');
+  const [subcategories, setSubcategories] = useState([]);
 
   useEffect(() => {
     fetchCategories();
