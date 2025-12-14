@@ -118,6 +118,7 @@ class Ad(BaseModel):
     title: str
     description: str
     category: str
+    subcategory: Optional[str] = None
     price: float
     images: List[str]
     is_paid: bool
@@ -129,6 +130,7 @@ class AdCreate(BaseModel):
     title: str
     description: str
     category: str
+    subcategory: Optional[str] = None
     price: float
     images: List[str]
     is_paid: bool = False
@@ -137,6 +139,7 @@ class AdUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
     category: Optional[str] = None
+    subcategory: Optional[str] = None
     price: Optional[float] = None
     images: Optional[List[str]] = None
 
