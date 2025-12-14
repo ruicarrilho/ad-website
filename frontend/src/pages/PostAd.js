@@ -69,21 +69,56 @@ const PostAd = () => {
     setFormData(prev => ({ ...prev, subcategory: value }));
   };
 
-  const handleImageUrlAdd = () => {
-    const url = prompt('Enter image URL:');
-    if (url && url.trim()) {
-      if (!formData.is_paid && formData.images.length >= 5) {
-        toast({
-          title: 'Limit Reached',
-          description: 'Free ads are limited to 5 images. Upgrade to premium for unlimited images.',
-          variant: 'destructive'
-        });
-        return;
-      }
+  const handleImageUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    
+    if (!formData.is_paid && (formData.images.length + files.length) > 5) {
+      toast({
+        title: 'Limit Reached',
+        description: 'Free ads are limited to 5 images. Upgrade to premium for unlimited images.',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    // Convert images to base64
+    const promises = files.map(file => {
+      return new Promise((resolve, reject) => {
+        if (!file.type.startsWith('image/')) {
+          toast({
+            title: 'Invalid File',
+            description: 'Please upload only image files',
+            variant: 'destructive'
+          });
+          reject('Invalid file type');
+          return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) { // 5MB limit
+          toast({
+            title: 'File Too Large',
+            description: 'Image size must be less than 5MB',
+            variant: 'destructive'
+          });
+          reject('File too large');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (event) => resolve(event.target.result);
+        reader.onerror = (error) => reject(error);
+        reader.readAsDataURL(file);
+      });
+    });
+
+    try {
+      const base64Images = await Promise.all(promises);
       setFormData(prev => ({
         ...prev,
-        images: [...prev.images, url.trim()]
+        images: [...prev.images, ...base64Images]
       }));
+    } catch (error) {
+      console.error('Error uploading images:', error);
     }
   };
 
