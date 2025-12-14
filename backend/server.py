@@ -328,7 +328,16 @@ async def logout(request: Request, authorization: Optional[str] = Header(None)):
 
 # Ad endpoints
 @api_router.get("/ads")
-async def get_ads(category: Optional[str] = None, subcategory: Optional[str] = None, search: Optional[str] = None, limit: int = 20):
+async def get_ads(
+    category: Optional[str] = None, 
+    subcategory: Optional[str] = None, 
+    search: Optional[str] = None,
+    country: Optional[str] = None,
+    lat: Optional[float] = None,
+    lng: Optional[float] = None,
+    radius: Optional[float] = None,
+    limit: int = 20
+):
     query = {"status": "active"}
     
     if category and category in AD_CATEGORIES:
@@ -336,6 +345,19 @@ async def get_ads(category: Optional[str] = None, subcategory: Optional[str] = N
     
     if subcategory:
         query["subcategory"] = subcategory
+    
+    if country:
+        query["location.country"] = country
+    
+    # Geospatial search: find ads within radius (in kilometers) of given coordinates
+    if lat is not None and lng is not None and radius is not None:
+        # Convert radius from km to radians (Earth radius = 6371 km)
+        radius_in_radians = radius / 6371
+        query["location.coordinates"] = {
+            "$geoWithin": {
+                "$centerSphere": [[lng, lat], radius_in_radians]
+            }
+        }
     
     if search:
         query["$or"] = [
