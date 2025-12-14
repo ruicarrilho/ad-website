@@ -21,6 +21,8 @@ const Browse = () => {
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'all');
   const [selectedSubcategory, setSelectedSubcategory] = useState(searchParams.get('subcategory') || 'all');
   const [subcategories, setSubcategories] = useState([]);
+  const [locationFilter, setLocationFilter] = useState(null);
+  const [showMapSearch, setShowMapSearch] = useState(false);
 
   useEffect(() => {
     fetchCategories();
