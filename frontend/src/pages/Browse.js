@@ -94,7 +94,7 @@ const Browse = () => {
             <span className="font-medium text-slate-900">Filters</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-            <div className="md:col-span-4">
+            <div className="md:col-span-3">
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                 <SelectTrigger data-testid="category-filter" className="h-12 rounded-lg">
                   <SelectValue placeholder="All Categories" />
@@ -109,7 +109,26 @@ const Browse = () => {
                 </SelectContent>
               </Select>
             </div>
-            <div className="md:col-span-6 relative">
+            <div className="md:col-span-3">
+              <Select 
+                value={selectedSubcategory} 
+                onValueChange={setSelectedSubcategory}
+                disabled={!selectedCategory || selectedCategory === 'all' || subcategories.length === 0}
+              >
+                <SelectTrigger data-testid="subcategory-filter" className="h-12 rounded-lg">
+                  <SelectValue placeholder="All Subcategories" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all" data-testid="subcategory-all">All Subcategories</SelectItem>
+                  {subcategories.map((subcat) => (
+                    <SelectItem key={subcat} value={subcat} data-testid={`subcategory-filter-${subcat}`}>
+                      {subcat}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="md:col-span-4 relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
               <Input
                 data-testid="search-filter-input"
