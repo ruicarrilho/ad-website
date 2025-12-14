@@ -69,6 +69,9 @@ const Browse = () => {
       if (searchQuery) {
         url += `&search=${encodeURIComponent(searchQuery)}`;
       }
+      if (locationFilter) {
+        url += `&lat=${locationFilter.latitude}&lng=${locationFilter.longitude}&radius=${locationFilter.radius}`;
+      }
       const response = await axios.get(url);
       setAds(response.data);
     } catch (error) {
