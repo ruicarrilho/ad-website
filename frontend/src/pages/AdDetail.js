@@ -116,10 +116,13 @@ const AdDetail = () => {
               </span>
             )}
             <h1 className="font-heading text-4xl font-bold text-primary mb-4" data-testid="ad-title">{ad.title}</h1>
-            <div className="flex items-center gap-6 text-slate-600 mb-6">
+            <div className="flex items-center gap-6 text-slate-600 mb-6 flex-wrap">
               <div className="flex items-center gap-2">
                 <Tag className="w-4 h-4" />
-                <span className="capitalize text-sm" data-testid="ad-category">{ad.category.replace(/_/g, ' ')}</span>
+                <span className="capitalize text-sm" data-testid="ad-category">
+                  {ad.category.replace(/_/g, ' ')}
+                  {ad.subcategory && ` • ${ad.subcategory}`}
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
