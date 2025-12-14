@@ -368,6 +368,10 @@ async def create_ad(ad_data: AdCreate, request: Request, authorization: Optional
     if ad_data.category not in AD_CATEGORIES:
         raise HTTPException(status_code=400, detail="Invalid category")
     
+    # Validate subcategory
+    if ad_data.subcategory and ad_data.subcategory not in AD_CATEGORIES[ad_data.category]["subcategories"]:
+        raise HTTPException(status_code=400, detail="Invalid subcategory for selected category")
+    
     # Validate free ad constraints
     if not ad_data.is_paid:
         if len(ad_data.images) > 5:
@@ -384,6 +388,7 @@ async def create_ad(ad_data: AdCreate, request: Request, authorization: Optional
         "title": ad_data.title,
         "description": ad_data.description,
         "category": ad_data.category,
+        "subcategory": ad_data.subcategory,
         "price": ad_data.price,
         "images": ad_data.images,
         "is_paid": ad_data.is_paid,
