@@ -27,15 +27,33 @@ api_router = APIRouter(prefix="/api")
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Ad categories
-AD_CATEGORIES = [
-    "jobs",
-    "real_estate_renting",
-    "real_estate_selling",
-    "vehicles",
-    "sales_of_products",
-    "services"
-]
+# Ad categories with subcategories
+AD_CATEGORIES = {
+    "jobs": {
+        "name": "Jobs",
+        "subcategories": ["Full-time", "Part-time", "Freelance", "Internships", "Temporary", "Other"]
+    },
+    "real_estate_renting": {
+        "name": "Real Estate Renting",
+        "subcategories": ["Rooms", "Flats", "Houses", "Holiday Rentals", "Offices", "Parking Places", "Garages", "Other"]
+    },
+    "real_estate_selling": {
+        "name": "Real Estate Selling",
+        "subcategories": ["Flats", "Houses", "Offices", "Parking Places", "Garages", "Land", "Commercial", "Other"]
+    },
+    "vehicles": {
+        "name": "Vehicles",
+        "subcategories": ["Cars", "Trucks", "Boats", "Jet Ski", "Motorcycles", "Bicycles", "Accessories", "Caravans", "Other"]
+    },
+    "sales_of_products": {
+        "name": "Sales of Products",
+        "subcategories": ["Electronics", "Furniture", "Clothing", "Books", "Home & Garden", "Sports & Outdoors", "Toys & Games", "Other"]
+    },
+    "services": {
+        "name": "Services",
+        "subcategories": ["Home Services", "Professional Services", "Tutoring", "Beauty & Wellness", "Event Services", "Repair Services", "Other"]
+    }
+}
 
 # Helper function to get user from session
 async def get_current_user(request: Request, authorization: Optional[str] = Header(None)):
