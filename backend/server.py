@@ -486,6 +486,14 @@ async def update_ad(ad_id: str, ad_data: AdUpdate, request: Request, authorizati
         if not ad["is_paid"] and len(ad_data.images) > 5:
             raise HTTPException(status_code=400, detail="Free ads are limited to 5 images")
         update_data["images"] = ad_data.images
+    if ad_data.location:
+        update_data["location"] = {
+            "country": ad_data.location.country,
+            "address": ad_data.location.address,
+            "latitude": ad_data.location.latitude,
+            "longitude": ad_data.location.longitude,
+            "coordinates": [ad_data.location.longitude, ad_data.location.latitude]
+        }
     
     if update_data:
         await db.ads.update_one({"ad_id": ad_id}, {"$set": update_data})
