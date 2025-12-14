@@ -111,6 +111,12 @@ class UserLogin(BaseModel):
     email: str
     password: str
 
+class Location(BaseModel):
+    country: str
+    address: str
+    latitude: float
+    longitude: float
+
 class Ad(BaseModel):
     model_config = ConfigDict(extra="ignore")
     ad_id: str
@@ -121,6 +127,7 @@ class Ad(BaseModel):
     subcategory: Optional[str] = None
     price: float
     images: List[str]
+    location: Optional[Location] = None
     is_paid: bool
     status: str
     created_at: datetime
@@ -133,6 +140,7 @@ class AdCreate(BaseModel):
     subcategory: Optional[str] = None
     price: float
     images: List[str]
+    location: Optional[Location] = None
     is_paid: bool = False
 
 class AdUpdate(BaseModel):
@@ -142,6 +150,7 @@ class AdUpdate(BaseModel):
     subcategory: Optional[str] = None
     price: Optional[float] = None
     images: Optional[List[str]] = None
+    location: Optional[Location] = None
 
 class PaymentTransaction(BaseModel):
     model_config = ConfigDict(extra="ignore")
