@@ -428,6 +428,16 @@ async def create_ad(ad_data: AdCreate, request: Request, authorization: Optional
         "expires_at": expires_at.isoformat()
     }
     
+    # Add location data if provided
+    if ad_data.location:
+        ad_doc["location"] = {
+            "country": ad_data.location.country,
+            "address": ad_data.location.address,
+            "latitude": ad_data.location.latitude,
+            "longitude": ad_data.location.longitude,
+            "coordinates": [ad_data.location.longitude, ad_data.location.latitude]  # GeoJSON format [lng, lat]
+        }
+    
     await db.ads.insert_one(ad_doc)
     
     # Get the inserted ad without MongoDB _id field
