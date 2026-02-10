@@ -524,7 +524,7 @@ const PostAd = () => {
               data-testid="submit-ad-btn"
               className="flex-1 bg-accent text-white hover:bg-accent/90 h-12 rounded-full font-medium transition-all active:scale-95"
             >
-              {loading ? 'Posting...' : formData.is_paid ? 'Post & Pay' : 'Post Ad'}
+              {loading ? 'Posting...' : costBreakdown.requiresPayment ? `Post & Pay $${costBreakdown.totalCost.toFixed(2)}` : 'Post Ad Free'}
             </Button>
           </div>
         </form>
