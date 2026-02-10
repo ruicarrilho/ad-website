@@ -149,14 +149,14 @@ const Landing = () => {
       {/* Featured Ads Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="font-heading text-4xl font-semibold tracking-tight text-primary">Featured Ads</h2>
+          <h2 className="font-heading text-4xl font-semibold tracking-tight text-primary">{t('featuredAds.title')}</h2>
           <Button
             data-testid="view-all-ads-btn"
             onClick={() => navigate('/browse')}
             variant="ghost"
             className="font-medium"
           >
-            View All <ArrowRight className="w-4 h-4 ml-2" />
+            {t('featuredAds.viewAll')} <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
