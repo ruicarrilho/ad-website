@@ -182,7 +182,7 @@ const Landing = () => {
                 <h3 className="font-heading font-semibold text-lg text-slate-900 line-clamp-1">{ad.title}</h3>
                 <p className="text-sm text-slate-600 line-clamp-2">{ad.description}</p>
                 <div className="flex justify-between items-center pt-2">
-                  <span className="text-2xl font-bold text-accent">${ad.price}</span>
+                  <span className="text-2xl font-bold text-accent">€{ad.price}</span>
                   {ad.is_paid && (
                     <span className="text-xs bg-accent/10 text-accent px-2 py-1 rounded-full font-medium">Featured</span>
                   )}
