@@ -82,10 +82,11 @@ const PostAd = () => {
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
     
-    if (!formData.is_paid && (formData.images.length + files.length) > 5) {
+    const maxImages = 20; // Absolute maximum
+    if (formData.images.length + files.length > maxImages) {
       toast({
         title: 'Limit Reached',
-        description: 'Free ads are limited to 5 images. Upgrade to premium for unlimited images.',
+        description: `Maximum ${maxImages} images allowed per ad.`,
         variant: 'destructive'
       });
       return;
