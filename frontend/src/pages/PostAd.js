@@ -245,7 +245,9 @@ const PostAd = () => {
         `${API}/payment/create-session`,
         {
           ad_id: adId,
-          origin_url: originUrl
+          origin_url: originUrl,
+          is_premium: formData.is_paid,
+          image_count: formData.images.length
         },
         {
           withCredentials: true
