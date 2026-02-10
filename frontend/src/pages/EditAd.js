@@ -362,7 +362,16 @@ const EditAd = () => {
           {/* Images */}
           <div className="space-y-4 border-t border-slate-200 pt-6">
             <div className="flex items-center justify-between">
-              <Label data-testid="images-label">Images {!formData.is_paid && `(Max 5 for free ads)`}</Label>
+              <div>
+                <Label data-testid="images-label" className="text-base">Images</Label>
+                <p className="text-sm text-slate-600 mt-1">
+                  {formData.is_paid ? (
+                    <>First 15 images included, max 20 total</>
+                  ) : (
+                    <>First 5 images free, max 20 total</>
+                  )}
+                </p>
+              </div>
               <div className="relative">
                 <input
                   type="file"
