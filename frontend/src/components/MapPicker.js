@@ -99,7 +99,7 @@ const MapPicker = ({ location, onLocationChange }) => {
             data-testid="address-input"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            placeholder="e.g., New York, NY"
+            placeholder="e.g., Lisbon, Porto, Faro"
             required
             className="h-12 rounded-lg border-slate-200 focus:border-primary"
           />
