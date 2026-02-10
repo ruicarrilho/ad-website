@@ -67,7 +67,7 @@ const Landing = () => {
               Find What You Need, Sell What You Have
             </h1>
             <p className="text-lg leading-relaxed text-slate-600">
-              Browse thousands of ads or post your own. From jobs to real estate, vehicles to services - all in one place.
+              Browse thousands of ads or post your own across Portugal. From jobs to real estate, vehicles to services - all in one place.
             </p>
             
             {/* Search Bar */}
