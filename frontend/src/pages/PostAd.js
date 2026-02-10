@@ -140,7 +140,30 @@ const PostAd = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const calculateCost = () => {
+    const imageCount = formData.images.length;
+    const isPremium = formData.is_paid;
+    
+    // Base costs
+    const baseCost = isPremium ? 10.00 : 0.00;
+    
+    // Extra image costs
+    const freeImageLimit = isPremium ? 15 : 5;
+    const extraImages = Math.max(0, imageCount - freeImageLimit);
+    const extraImagesCost = extraImages * 1.00;
+    
+    const totalCost = baseCost + extraImagesCost;
+    
+    return {
+      baseCost,
+      extraImages,
+      extraImagesCost,
+      totalCost,
+      requiresPayment: totalCost > 0
+    };
+  };
+
+  const costBreakdown = calculateCost();
     e.preventDefault();
 
     if (!formData.category) {
