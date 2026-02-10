@@ -45,6 +45,19 @@ const Landing = () => {
     }
   };
 
+  // Helper function to get translated category name
+  const getCategoryName = (categoryId) => {
+    const categoryMap = {
+      'jobs': t('categories.jobs'),
+      'real_estate_renting': t('categories.realEstateRenting'),
+      'real_estate_selling': t('categories.realEstateSelling'),
+      'vehicles': t('categories.vehicles'),
+      'sales_of_products': t('categories.products'),
+      'services': t('categories.services')
+    };
+    return categoryMap[categoryId] || categoryId;
+  };
+
   const categoryImages = {
     jobs: 'https://images.unsplash.com/photo-1661169398420-e8d229fb39f4?crop=entropy&cs=srgb&fm=jpg&q=85',
     real_estate_renting: 'https://images.unsplash.com/photo-1607756844432-f4849943f199?crop=entropy&cs=srgb&fm=jpg&q=85',
