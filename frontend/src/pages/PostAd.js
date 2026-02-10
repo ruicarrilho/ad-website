@@ -375,9 +375,9 @@ const PostAd = () => {
                 <Label data-testid="images-label" className="text-base">Images</Label>
                 <p className="text-sm text-slate-600 mt-1">
                   {formData.is_paid ? (
-                    <>First 15 images free, then $1 per extra image (max 20)</>
+                    <>First 15 images free, then €1 per extra image (max 20)</>
                   ) : (
-                    <>First 5 images free, then $1 per extra image (max 20)</>
+                    <>First 5 images free, then €1 per extra image (max 20)</>
                   )}
                 </p>
               </div>
