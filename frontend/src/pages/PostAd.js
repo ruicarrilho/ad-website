@@ -220,11 +220,11 @@ const PostAd = () => {
       setCreatedAdId(adId);
       setCreatedAdTitle(adTitle);
 
-      // If premium, redirect to payment
-      if (formData.is_paid) {
+      // If payment is required (premium or extra images)
+      if (costBreakdown.requiresPayment) {
         initiatePayment(adId);
       } else {
-        // Show success dialog for free ads
+        // Show success dialog for free ads with no extra costs
         setShowSuccessDialog(true);
       }
     } catch (error) {
