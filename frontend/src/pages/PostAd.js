@@ -187,17 +187,19 @@ const PostAd = () => {
         withCredentials: true
       });
 
-      toast({
-        title: 'Success!',
-        description: 'Your ad has been posted successfully'
-      });
+      const adId = response.data.ad_id;
+      const adTitle = response.data.title;
+
+      // Set dialog data
+      setCreatedAdId(adId);
+      setCreatedAdTitle(adTitle);
 
       // If premium, redirect to payment
       if (formData.is_paid) {
-        const adId = response.data.ad_id;
         initiatePayment(adId);
       } else {
-        navigate('/dashboard');
+        // Show success dialog for free ads
+        setShowSuccessDialog(true);
       }
     } catch (error) {
       toast({
