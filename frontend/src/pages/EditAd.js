@@ -226,7 +226,8 @@ const EditAd = () => {
         withCredentials: true
       });
 
-      // Show success dialog
+      // Stop loading and show success dialog
+      setLoading(false);
       setShowSuccessDialog(true);
     } catch (error) {
       toast({
@@ -234,7 +235,6 @@ const EditAd = () => {
         description: error.response?.data?.detail || 'Failed to update ad',
         variant: 'destructive'
       });
-    } finally {
       setLoading(false);
     }
   };
