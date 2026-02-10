@@ -38,6 +38,9 @@ const PostAd = () => {
   });
   const [subcategories, setSubcategories] = useState([]);
   const [location, setLocation] = useState(null);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [createdAdId, setCreatedAdId] = useState(null);
+  const [createdAdTitle, setCreatedAdTitle] = useState('');
 
   useEffect(() => {
     if (!user) {
