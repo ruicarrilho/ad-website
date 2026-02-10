@@ -28,9 +28,9 @@ const LocationMarker = ({ position, setPosition }) => {
 const MapPicker = ({ location, onLocationChange }) => {
   const [position, setPosition] = useState(location?.latitude && location?.longitude ? 
     { lat: location.latitude, lng: location.longitude } : 
-    { lat: 40.7128, lng: -74.0060 } // Default to New York
+    { lat: 38.7223, lng: -9.1393 } // Default to Lisbon, Portugal
   );
-  const [country, setCountry] = useState(location?.country || '');
+  const [country, setCountry] = useState(location?.country || 'Portugal');
   const [address, setAddress] = useState(location?.address || '');
   const [mapKey, setMapKey] = useState(0);
 
