@@ -198,14 +198,14 @@ const Landing = () => {
       {/* CTA Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="bg-primary rounded-3xl p-12 md:p-16 text-center text-white">
-          <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4">Ready to Post Your Ad?</h2>
-          <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">Join thousands of users buying and selling on AdsHub. Post your first ad today!</p>
+          <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4">{t('cta.title')}</h2>
+          <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">{t('cta.description')}</p>
           <Button
             data-testid="cta-post-ad-btn"
             onClick={() => navigate('/post-ad')}
             className="bg-accent text-white hover:bg-accent/90 h-14 px-12 rounded-full font-medium text-lg transition-all active:scale-95"
           >
-            Post Your First Ad
+            {t('cta.button')}
           </Button>
         </div>
       </section>
