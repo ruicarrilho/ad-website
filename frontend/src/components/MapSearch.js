@@ -95,7 +95,7 @@ const MapSearch = ({ onLocationChange, country }) => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-            placeholder="e.g., New York, London, Tokyo"
+            placeholder="e.g., Lisbon, Porto, Faro, Coimbra"
             className="h-12 rounded-lg flex-1"
           />
           <button
