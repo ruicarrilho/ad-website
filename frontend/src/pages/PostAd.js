@@ -220,6 +220,9 @@ const PostAd = () => {
       setCreatedAdId(adId);
       setCreatedAdTitle(adTitle);
 
+      // Stop loading before showing dialog or redirecting
+      setLoading(false);
+
       // If payment is required (premium or extra images)
       if (costBreakdown.requiresPayment) {
         initiatePayment(adId);
@@ -233,7 +236,6 @@ const PostAd = () => {
         description: error.response?.data?.detail || 'Failed to post ad',
         variant: 'destructive'
       });
-    } finally {
       setLoading(false);
     }
   };
