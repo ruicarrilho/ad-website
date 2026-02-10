@@ -186,7 +186,7 @@ const Landing = () => {
                 <div className="flex justify-between items-center pt-2">
                   <span className="text-2xl font-bold text-accent">€{ad.price}</span>
                   {ad.is_paid && (
-                    <span className="text-xs bg-accent/10 text-accent px-2 py-1 rounded-full font-medium">Featured</span>
+                    <span className="text-xs bg-accent/10 text-accent px-2 py-1 rounded-full font-medium">{t('featuredAds.featured')}</span>
                   )}
                 </div>
               </div>
