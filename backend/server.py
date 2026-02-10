@@ -482,9 +482,9 @@ async def update_ad(ad_id: str, ad_data: AdUpdate, request: Request, authorizati
     if ad_data.price is not None:
         update_data["price"] = ad_data.price
     if ad_data.images is not None:
-        # Validate free ad constraints
-        if not ad["is_paid"] and len(ad_data.images) > 5:
-            raise HTTPException(status_code=400, detail="Free ads are limited to 5 images")
+        # Allow up to 20 images total
+        if len(ad_data.images) > 20:
+            raise HTTPException(status_code=400, detail="Maximum 20 images allowed")
         update_data["images"] = ad_data.images
     if ad_data.location:
         update_data["location"] = {
