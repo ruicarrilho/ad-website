@@ -533,8 +533,17 @@ const PostAd = () => {
       </div>
 
       {/* Success Dialog */}
-      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
-        <DialogContent className="sm:max-w-md" data-testid="success-dialog">
+      <Dialog open={showSuccessDialog} onOpenChange={(open) => {
+        // Prevent closing by clicking outside or ESC
+        if (open === false) return;
+        setShowSuccessDialog(open);
+      }}>
+        <DialogContent 
+          className="sm:max-w-md" 
+          data-testid="success-dialog"
+          onPointerDownOutside={(e) => e.preventDefault()}
+          onEscapeKeyDown={(e) => e.preventDefault()}
+        >
           <DialogHeader>
             <div className="flex justify-center mb-4">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
