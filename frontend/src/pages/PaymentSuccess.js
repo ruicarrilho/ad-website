@@ -16,6 +16,7 @@ const PaymentSuccess = () => {
   const { t } = useTranslation();
   const [status, setStatus] = useState('checking');
   const [attempts, setAttempts] = useState(0);
+  const [adDetails, setAdDetails] = useState(null);
   const maxAttempts = 5;
 
   useEffect(() => {
@@ -35,6 +36,13 @@ const PaymentSuccess = () => {
 
       if (response.data.payment_status === 'paid') {
         setStatus('success');
+        // Store ad details if available
+        if (response.data.ad_id) {
+          setAdDetails({
+            ad_id: response.data.ad_id,
+            title: response.data.ad_title || 'Your ad'
+          });
+        }
       } else if (attempt < maxAttempts) {
         // Retry after 2 seconds
         setTimeout(() => {
@@ -63,16 +71,47 @@ const PaymentSuccess = () => {
             </>
           ) : status === 'success' ? (
             <>
-              <CheckCircle2 className="w-16 h-16 text-green-600 mx-auto mb-6" data-testid="success-icon" />
-              <h1 className="font-heading text-2xl font-bold text-primary mb-2">{t('payment.success')}</h1>
-              <p className="text-slate-600 mb-8">{t('payment.adUpgraded')}</p>
-              <Button
-                data-testid="view-dashboard-btn"
-                onClick={() => navigate('/dashboard')}
-                className="w-full bg-accent text-white hover:bg-accent/90 h-12 rounded-full font-medium"
-              >
-                {t('payment.viewMyAds')}
-              </Button>
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <CheckCircle2 className="w-10 h-10 text-green-600" data-testid="success-icon" />
+              </div>
+              <h1 className="font-heading text-2xl font-bold text-primary mb-2">{t('successDialog.adPosted')}</h1>
+              <p className="text-slate-700 mb-2">
+                {adDetails?.title ? (
+                  <>
+                    {t('successDialog.adPublished', { title: adDetails.title }).replace('<strong>', '').replace('</strong>', '')}
+                  </>
+                ) : (
+                  t('payment.adUpgraded')
+                )}
+              </p>
+              <p className="text-sm text-slate-600 mb-8">{t('successDialog.visiblePortugal')}</p>
+              <div className="flex flex-col gap-3">
+                {adDetails?.ad_id && (
+                  <Button
+                    data-testid="view-ad-btn"
+                    onClick={() => navigate(`/ads/${adDetails.ad_id}`)}
+                    className="w-full bg-accent text-white hover:bg-accent/90 h-12 rounded-full font-medium"
+                  >
+                    {t('successDialog.viewAd')}
+                  </Button>
+                )}
+                <Button
+                  data-testid="view-dashboard-btn"
+                  onClick={() => navigate('/dashboard')}
+                  variant={adDetails?.ad_id ? "outline" : "default"}
+                  className={`w-full h-12 rounded-full font-medium ${!adDetails?.ad_id ? 'bg-accent text-white hover:bg-accent/90' : ''}`}
+                >
+                  {t('successDialog.goToDashboard')}
+                </Button>
+                <Button
+                  data-testid="post-another-btn"
+                  onClick={() => navigate('/post-ad')}
+                  variant="ghost"
+                  className="w-full text-primary hover:text-primary/80"
+                >
+                  {t('successDialog.postAnother')}
+                </Button>
+              </div>
             </>
           ) : status === 'pending' ? (
             <>
