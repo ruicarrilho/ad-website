@@ -41,6 +41,7 @@ const EditAd = () => {
   const [subcategories, setSubcategories] = useState([]);
   const [location, setLocation] = useState(null);
   const [originalIsPaid, setOriginalIsPaid] = useState(false);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
   useEffect(() => {
     if (!user) {
