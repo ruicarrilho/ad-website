@@ -222,7 +222,7 @@ const Browse = () => {
                     <h3 className="font-heading font-semibold text-lg text-slate-900 line-clamp-1">{ad.title}</h3>
                     <p className="text-sm text-slate-600 line-clamp-2">{ad.description}</p>
                     <div className="flex justify-between items-center pt-2">
-                      <span className="text-2xl font-bold text-accent">${ad.price}</span>
+                      <span className="text-2xl font-bold text-accent">€{ad.price}</span>
                       <div className="text-right">
                         <span className="text-xs text-slate-500 capitalize block">{ad.category.replace(/_/g, ' ')}</span>
                         {ad.subcategory && (
