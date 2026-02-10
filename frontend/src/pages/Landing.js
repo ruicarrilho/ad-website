@@ -113,26 +113,26 @@ const Landing = () => {
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-4">
               <div className="relative h-48 rounded-2xl overflow-hidden group cursor-pointer" onClick={() => navigate('/browse?category=jobs')}>
-                <img src={categoryImages.jobs} alt="Jobs" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <img src={categoryImages.jobs} alt={t('categories.jobs')} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-4 left-4 text-white font-heading font-semibold text-lg">Jobs</div>
+                <div className="absolute bottom-4 left-4 text-white font-heading font-semibold text-lg">{t('categories.jobs')}</div>
               </div>
               <div className="relative h-64 rounded-2xl overflow-hidden group cursor-pointer" onClick={() => navigate('/browse?category=vehicles')}>
-                <img src={categoryImages.vehicles} alt="Vehicles" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <img src={categoryImages.vehicles} alt={t('categories.vehicles')} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-4 left-4 text-white font-heading font-semibold text-lg">Vehicles</div>
+                <div className="absolute bottom-4 left-4 text-white font-heading font-semibold text-lg">{t('categories.vehicles')}</div>
               </div>
             </div>
             <div className="space-y-4 pt-8">
               <div className="relative h-64 rounded-2xl overflow-hidden group cursor-pointer" onClick={() => navigate('/browse?category=real_estate_renting')}>
-                <img src={categoryImages.real_estate_renting} alt="Real Estate" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <img src={categoryImages.real_estate_renting} alt={t('categories.realEstateRenting')} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-4 left-4 text-white font-heading font-semibold text-lg">Real Estate</div>
+                <div className="absolute bottom-4 left-4 text-white font-heading font-semibold text-lg">{t('categories.realEstateRenting')}</div>
               </div>
               <div className="relative h-48 rounded-2xl overflow-hidden group cursor-pointer" onClick={() => navigate('/browse?category=services')}>
-                <img src={categoryImages.services} alt="Services" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <img src={categoryImages.services} alt={t('categories.services')} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-4 left-4 text-white font-heading font-semibold text-lg">Services</div>
+                <div className="absolute bottom-4 left-4 text-white font-heading font-semibold text-lg">{t('categories.services')}</div>
               </div>
             </div>
           </div>
