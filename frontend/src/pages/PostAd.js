@@ -456,11 +456,56 @@ const PostAd = () => {
                   Make this a Premium Ad - $10.00
                 </label>
                 <p className="text-sm text-slate-600">
-                  Premium ads get unlimited images, priority placement, and extended visibility. Payment via Stripe.
+                  Premium ads get priority placement, extended visibility, and 15 free images instead of 5.
                 </p>
               </div>
             </div>
           </div>
+
+          {/* Cost Summary */}
+          {(costBreakdown.requiresPayment || formData.images.length > 0) && (
+            <div className="bg-slate-50 rounded-2xl p-6 border border-slate-200">
+              <h3 className="font-heading font-semibold text-lg text-slate-900 mb-4">Cost Summary</h3>
+              <div className="space-y-2">
+                <div className="flex justify-between text-slate-700">
+                  <span>Images ({formData.images.length} total)</span>
+                  <span>
+                    {costBreakdown.extraImages > 0 ? (
+                      <span className="text-sm">
+                        {formData.is_paid ? '15' : '5'} free + {costBreakdown.extraImages} extra
+                      </span>
+                    ) : (
+                      <span className="text-green-600 font-medium">Free</span>
+                    )}
+                  </span>
+                </div>
+                {formData.is_paid && (
+                  <div className="flex justify-between text-slate-700">
+                    <span>Premium Ad</span>
+                    <span className="font-medium">${costBreakdown.baseCost.toFixed(2)}</span>
+                  </div>
+                )}
+                {costBreakdown.extraImages > 0 && (
+                  <div className="flex justify-between text-slate-700">
+                    <span>Extra Images ({costBreakdown.extraImages} × $1)</span>
+                    <span className="font-medium">${costBreakdown.extraImagesCost.toFixed(2)}</span>
+                  </div>
+                )}
+                <div className="border-t border-slate-300 pt-2 mt-2">
+                  <div className="flex justify-between text-lg font-bold text-primary">
+                    <span>Total Cost</span>
+                    <span data-testid="total-cost">
+                      {costBreakdown.totalCost === 0 ? (
+                        <span className="text-green-600">FREE</span>
+                      ) : (
+                        `$${costBreakdown.totalCost.toFixed(2)}`
+                      )}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Submit Button */}
           <div className="flex gap-4 pt-4">
