@@ -13,6 +13,7 @@ const PaymentSuccess = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [status, setStatus] = useState('checking');
   const [attempts, setAttempts] = useState(0);
   const maxAttempts = 5;
@@ -56,21 +57,21 @@ const PaymentSuccess = () => {
           {status === 'checking' ? (
             <>
               <Loader2 className="w-16 h-16 text-primary mx-auto mb-6 animate-spin" data-testid="loading-spinner" />
-              <h1 className="font-heading text-2xl font-bold text-primary mb-2">Processing Payment</h1>
-              <p className="text-slate-600">Please wait while we confirm your payment...</p>
-              <p className="text-sm text-slate-500 mt-4">Attempt {attempts + 1} of {maxAttempts}</p>
+              <h1 className="font-heading text-2xl font-bold text-primary mb-2">{t('payment.processing')}</h1>
+              <p className="text-slate-600">{t('payment.pleaseWait')}</p>
+              <p className="text-sm text-slate-500 mt-4">{t('payment.attempt', { current: attempts + 1, max: maxAttempts })}</p>
             </>
           ) : status === 'success' ? (
             <>
               <CheckCircle2 className="w-16 h-16 text-green-600 mx-auto mb-6" data-testid="success-icon" />
-              <h1 className="font-heading text-2xl font-bold text-primary mb-2">Payment Successful!</h1>
-              <p className="text-slate-600 mb-8">Your ad has been upgraded to premium and is now live.</p>
+              <h1 className="font-heading text-2xl font-bold text-primary mb-2">{t('payment.success')}</h1>
+              <p className="text-slate-600 mb-8">{t('payment.adUpgraded')}</p>
               <Button
                 data-testid="view-dashboard-btn"
                 onClick={() => navigate('/dashboard')}
                 className="w-full bg-accent text-white hover:bg-accent/90 h-12 rounded-full font-medium"
               >
-                View My Ads
+                {t('payment.viewMyAds')}
               </Button>
             </>
           ) : status === 'pending' ? (
@@ -78,14 +79,14 @@ const PaymentSuccess = () => {
               <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-3xl">⏳</span>
               </div>
-              <h1 className="font-heading text-2xl font-bold text-primary mb-2">Payment Pending</h1>
-              <p className="text-slate-600 mb-8">Your payment is being processed. Check your dashboard in a few minutes.</p>
+              <h1 className="font-heading text-2xl font-bold text-primary mb-2">{t('payment.pending')}</h1>
+              <p className="text-slate-600 mb-8">{t('payment.pendingMessage')}</p>
               <Button
                 data-testid="goto-dashboard-btn"
                 onClick={() => navigate('/dashboard')}
                 className="w-full bg-primary text-white hover:bg-primary/90 h-12 rounded-full font-medium"
               >
-                Go to Dashboard
+                {t('payment.goToDashboard')}
               </Button>
             </>
           ) : (
@@ -93,14 +94,14 @@ const PaymentSuccess = () => {
               <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-3xl">❌</span>
               </div>
-              <h1 className="font-heading text-2xl font-bold text-primary mb-2">Payment Error</h1>
-              <p className="text-slate-600 mb-8">There was an issue processing your payment. Please contact support.</p>
+              <h1 className="font-heading text-2xl font-bold text-primary mb-2">{t('payment.error')}</h1>
+              <p className="text-slate-600 mb-8">{t('payment.errorMessage')}</p>
               <Button
                 data-testid="back-dashboard-btn"
                 onClick={() => navigate('/dashboard')}
                 className="w-full bg-primary text-white hover:bg-primary/90 h-12 rounded-full font-medium"
               >
-                Back to Dashboard
+                {t('payment.backToDashboard')}
               </Button>
             </>
           )}
