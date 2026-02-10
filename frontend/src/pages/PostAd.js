@@ -274,14 +274,14 @@ const PostAd = () => {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
-          <h1 className="font-heading text-4xl font-bold text-primary mb-2">Post an Ad</h1>
-          <p className="text-slate-600">Fill in the details to create your advertisement</p>
+          <h1 className="font-heading text-4xl font-bold text-primary mb-2">{t('postAd.title')}</h1>
+          <p className="text-slate-600">{t('postAd.subtitle')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-slate-100 p-8 space-y-6" data-testid="post-ad-form">
           {/* Title */}
           <div className="space-y-2">
-            <Label htmlFor="title" data-testid="title-label">Title *</Label>
+            <Label htmlFor="title" data-testid="title-label">{t('postAd.titleLabel')} *</Label>
             <Input
               id="title"
               name="title"
@@ -289,14 +289,14 @@ const PostAd = () => {
               data-testid="title-input"
               value={formData.title}
               onChange={handleInputChange}
-              placeholder="e.g., iPhone 15 Pro Max"
+              placeholder={t('postAd.titlePlaceholder')}
               className="h-12 rounded-lg border-slate-200 focus:border-primary focus:ring-1 focus:ring-primary"
             />
           </div>
 
           {/* Description */}
           <div className="space-y-2">
-            <Label htmlFor="description" data-testid="description-label">Description *</Label>
+            <Label htmlFor="description" data-testid="description-label">{t('postAd.description')} *</Label>
             <Textarea
               id="description"
               name="description"
@@ -304,7 +304,7 @@ const PostAd = () => {
               data-testid="description-input"
               value={formData.description}
               onChange={handleInputChange}
-              placeholder="Describe your item or service..."
+              placeholder={t('postAd.descriptionPlaceholder')}
               rows={5}
               className="rounded-lg border-slate-200 focus:border-primary focus:ring-1 focus:ring-primary resize-none"
             />
@@ -313,10 +313,10 @@ const PostAd = () => {
           {/* Category, Subcategory and Price */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-2">
-              <Label data-testid="category-label">Category *</Label>
+              <Label data-testid="category-label">{t('postAd.category')} *</Label>
               <Select value={formData.category} onValueChange={handleCategoryChange}>
                 <SelectTrigger data-testid="category-select" className="h-12 rounded-lg">
-                  <SelectValue placeholder="Select category" />
+                  <SelectValue placeholder={t('postAd.selectCategory')} />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((cat) => (
@@ -329,14 +329,14 @@ const PostAd = () => {
             </div>
 
             <div className="space-y-2">
-              <Label data-testid="subcategory-label">Subcategory</Label>
+              <Label data-testid="subcategory-label">{t('postAd.subcategory')}</Label>
               <Select 
                 value={formData.subcategory} 
                 onValueChange={handleSubcategoryChange}
                 disabled={!formData.category}
               >
                 <SelectTrigger data-testid="subcategory-select" className="h-12 rounded-lg">
-                  <SelectValue placeholder={formData.category ? "Select subcategory" : "Select category first"} />
+                  <SelectValue placeholder={formData.category ? t('postAd.selectSubcategory') : t('postAd.selectCategoryFirst')} />
                 </SelectTrigger>
                 <SelectContent>
                   {subcategories.map((subcat) => (
@@ -349,7 +349,7 @@ const PostAd = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="price" data-testid="price-label">Price (EUR) *</Label>
+              <Label htmlFor="price" data-testid="price-label">{t('postAd.price')} *</Label>
               <Input
                 id="price"
                 name="price"
@@ -368,7 +368,7 @@ const PostAd = () => {
 
           {/* Location */}
           <div className="space-y-4 border-t border-slate-200 pt-6">
-            <h3 className="font-heading text-xl font-semibold text-primary">Location</h3>
+            <h3 className="font-heading text-xl font-semibold text-primary">{t('postAd.location')}</h3>
             <MapPicker location={location} onLocationChange={setLocation} />
           </div>
 
@@ -376,13 +376,9 @@ const PostAd = () => {
           <div className="space-y-4 border-t border-slate-200 pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <Label data-testid="images-label" className="text-base">Images</Label>
+                <Label data-testid="images-label" className="text-base">{t('postAd.images')}</Label>
                 <p className="text-sm text-slate-600 mt-1">
-                  {formData.is_paid ? (
-                    <>First 15 images free, then €1 per extra image (max 20)</>
-                  ) : (
-                    <>First 5 images free, then €1 per extra image (max 20)</>
-                  )}
+                  {formData.is_paid ? t('postAd.imagesPremium') : t('postAd.imagesFree')}
                 </p>
               </div>
               <div className="relative">
@@ -404,15 +400,15 @@ const PostAd = () => {
                   className="rounded-full cursor-pointer"
                 >
                   <ImagePlus className="w-4 h-4 mr-2" />
-                  Upload Images
+                  {t('postAd.uploadImages')}
                 </Button>
               </div>
             </div>
             {formData.images.length === 0 ? (
               <div className="border-2 border-dashed border-slate-200 rounded-xl p-12 text-center">
                 <ImagePlus className="w-12 h-12 text-slate-400 mx-auto mb-3" />
-                <p className="text-slate-600 mb-2">No images uploaded yet</p>
-                <p className="text-sm text-slate-500">Click "Upload Images" to add photos</p>
+                <p className="text-slate-600 mb-2">{t('postAd.noImages')}</p>
+                <p className="text-sm text-slate-500">{t('postAd.clickUpload')}</p>
               </div>
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -439,7 +435,7 @@ const PostAd = () => {
               </div>
             )}
             <p className="text-xs text-slate-500">
-              Accepted formats: JPG, PNG, GIF, WebP. Max size: 5MB per image
+              {t('postAd.acceptedFormats')}
             </p>
           </div>
 
@@ -457,10 +453,10 @@ const PostAd = () => {
               <div className="flex-1">
                 <label htmlFor="is_paid" className="flex items-center gap-2 font-heading font-semibold text-lg text-slate-900 mb-2 cursor-pointer">
                   <Sparkles className="w-5 h-5 text-accent" />
-                  Make this a Premium Ad - €10.00
+                  {t('postAd.premiumAd')}
                 </label>
                 <p className="text-sm text-slate-600">
-                  Premium ads get priority placement, extended visibility, and 15 free images instead of 5.
+                  {t('postAd.premiumDescription')}
                 </p>
               </div>
             </div>
@@ -469,38 +465,38 @@ const PostAd = () => {
           {/* Cost Summary */}
           {(costBreakdown.requiresPayment || formData.images.length > 0) && (
             <div className="bg-slate-50 rounded-2xl p-6 border border-slate-200">
-              <h3 className="font-heading font-semibold text-lg text-slate-900 mb-4">Cost Summary</h3>
+              <h3 className="font-heading font-semibold text-lg text-slate-900 mb-4">{t('postAd.costSummary')}</h3>
               <div className="space-y-2">
                 <div className="flex justify-between text-slate-700">
-                  <span>Images ({formData.images.length} total)</span>
+                  <span>{t('postAd.imagesCount', { count: formData.images.length })}</span>
                   <span>
                     {costBreakdown.extraImages > 0 ? (
                       <span className="text-sm">
-                        {formData.is_paid ? '15' : '5'} free + {costBreakdown.extraImages} extra
+                        {t('postAd.freeExtra', { free: formData.is_paid ? 15 : 5, extra: costBreakdown.extraImages })}
                       </span>
                     ) : (
-                      <span className="text-green-600 font-medium">Free</span>
+                      <span className="text-green-600 font-medium">{t('postAd.free')}</span>
                     )}
                   </span>
                 </div>
                 {formData.is_paid && (
                   <div className="flex justify-between text-slate-700">
-                    <span>Premium Ad</span>
+                    <span>{t('postAd.premiumAdCost')}</span>
                     <span className="font-medium">€{costBreakdown.baseCost.toFixed(2)}</span>
                   </div>
                 )}
                 {costBreakdown.extraImages > 0 && (
                   <div className="flex justify-between text-slate-700">
-                    <span>Extra Images ({costBreakdown.extraImages} × €1)</span>
+                    <span>{t('postAd.extraImages', { count: costBreakdown.extraImages })}</span>
                     <span className="font-medium">€{costBreakdown.extraImagesCost.toFixed(2)}</span>
                   </div>
                 )}
                 <div className="border-t border-slate-300 pt-2 mt-2">
                   <div className="flex justify-between text-lg font-bold text-primary">
-                    <span>Total Cost</span>
+                    <span>{t('postAd.totalCost')}</span>
                     <span data-testid="total-cost">
                       {costBreakdown.totalCost === 0 ? (
-                        <span className="text-green-600">FREE</span>
+                        <span className="text-green-600">{t('postAd.free').toUpperCase()}</span>
                       ) : (
                         `€${costBreakdown.totalCost.toFixed(2)}`
                       )}
@@ -520,7 +516,7 @@ const PostAd = () => {
               variant="outline"
               className="flex-1 h-12 rounded-full font-medium"
             >
-              Cancel
+              {t('postAd.cancel')}
             </Button>
             <Button
               type="submit"
@@ -528,7 +524,7 @@ const PostAd = () => {
               data-testid="submit-ad-btn"
               className="flex-1 bg-accent text-white hover:bg-accent/90 h-12 rounded-full font-medium transition-all active:scale-95"
             >
-              {loading ? 'Posting...' : costBreakdown.requiresPayment ? `Post & Pay €${costBreakdown.totalCost.toFixed(2)}` : 'Post Ad Free'}
+              {loading ? t('postAd.posting') : costBreakdown.requiresPayment ? t('postAd.postPay', { amount: costBreakdown.totalCost.toFixed(2) }) : t('postAd.postFree')}
             </Button>
           </div>
         </form>
@@ -553,14 +549,14 @@ const PostAd = () => {
               </div>
             </div>
             <DialogTitle className="text-center text-2xl font-heading">
-              Ad Posted Successfully! 🎉
+              {t('successDialog.adPosted')}
             </DialogTitle>
             <DialogDescription className="text-center space-y-4 pt-2">
               <p className="text-base text-slate-700">
-                Your ad <span className="font-semibold">"{createdAdTitle}"</span> has been published and is now live.
+                {t('successDialog.adPublished', { title: createdAdTitle }).replace('<strong>', '').replace('</strong>', '')}
               </p>
               <p className="text-sm text-slate-600">
-                It will be visible to thousands of potential buyers across Portugal!
+                {t('successDialog.visiblePortugal')}
               </p>
             </DialogDescription>
           </DialogHeader>
@@ -570,7 +566,7 @@ const PostAd = () => {
               onClick={() => navigate(`/ads/${createdAdId}`)}
               className="w-full bg-accent text-white hover:bg-accent/90 h-12 rounded-full font-medium"
             >
-              View My Ad
+              {t('successDialog.viewAd')}
             </Button>
             <Button
               data-testid="go-to-dashboard-btn"
@@ -578,7 +574,7 @@ const PostAd = () => {
               variant="outline"
               className="w-full h-12 rounded-full font-medium"
             >
-              Go to My Dashboard
+              {t('successDialog.goToDashboard')}
             </Button>
             <Button
               data-testid="post-another-ad-btn"
@@ -589,7 +585,7 @@ const PostAd = () => {
               variant="ghost"
               className="w-full text-primary hover:text-primary/80"
             >
-              Post Another Ad
+              {t('successDialog.postAnother')}
             </Button>
           </div>
         </DialogContent>
