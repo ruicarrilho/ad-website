@@ -453,7 +453,7 @@ const PostAd = () => {
               <div className="flex-1">
                 <label htmlFor="is_paid" className="flex items-center gap-2 font-heading font-semibold text-lg text-slate-900 mb-2 cursor-pointer">
                   <Sparkles className="w-5 h-5 text-accent" />
-                  Make this a Premium Ad - $10.00
+                  Make this a Premium Ad - €10.00
                 </label>
                 <p className="text-sm text-slate-600">
                   Premium ads get priority placement, extended visibility, and 15 free images instead of 5.
