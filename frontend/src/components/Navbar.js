@@ -34,6 +34,8 @@ const Navbar = () => {
           </Link>
 
           <div className="flex items-center space-x-4">
+            <LanguageSwitcher />
+            
             {user ? (
               <>
                 <Button
@@ -42,7 +44,7 @@ const Navbar = () => {
                   className="bg-accent text-white hover:bg-accent/90 h-11 px-8 rounded-full font-medium transition-all active:scale-95"
                 >
                   <PlusCircle className="w-4 h-4 mr-2" />
-                  Post Ad
+                  {t('nav.postAd')}
                 </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
