@@ -552,12 +552,27 @@ async def create_payment_session(request: Request, authorization: Optional[str] 
     
     ad_id = body.get("ad_id")
     origin_url = body.get("origin_url")
+    is_premium = body.get("is_premium", False)
+    image_count = body.get("image_count", 0)
     
     if not origin_url:
         raise HTTPException(status_code=400, detail="Origin URL required")
     
-    # Payment amount for premium ad (fixed price)
-    amount = 10.00
+    # Calculate total cost
+    base_cost = 10.00 if is_premium else 0.00  # $10 for premium ad
+    
+    # Calculate extra image costs
+    # Free ads: first 5 images free, premium ads: first 15 images free
+    free_image_limit = 15 if is_premium else 5
+    extra_images = max(0, image_count - free_image_limit)
+    extra_images_cost = extra_images * 1.00  # $1 per extra image
+    
+    total_amount = base_cost + extra_images_cost
+    
+    # Minimum charge of $1 for Stripe
+    if total_amount < 1.00:
+        raise HTTPException(status_code=400, detail="Minimum payment amount is $1.00")
+    
     currency = "usd"
     
     # Create success and cancel URLs
@@ -572,14 +587,18 @@ async def create_payment_session(request: Request, authorization: Optional[str] 
     
     # Create checkout session
     checkout_request = CheckoutSessionRequest(
-        amount=amount,
+        amount=total_amount,
         currency=currency,
         success_url=success_url,
         cancel_url=cancel_url,
         metadata={
             "user_id": user["user_id"],
             "ad_id": ad_id if ad_id else "",
-            "type": "premium_ad"
+            "type": "ad_payment",
+            "is_premium": str(is_premium),
+            "image_count": str(image_count),
+            "extra_images": str(extra_images),
+            "extra_images_cost": str(extra_images_cost)
         }
     )
     
@@ -592,7 +611,10 @@ async def create_payment_session(request: Request, authorization: Optional[str] 
         "user_id": user["user_id"],
         "ad_id": ad_id,
         "session_id": session.session_id,
-        "amount": amount,
+        "amount": total_amount,
+        "base_cost": base_cost,
+        "extra_images": extra_images,
+        "extra_images_cost": extra_images_cost,
         "currency": currency,
         "payment_status": "pending",
         "created_at": datetime.now(timezone.utc).isoformat()
@@ -600,7 +622,16 @@ async def create_payment_session(request: Request, authorization: Optional[str] 
     
     await db.payment_transactions.insert_one(transaction_doc)
     
-    return {"url": session.url, "session_id": session.session_id}
+    return {
+        "url": session.url, 
+        "session_id": session.session_id,
+        "amount": total_amount,
+        "breakdown": {
+            "base_cost": base_cost,
+            "extra_images": extra_images,
+            "extra_images_cost": extra_images_cost
+        }
+    }
 
 @api_router.get("/payment/status/{session_id}")
 async def get_payment_status(session_id: str, request: Request, authorization: Optional[str] = Header(None)):
