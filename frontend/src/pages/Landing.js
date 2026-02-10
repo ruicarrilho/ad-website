@@ -63,13 +63,13 @@ const Landing = () => {
           <div className="space-y-8">
             <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">
               <Sparkles className="w-4 h-4" />
-              <span>Your marketplace for everything</span>
+              <span>{t('hero.badge')}</span>
             </div>
             <h1 className="font-heading text-5xl md:text-6xl font-bold tracking-tight leading-none text-primary">
-              Find What You Need, Sell What You Have
+              {t('hero.title')}
             </h1>
             <p className="text-lg leading-relaxed text-slate-600">
-              Browse thousands of ads or post your own across Portugal. From jobs to real estate, vehicles to services - all in one place.
+              {t('hero.description')}
             </p>
             
             {/* Search Bar */}
@@ -79,7 +79,7 @@ const Landing = () => {
                 <Input
                   data-testid="search-input"
                   type="text"
-                  placeholder="Search for ads..."
+                  placeholder={t('hero.searchPlaceholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
@@ -91,7 +91,7 @@ const Landing = () => {
                 onClick={handleSearch}
                 className="bg-accent text-white hover:bg-accent/90 h-12 px-8 rounded-full font-medium transition-all active:scale-95"
               >
-                Search
+                {t('hero.searchButton')}
               </Button>
             </div>
           </div>
