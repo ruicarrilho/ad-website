@@ -25,7 +25,7 @@ const MapUpdater = ({ center }) => {
 };
 
 const MapSearch = ({ onLocationChange, country }) => {
-  const [center, setCenter] = useState({ lat: 40.7128, lng: -74.0060 }); // Default NY
+  const [center, setCenter] = useState({ lat: 38.7223, lng: -9.1393 }); // Default to Lisbon, Portugal
   const [radius, setRadius] = useState([10]); // Default 10km
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
