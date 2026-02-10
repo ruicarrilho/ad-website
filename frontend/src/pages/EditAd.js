@@ -225,12 +225,8 @@ const EditAd = () => {
         withCredentials: true
       });
 
-      toast({
-        title: 'Success!',
-        description: 'Your ad has been updated successfully'
-      });
-
-      navigate('/dashboard');
+      // Show success dialog
+      setShowSuccessDialog(true);
     } catch (error) {
       toast({
         title: 'Error',
