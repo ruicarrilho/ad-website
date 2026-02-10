@@ -87,7 +87,7 @@ const MapPicker = ({ location, onLocationChange }) => {
             data-testid="country-input"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
-            placeholder="e.g., United States"
+            placeholder="e.g., Portugal"
             required
             className="h-12 rounded-lg border-slate-200 focus:border-primary"
           />
