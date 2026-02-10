@@ -128,7 +128,7 @@ const Landing = () => {
 
       {/* Categories Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="font-heading text-4xl font-semibold tracking-tight text-primary mb-8">Browse by Category</h2>
+        <h2 className="font-heading text-4xl font-semibold tracking-tight text-primary mb-8">{t('categories.title')}</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {categories.map((category) => (
             <div
