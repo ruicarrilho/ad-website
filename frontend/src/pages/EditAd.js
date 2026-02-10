@@ -455,6 +455,47 @@ const EditAd = () => {
           </div>
         </form>
       </div>
+
+      {/* Success Dialog */}
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <DialogContent className="sm:max-w-md" data-testid="success-dialog">
+          <DialogHeader>
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                <CheckCircle2 className="w-10 h-10 text-green-600" data-testid="success-icon" />
+              </div>
+            </div>
+            <DialogTitle className="text-center text-2xl font-heading">
+              Ad Updated Successfully! ✨
+            </DialogTitle>
+            <DialogDescription className="text-center space-y-4 pt-2">
+              <p className="text-base text-slate-700">
+                Your changes to <span className="font-semibold">"{formData.title}"</span> have been saved.
+              </p>
+              <p className="text-sm text-slate-600">
+                The updated ad is now live and visible to all users.
+              </p>
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 mt-4">
+            <Button
+              data-testid="view-ad-btn"
+              onClick={() => navigate(`/ads/${adId}`)}
+              className="w-full bg-accent text-white hover:bg-accent/90 h-12 rounded-full font-medium"
+            >
+              View Updated Ad
+            </Button>
+            <Button
+              data-testid="go-to-dashboard-btn"
+              onClick={() => navigate('/dashboard')}
+              variant="outline"
+              className="w-full h-12 rounded-full font-medium"
+            >
+              Go to My Dashboard
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
