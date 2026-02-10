@@ -403,10 +403,10 @@ async def create_ad(ad_data: AdCreate, request: Request, authorization: Optional
     if ad_data.subcategory and ad_data.subcategory not in AD_CATEGORIES[ad_data.category]["subcategories"]:
         raise HTTPException(status_code=400, detail="Invalid subcategory for selected category")
     
-    # Validate free ad constraints
-    if not ad_data.is_paid:
-        if len(ad_data.images) > 5:
-            raise HTTPException(status_code=400, detail="Free ads are limited to 5 images")
+    # Image limits: Free ads = 5 free + extra at $1 each, Premium = 15 free + extra at $1 each
+    max_images = 20  # Absolute maximum to prevent abuse
+    if len(ad_data.images) > max_images:
+        raise HTTPException(status_code=400, detail=f"Maximum {max_images} images allowed")
     
     # Create ad
     ad_id = f"ad_{uuid.uuid4().hex[:12]}"
