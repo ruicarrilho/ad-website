@@ -68,6 +68,14 @@ const AppRouter = () => {
           }
         />
         <Route
+          path="/edit-ad/:adId"
+          element={
+            <ProtectedRoute>
+              <EditAd />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/payment-success"
           element={
             <ProtectedRoute>
