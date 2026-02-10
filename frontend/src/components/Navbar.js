@@ -82,14 +82,14 @@ const Navbar = () => {
                   variant="ghost"
                   className="h-11 px-6 rounded-full font-medium"
                 >
-                  Login
+                  {t('nav.login')}
                 </Button>
                 <Button
                   data-testid="register-nav-btn"
                   onClick={() => navigate('/register')}
                   className="bg-primary text-white hover:bg-primary/90 h-11 px-8 rounded-full font-medium transition-all active:scale-95"
                 >
-                  Sign Up
+                  {t('nav.signup')}
                 </Button>
               </div>
             )}
