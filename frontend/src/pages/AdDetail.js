@@ -23,6 +23,7 @@ const API = `${BACKEND_URL}/api`;
 const AdDetail = () => {
   const { adId } = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [ad, setAd] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -58,9 +59,9 @@ const AdDetail = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <p className="text-slate-600 text-lg mb-4">Ad not found</p>
+          <p className="text-slate-600 text-lg mb-4">{t('adDetail.adNotFound')}</p>
           <Button onClick={() => navigate('/browse')} className="bg-primary text-white rounded-full">
-            Browse Ads
+            {t('adDetail.browseAds')}
           </Button>
         </div>
       </div>
@@ -78,7 +79,7 @@ const AdDetail = () => {
           className="mb-6 rounded-full"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back
+          {t('adDetail.back')}
         </Button>
 
         <div className="grid lg:grid-cols-2 gap-12">
@@ -114,7 +115,7 @@ const AdDetail = () => {
               )
             ) : (
               <div className="w-full h-96 bg-slate-100 rounded-2xl flex items-center justify-center">
-                <p className="text-slate-400">No images available</p>
+                <p className="text-slate-400">{t('adDetail.noImages')}</p>
               </div>
             )}
           </div>
@@ -124,7 +125,7 @@ const AdDetail = () => {
             {ad.is_paid && (
               <span className="inline-flex items-center gap-2 bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium mb-4">
                 <span>✨</span>
-                Featured Ad
+                {t('adDetail.featuredAd')}
               </span>
             )}
             <h1 className="font-heading text-4xl font-bold text-primary mb-4" data-testid="ad-title">{ad.title}</h1>
@@ -138,17 +139,17 @@ const AdDetail = () => {
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                <span className="text-sm" data-testid="ad-date">Posted {formatDate(ad.created_at)}</span>
+                <span className="text-sm" data-testid="ad-date">{t('adDetail.posted', { date: formatDate(ad.created_at) })}</span>
               </div>
             </div>
 
             <div className="bg-white rounded-2xl border border-slate-100 p-8 mb-6">
               <div className="text-5xl font-bold text-accent mb-2" data-testid="ad-price">€{ad.price}</div>
-              <p className="text-slate-600">Price</p>
+              <p className="text-slate-600">{t('adDetail.price')}</p>
             </div>
 
             <div className="bg-white rounded-2xl border border-slate-100 p-8 mb-6">
-              <h2 className="font-heading text-2xl font-semibold text-primary mb-4">Description</h2>
+              <h2 className="font-heading text-2xl font-semibold text-primary mb-4">{t('adDetail.description')}</h2>
               <p className="text-slate-700 leading-relaxed whitespace-pre-wrap" data-testid="ad-description">
                 {ad.description}
               </p>
@@ -157,7 +158,7 @@ const AdDetail = () => {
             {/* Location */}
             {ad.location && (
               <div className="bg-white rounded-2xl border border-slate-100 p-8">
-                <h2 className="font-heading text-2xl font-semibold text-primary mb-4">Location</h2>
+                <h2 className="font-heading text-2xl font-semibold text-primary mb-4">{t('adDetail.location')}</h2>
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 text-slate-600 mt-1" />
