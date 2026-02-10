@@ -11,6 +11,7 @@ const API = `${BACKEND_URL}/api`;
 
 const Landing = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [categories, setCategories] = useState([]);
   const [featuredAds, setFeaturedAds] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
