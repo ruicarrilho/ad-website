@@ -1,0 +1,30 @@
+{
+  "nav": {
+    "postAd": "Publier une Annonce",
+    "login": "Connexion",
+    "signup": "S'inscrire",
+    "myDashboard": "Mon Tableau de Bord",
+    "logout": "Déconnexion"
+  },
+  "hero": {
+    "badge": "Votre marché pour tout",
+    "title": "Trouvez Ce Dont Vous Avez Besoin, Vendez Ce Que Vous Avez",
+    "description": "Parcourez des milliers d'annonces ou publiez la vôtre au Portugal. Des emplois aux biens immobiliers, véhicules et services - tout en un seul endroit.",
+    "searchPlaceholder": "Rechercher des annonces...",
+    "searchButton": "Rechercher"
+  },
+  "categories": {
+    "title": "Parcourir par Catégorie",
+    "jobs": "Emplois",
+    "realEstateRenting": "Location Immobilière",
+    "realEstateSelling": "Vente Immobilière",
+    "vehicles": "Véhicules",
+    "products": "Vente de Produits",
+    "services": "Services"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès"
+  }
+}
