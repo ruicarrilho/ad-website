@@ -1,0 +1,30 @@
+{
+  "nav": {
+    "postAd": "Opublikuj Ogłoszenie",
+    "login": "Zaloguj się",
+    "signup": "Zarejestruj się",
+    "myDashboard": "Mój Panel",
+    "logout": "Wyloguj"
+  },
+  "hero": {
+    "badge": "Twój rynek na wszystko",
+    "title": "Znajdź Czego Potrzebujesz, Sprzedaj Co Masz",
+    "description": "Przeglądaj tysiące ogłoszeń lub opublikuj własne w Portugalii. Od pracy po nieruchomości, pojazdy i usługi - wszystko w jednym miejscu.",
+    "searchPlaceholder": "Szukaj ogłoszeń...",
+    "searchButton": "Szukaj"
+  },
+  "categories": {
+    "title": "Przeglądaj według Kategorii",
+    "jobs": "Praca",
+    "realEstateRenting": "Wynajem Nieruchomości",
+    "realEstateSelling": "Sprzedaż Nieruchomości",
+    "vehicles": "Pojazdy",
+    "products": "Sprzedaż Produktów",
+    "services": "Usługi"
+  },
+  "common": {
+    "loading": "Ładowanie...",
+    "error": "Błąd",
+    "success": "Sukces"
+  }
+}
