@@ -142,7 +142,7 @@ const AdDetail = () => {
             </div>
 
             <div className="bg-white rounded-2xl border border-slate-100 p-8 mb-6">
-              <div className="text-5xl font-bold text-accent mb-2" data-testid="ad-price">${ad.price}</div>
+              <div className="text-5xl font-bold text-accent mb-2" data-testid="ad-price">€{ad.price}</div>
               <p className="text-slate-600">Price</p>
             </div>
 
