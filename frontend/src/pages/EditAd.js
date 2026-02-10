@@ -336,7 +336,7 @@ const EditAd = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="price" data-testid="price-label">Price (USD) *</Label>
+              <Label htmlFor="price" data-testid="price-label">Price (EUR) *</Label>
               <Input
                 id="price"
                 name="price"
