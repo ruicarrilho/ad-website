@@ -482,13 +482,13 @@ const PostAd = () => {
                 {formData.is_paid && (
                   <div className="flex justify-between text-slate-700">
                     <span>Premium Ad</span>
-                    <span className="font-medium">${costBreakdown.baseCost.toFixed(2)}</span>
+                    <span className="font-medium">€{costBreakdown.baseCost.toFixed(2)}</span>
                   </div>
                 )}
                 {costBreakdown.extraImages > 0 && (
                   <div className="flex justify-between text-slate-700">
-                    <span>Extra Images ({costBreakdown.extraImages} × $1)</span>
-                    <span className="font-medium">${costBreakdown.extraImagesCost.toFixed(2)}</span>
+                    <span>Extra Images ({costBreakdown.extraImages} × €1)</span>
+                    <span className="font-medium">€{costBreakdown.extraImagesCost.toFixed(2)}</span>
                   </div>
                 )}
                 <div className="border-t border-slate-300 pt-2 mt-2">
@@ -498,7 +498,7 @@ const PostAd = () => {
                       {costBreakdown.totalCost === 0 ? (
                         <span className="text-green-600">FREE</span>
                       ) : (
-                        `$${costBreakdown.totalCost.toFixed(2)}`
+                        `€${costBreakdown.totalCost.toFixed(2)}`
                       )}
                     </span>
                   </div>
