@@ -9,6 +9,7 @@ import Register from './pages/Register';
 import AuthCallback from './pages/AuthCallback';
 import Dashboard from './pages/Dashboard';
 import PostAd from './pages/PostAd';
+import EditAd from './pages/EditAd';
 import Browse from './pages/Browse';
 import AdDetail from './pages/AdDetail';
 import PaymentSuccess from './pages/PaymentSuccess';
