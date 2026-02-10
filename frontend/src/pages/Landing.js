@@ -153,7 +153,7 @@ const Landing = () => {
               <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-3">
                 <span className="text-2xl">{category.id === 'jobs' ? '💼' : category.id.includes('real_estate') ? '🏠' : category.id === 'vehicles' ? '🚗' : category.id === 'services' ? '🔧' : '🛍️'}</span>
               </div>
-              <span className="text-sm font-medium text-slate-900 text-center">{category.name}</span>
+              <span className="text-sm font-medium text-slate-900 text-center">{getCategoryName(category.id)}</span>
             </div>
           ))}
         </div>
