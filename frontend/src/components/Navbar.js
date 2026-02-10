@@ -65,11 +65,11 @@ const Navbar = () => {
                   <DropdownMenuContent align="end" className="w-48">
                     <DropdownMenuItem onClick={() => navigate('/dashboard')} data-testid="dashboard-menu-item">
                       <Grid className="w-4 h-4 mr-2" />
-                      My Dashboard
+                      {t('nav.myDashboard')}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleLogout} data-testid="logout-menu-item">
                       <LogOut className="w-4 h-4 mr-2" />
-                      Logout
+                      {t('nav.logout')}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
