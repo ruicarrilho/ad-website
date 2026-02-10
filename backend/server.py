@@ -558,22 +558,22 @@ async def create_payment_session(request: Request, authorization: Optional[str] 
     if not origin_url:
         raise HTTPException(status_code=400, detail="Origin URL required")
     
-    # Calculate total cost
-    base_cost = 10.00 if is_premium else 0.00  # $10 for premium ad
+    # Calculate total cost in EUR
+    base_cost = 10.00 if is_premium else 0.00  # €10 for premium ad
     
     # Calculate extra image costs
     # Free ads: first 5 images free, premium ads: first 15 images free
     free_image_limit = 15 if is_premium else 5
     extra_images = max(0, image_count - free_image_limit)
-    extra_images_cost = extra_images * 1.00  # $1 per extra image
+    extra_images_cost = extra_images * 1.00  # €1 per extra image
     
     total_amount = base_cost + extra_images_cost
     
-    # Minimum charge of $1 for Stripe
+    # Minimum charge of €1 for Stripe
     if total_amount < 1.00:
-        raise HTTPException(status_code=400, detail="Minimum payment amount is $1.00")
+        raise HTTPException(status_code=400, detail="Minimum payment amount is €1.00")
     
-    currency = "usd"
+    currency = "eur"
     
     # Create success and cancel URLs
     success_url = f"{origin_url}/payment-success?session_id={{{{CHECKOUT_SESSION_ID}}}}"
