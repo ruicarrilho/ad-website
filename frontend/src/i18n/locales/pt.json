@@ -62,7 +62,9 @@
     "postFirst": "Publique o Seu Primeiro Anúncio",
     "edit": "Editar",
     "delete": "Eliminar",
-    "daysLeft": "dias restantes"
+    "daysLeft": "dias restantes",
+    "premium": "Premium",
+    "noImage": "Sem imagem"
   },
   "postAd": {
     "title": "Publicar Anúncio",
@@ -124,7 +126,8 @@
     "showingResults": "A mostrar {{count}} resultado",
     "showingResults_plural": "A mostrar {{count}} resultados",
     "noAdsFound": "Nenhum anúncio encontrado com os seus critérios",
-    "featured": "Destaque"
+    "featured": "Destaque",
+    "noImage": "Sem imagem"
   },
   "adDetail": {
     "back": "Voltar",
@@ -134,7 +137,8 @@
     "location": "Localização",
     "posted": "Publicado {{date}}",
     "adNotFound": "Anúncio não encontrado",
-    "browseAds": "Navegar Anúncios"
+    "browseAds": "Navegar Anúncios",
+    "noImages": "Sem imagens disponíveis"
   },
   "successDialog": {
     "adPosted": "Anúncio Publicado com Sucesso!",
@@ -161,5 +165,28 @@
     "save": "Guardar",
     "close": "Fechar",
     "required": "Obrigatório"
+  },
+  "editAd": {
+    "title": "Editar Anúncio",
+    "subtitle": "Atualize os detalhes do seu anúncio",
+    "backToDashboard": "Voltar ao Painel",
+    "updating": "A atualizar...",
+    "updateAd": "Atualizar Anúncio",
+    "premiumStatus": "Anúncio Premium",
+    "premiumEnabled": "Este anúncio tem funcionalidades premium ativadas"
+  },
+  "payment": {
+    "processing": "A Processar Pagamento",
+    "pleaseWait": "Por favor aguarde enquanto confirmamos o seu pagamento...",
+    "attempt": "Tentativa {{current}} de {{max}}",
+    "success": "Pagamento Bem Sucedido!",
+    "adUpgraded": "O seu anúncio foi atualizado para premium e está agora ativo.",
+    "viewMyAds": "Ver os Meus Anúncios",
+    "pending": "Pagamento Pendente",
+    "pendingMessage": "O seu pagamento está a ser processado. Verifique o seu painel em alguns minutos.",
+    "goToDashboard": "Ir para o Painel",
+    "error": "Erro de Pagamento",
+    "errorMessage": "Houve um problema ao processar o seu pagamento. Por favor contacte o suporte.",
+    "backToDashboard": "Voltar ao Painel"
   }
 }
