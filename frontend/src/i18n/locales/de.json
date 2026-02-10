@@ -1,0 +1,30 @@
+{
+  "nav": {
+    "postAd": "Anzeige Schalten",
+    "login": "Anmelden",
+    "signup": "Registrieren",
+    "myDashboard": "Mein Dashboard",
+    "logout": "Abmelden"
+  },
+  "hero": {
+    "badge": "Ihr Marktplatz für alles",
+    "title": "Finden Sie Was Sie Brauchen, Verkaufen Sie Was Sie Haben",
+    "description": "Durchsuchen Sie Tausende von Anzeigen oder veröffentlichen Sie Ihre eigene in Portugal. Von Jobs bis Immobilien, Fahrzeugen und Dienstleistungen - alles an einem Ort.",
+    "searchPlaceholder": "Anzeigen suchen...",
+    "searchButton": "Suchen"
+  },
+  "categories": {
+    "title": "Nach Kategorie Durchsuchen",
+    "jobs": "Jobs",
+    "realEstateRenting": "Immobilienvermietung",
+    "realEstateSelling": "Immobilienverkauf",
+    "vehicles": "Fahrzeuge",
+    "products": "Produktverkauf",
+    "services": "Dienstleistungen"
+  },
+  "common": {
+    "loading": "Lädt...",
+    "error": "Fehler",
+    "success": "Erfolg"
+  }
+}
