@@ -26,6 +26,7 @@ const PostAd = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
