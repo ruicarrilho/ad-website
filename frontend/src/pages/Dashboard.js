@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Button } from '../components/ui/button';
 import { PlusCircle, Edit, Trash2, Clock, DollarSign } from 'lucide-react';
@@ -23,6 +24,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [ads, setAds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleteAdId, setDeleteAdId] = useState(null);
@@ -93,8 +95,8 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="font-heading text-4xl font-bold text-primary mb-2">My Dashboard</h1>
-          <p className="text-slate-600">Manage your ads and account</p>
+          <h1 className="font-heading text-4xl font-bold text-primary mb-2">{t('dashboard.title')}</h1>
+          <p className="text-slate-600">{t('dashboard.subtitle')}</p>
         </div>
 
         {/* Stats */}
@@ -102,7 +104,7 @@ const Dashboard = () => {
           <div className="bg-white rounded-2xl border border-slate-100 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600 mb-1">Total Ads</p>
+                <p className="text-sm text-slate-600 mb-1">{t('dashboard.totalAds')}</p>
                 <p className="text-3xl font-bold text-primary">{ads.length}</p>
               </div>
               <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
@@ -113,7 +115,7 @@ const Dashboard = () => {
           <div className="bg-white rounded-2xl border border-slate-100 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600 mb-1">Active Ads</p>
+                <p className="text-sm text-slate-600 mb-1">{t('dashboard.activeAds')}</p>
                 <p className="text-3xl font-bold text-accent">{ads.filter(ad => ad.status === 'active').length}</p>
               </div>
               <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
@@ -124,7 +126,7 @@ const Dashboard = () => {
           <div className="bg-white rounded-2xl border border-slate-100 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600 mb-1">Premium Ads</p>
+                <p className="text-sm text-slate-600 mb-1">{t('dashboard.premiumAds')}</p>
                 <p className="text-3xl font-bold text-green-600">{ads.filter(ad => ad.is_paid).length}</p>
               </div>
               <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
@@ -142,24 +144,24 @@ const Dashboard = () => {
             className="bg-accent text-white hover:bg-accent/90 h-12 px-8 rounded-full font-medium transition-all active:scale-95"
           >
             <PlusCircle className="w-5 h-5 mr-2" />
-            Create New Ad
+            {t('dashboard.createNew')}
           </Button>
         </div>
 
         {/* Ads List */}
         <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden">
           <div className="p-6 border-b border-slate-100">
-            <h2 className="font-heading text-2xl font-semibold text-primary">Your Ads</h2>
+            <h2 className="font-heading text-2xl font-semibold text-primary">{t('dashboard.yourAds')}</h2>
           </div>
           {ads.length === 0 ? (
             <div className="p-12 text-center">
-              <p className="text-slate-600 mb-4">You haven't posted any ads yet</p>
+              <p className="text-slate-600 mb-4">{t('dashboard.noAds')}</p>
               <Button
                 data-testid="empty-state-post-ad-btn"
                 onClick={() => navigate('/post-ad')}
                 className="bg-primary text-white hover:bg-primary/90 h-11 px-8 rounded-full font-medium"
               >
-                Post Your First Ad
+                {t('dashboard.postFirst')}
               </Button>
             </div>
           ) : (
@@ -178,7 +180,7 @@ const Dashboard = () => {
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-slate-400">
-                            No image
+                            {t('dashboard.noImage')}
                           </div>
                         )}
                       </div>
@@ -193,7 +195,7 @@ const Dashboard = () => {
                         </div>
                         {ad.is_paid && (
                           <span className="ml-4 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent/10 text-accent">
-                            Premium
+                            {t('dashboard.premium')}
                           </span>
                         )}
                       </div>
@@ -203,7 +205,7 @@ const Dashboard = () => {
                           {ad.category.replace(/_/g, ' ')}
                           {ad.subcategory && ` • ${ad.subcategory}`}
                         </span>
-                        <span>{getDaysRemaining(ad.expires_at)} days left</span>
+                        <span>{getDaysRemaining(ad.expires_at)} {t('dashboard.daysLeft')}</span>
                       </div>
                       <div className="flex gap-3">
                         <Button
@@ -214,7 +216,7 @@ const Dashboard = () => {
                           className="rounded-full"
                         >
                           <Edit className="w-4 h-4 mr-2" />
-                          Edit
+                          {t('dashboard.edit')}
                         </Button>
                         <Button
                           data-testid={`delete-ad-btn-${ad.ad_id}`}
@@ -224,7 +226,7 @@ const Dashboard = () => {
                           className="rounded-full text-red-600 hover:text-red-700 hover:bg-red-50"
                         >
                           <Trash2 className="w-4 h-4 mr-2" />
-                          Delete
+                          {t('dashboard.delete')}
                         </Button>
                       </div>
                     </div>
@@ -240,19 +242,19 @@ const Dashboard = () => {
       <AlertDialog open={!!deleteAdId} onOpenChange={() => setDeleteAdId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Ad?</AlertDialogTitle>
+            <AlertDialogTitle>{t('deleteDialog.title')}</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your ad.
+              {t('deleteDialog.description')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel data-testid="cancel-delete-btn">Cancel</AlertDialogCancel>
+            <AlertDialogCancel data-testid="cancel-delete-btn">{t('deleteDialog.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               data-testid="confirm-delete-btn"
               onClick={handleDelete}
               className="bg-red-600 hover:bg-red-700"
             >
-              Delete
+              {t('deleteDialog.delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

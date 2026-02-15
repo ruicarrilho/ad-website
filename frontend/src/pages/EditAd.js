@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -26,6 +27,7 @@ const EditAd = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [fetchingAd, setFetchingAd] = useState(true);
@@ -257,18 +259,18 @@ const EditAd = () => {
           className="mb-6 rounded-full"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Dashboard
+          {t('editAd.backToDashboard')}
         </Button>
 
         <div className="mb-8">
-          <h1 className="font-heading text-4xl font-bold text-primary mb-2">Edit Ad</h1>
-          <p className="text-slate-600">Update your advertisement details</p>
+          <h1 className="font-heading text-4xl font-bold text-primary mb-2">{t('editAd.title')}</h1>
+          <p className="text-slate-600">{t('editAd.subtitle')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-slate-100 p-8 space-y-6" data-testid="edit-ad-form">
           {/* Title */}
           <div className="space-y-2">
-            <Label htmlFor="title" data-testid="title-label">Title *</Label>
+            <Label htmlFor="title" data-testid="title-label">{t('postAd.titleLabel')} *</Label>
             <Input
               id="title"
               name="title"
@@ -276,14 +278,14 @@ const EditAd = () => {
               data-testid="title-input"
               value={formData.title}
               onChange={handleInputChange}
-              placeholder="e.g., iPhone 15 Pro Max"
+              placeholder={t('postAd.titlePlaceholder')}
               className="h-12 rounded-lg border-slate-200 focus:border-primary focus:ring-1 focus:ring-primary"
             />
           </div>
 
           {/* Description */}
           <div className="space-y-2">
-            <Label htmlFor="description" data-testid="description-label">Description *</Label>
+            <Label htmlFor="description" data-testid="description-label">{t('postAd.description')} *</Label>
             <Textarea
               id="description"
               name="description"
@@ -291,7 +293,7 @@ const EditAd = () => {
               data-testid="description-input"
               value={formData.description}
               onChange={handleInputChange}
-              placeholder="Describe your item or service..."
+              placeholder={t('postAd.descriptionPlaceholder')}
               rows={5}
               className="rounded-lg border-slate-200 focus:border-primary focus:ring-1 focus:ring-primary resize-none"
             />
@@ -300,10 +302,10 @@ const EditAd = () => {
           {/* Category, Subcategory and Price */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-2">
-              <Label data-testid="category-label">Category *</Label>
+              <Label data-testid="category-label">{t('postAd.category')} *</Label>
               <Select value={formData.category} onValueChange={handleCategoryChange}>
                 <SelectTrigger data-testid="category-select" className="h-12 rounded-lg">
-                  <SelectValue placeholder="Select category" />
+                  <SelectValue placeholder={t('postAd.selectCategory')} />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((cat) => (
@@ -316,14 +318,14 @@ const EditAd = () => {
             </div>
 
             <div className="space-y-2">
-              <Label data-testid="subcategory-label">Subcategory</Label>
+              <Label data-testid="subcategory-label">{t('postAd.subcategory')}</Label>
               <Select 
                 value={formData.subcategory} 
                 onValueChange={handleSubcategoryChange}
                 disabled={!formData.category}
               >
                 <SelectTrigger data-testid="subcategory-select" className="h-12 rounded-lg">
-                  <SelectValue placeholder={formData.category ? "Select subcategory" : "Select category first"} />
+                  <SelectValue placeholder={formData.category ? t('postAd.selectSubcategory') : t('postAd.selectCategoryFirst')} />
                 </SelectTrigger>
                 <SelectContent>
                   {subcategories.map((subcat) => (
@@ -336,7 +338,7 @@ const EditAd = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="price" data-testid="price-label">Price (EUR) *</Label>
+              <Label htmlFor="price" data-testid="price-label">{t('postAd.price')} *</Label>
               <Input
                 id="price"
                 name="price"
@@ -355,7 +357,7 @@ const EditAd = () => {
 
           {/* Location */}
           <div className="space-y-4 border-t border-slate-200 pt-6">
-            <h3 className="font-heading text-xl font-semibold text-primary">Location</h3>
+            <h3 className="font-heading text-xl font-semibold text-primary">{t('postAd.location')}</h3>
             <MapPicker location={location} onLocationChange={setLocation} />
           </div>
 
@@ -363,13 +365,9 @@ const EditAd = () => {
           <div className="space-y-4 border-t border-slate-200 pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <Label data-testid="images-label" className="text-base">Images</Label>
+                <Label data-testid="images-label" className="text-base">{t('postAd.images')}</Label>
                 <p className="text-sm text-slate-600 mt-1">
-                  {formData.is_paid ? (
-                    <>First 15 images included, max 20 total</>
-                  ) : (
-                    <>First 5 images free, max 20 total</>
-                  )}
+                  {formData.is_paid ? t('postAd.imagesPremium') : t('postAd.imagesFree')}
                 </p>
               </div>
               <div className="relative">
@@ -391,15 +389,15 @@ const EditAd = () => {
                   className="rounded-full cursor-pointer"
                 >
                   <ImagePlus className="w-4 h-4 mr-2" />
-                  Upload Images
+                  {t('postAd.uploadImages')}
                 </Button>
               </div>
             </div>
             {formData.images.length === 0 ? (
               <div className="border-2 border-dashed border-slate-200 rounded-xl p-12 text-center">
                 <ImagePlus className="w-12 h-12 text-slate-400 mx-auto mb-3" />
-                <p className="text-slate-600 mb-2">No images uploaded yet</p>
-                <p className="text-sm text-slate-500">Click "Upload Images" to add photos</p>
+                <p className="text-slate-600 mb-2">{t('postAd.noImages')}</p>
+                <p className="text-sm text-slate-500">{t('postAd.clickUpload')}</p>
               </div>
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -426,7 +424,7 @@ const EditAd = () => {
               </div>
             )}
             <p className="text-xs text-slate-500">
-              Accepted formats: JPG, PNG, GIF, WebP. Max size: 5MB per image
+              {t('postAd.acceptedFormats')}
             </p>
           </div>
 
@@ -436,8 +434,8 @@ const EditAd = () => {
               <div className="flex items-center gap-3">
                 <Sparkles className="w-6 h-6 text-accent" />
                 <div>
-                  <p className="font-heading font-semibold text-lg text-slate-900">Premium Ad</p>
-                  <p className="text-sm text-slate-600">This ad has premium features enabled</p>
+                  <p className="font-heading font-semibold text-lg text-slate-900">{t('editAd.premiumStatus')}</p>
+                  <p className="text-sm text-slate-600">{t('editAd.premiumEnabled')}</p>
                 </div>
               </div>
             </div>
@@ -452,7 +450,7 @@ const EditAd = () => {
               variant="outline"
               className="flex-1 h-12 rounded-full font-medium"
             >
-              Cancel
+              {t('postAd.cancel')}
             </Button>
             <Button
               type="submit"
@@ -460,7 +458,7 @@ const EditAd = () => {
               data-testid="update-ad-btn"
               className="flex-1 bg-accent text-white hover:bg-accent/90 h-12 rounded-full font-medium transition-all active:scale-95"
             >
-              {loading ? 'Updating...' : 'Update Ad'}
+              {loading ? t('editAd.updating') : t('editAd.updateAd')}
             </Button>
           </div>
         </form>
@@ -485,14 +483,14 @@ const EditAd = () => {
               </div>
             </div>
             <DialogTitle className="text-center text-2xl font-heading">
-              Ad Updated Successfully! ✨
+              {t('successDialog.adUpdated')}
             </DialogTitle>
             <DialogDescription className="text-center space-y-4 pt-2">
               <p className="text-base text-slate-700">
-                Your changes to <span className="font-semibold">"{formData.title}"</span> have been saved.
+                {t('successDialog.adUpdatedText', { title: formData.title }).replace('<strong>', '').replace('</strong>', '')}
               </p>
               <p className="text-sm text-slate-600">
-                The updated ad is now live and visible to all users.
+                {t('successDialog.updatedLive')}
               </p>
             </DialogDescription>
           </DialogHeader>
@@ -502,7 +500,7 @@ const EditAd = () => {
               onClick={() => navigate(`/ads/${adId}`)}
               className="w-full bg-accent text-white hover:bg-accent/90 h-12 rounded-full font-medium"
             >
-              View Updated Ad
+              {t('successDialog.viewUpdated')}
             </Button>
             <Button
               data-testid="go-to-dashboard-btn"
@@ -510,7 +508,7 @@ const EditAd = () => {
               variant="outline"
               className="w-full h-12 rounded-full font-medium"
             >
-              Go to My Dashboard
+              {t('successDialog.goToDashboard')}
             </Button>
           </div>
         </DialogContent>
