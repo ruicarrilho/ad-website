@@ -88,6 +88,17 @@ const AdDetail = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxOpen, lightboxIndex, ad]);
 
+  const handleToggleFavorite = () => {
+    const newStatus = toggleFavorite(ad);
+    setIsFav(newStatus);
+    toast({
+      title: newStatus ? 'Added to favorites' : 'Removed from favorites',
+      description: newStatus 
+        ? `"${ad.title}" has been saved to your favorites.`
+        : `"${ad.title}" has been removed from your favorites.`
+    });
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -112,12 +123,13 @@ const AdDetail = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Back Button */}
-        <Button
-          data-testid="back-btn"
-          onClick={() => navigate(-1)}
-          variant="ghost"
-          className="mb-6 rounded-full"
+        {/* Header with Back Button and Favorite */}
+        <div className="flex items-center justify-between mb-6">
+          <Button
+            data-testid="back-btn"
+            onClick={() => navigate(-1)}
+            variant="ghost"
+            className="rounded-full"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
