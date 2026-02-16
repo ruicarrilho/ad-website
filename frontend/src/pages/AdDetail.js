@@ -37,6 +37,8 @@ const AdDetail = () => {
     try {
       const response = await axios.get(`${API}/ads/${adId}`);
       setAd(response.data);
+      // Track this ad as recently viewed
+      addToRecentlyViewed(response.data);
     } catch (error) {
       console.error('Failed to fetch ad:', error);
     } finally {
