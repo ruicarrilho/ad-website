@@ -10,9 +10,17 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 import uuid
 from datetime import datetime, timezone, timedelta
-from emergentintegrations.payments.stripe.checkout import StripeCheckout, CheckoutSessionResponse, CheckoutStatusResponse, CheckoutSessionRequest
 import aiohttp
 import bcrypt
+
+# Try to import emergentintegrations (available in Emergent platform)
+# Fall back to standard stripe library for local development
+try:
+    from emergentintegrations.payments.stripe.checkout import StripeCheckout, CheckoutSessionResponse, CheckoutStatusResponse, CheckoutSessionRequest
+    USE_EMERGENT_STRIPE = True
+except ImportError:
+    import stripe
+    USE_EMERGENT_STRIPE = False
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -579,30 +587,59 @@ async def create_payment_session(request: Request, authorization: Optional[str] 
     success_url = f"{origin_url}/payment-success?session_id={{{{CHECKOUT_SESSION_ID}}}}"
     cancel_url = f"{origin_url}/post-ad"
     
-    # Initialize Stripe
     stripe_api_key = os.environ.get("STRIPE_API_KEY")
-    host_url = origin_url
-    webhook_url = f"{host_url}/api/webhook/stripe"
-    stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url=webhook_url)
     
-    # Create checkout session
-    checkout_request = CheckoutSessionRequest(
-        amount=total_amount,
-        currency=currency,
-        success_url=success_url,
-        cancel_url=cancel_url,
-        metadata={
-            "user_id": user["user_id"],
-            "ad_id": ad_id if ad_id else "",
-            "type": "ad_payment",
-            "is_premium": str(is_premium),
-            "image_count": str(image_count),
-            "extra_images": str(extra_images),
-            "extra_images_cost": str(extra_images_cost)
-        }
-    )
+    metadata = {
+        "user_id": user["user_id"],
+        "ad_id": ad_id if ad_id else "",
+        "type": "ad_payment",
+        "is_premium": str(is_premium),
+        "image_count": str(image_count),
+        "extra_images": str(extra_images),
+        "extra_images_cost": str(extra_images_cost)
+    }
     
-    session = await stripe_checkout.create_checkout_session(checkout_request)
+    if USE_EMERGENT_STRIPE:
+        # Use Emergent integrations library (platform environment)
+        host_url = origin_url
+        webhook_url = f"{host_url}/api/webhook/stripe"
+        stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url=webhook_url)
+        
+        checkout_request = CheckoutSessionRequest(
+            amount=total_amount,
+            currency=currency,
+            success_url=success_url,
+            cancel_url=cancel_url,
+            metadata=metadata
+        )
+        
+        session = await stripe_checkout.create_checkout_session(checkout_request)
+        session_id = session.session_id
+        session_url = session.url
+    else:
+        # Use standard Stripe library (local development)
+        stripe.api_key = stripe_api_key
+        
+        session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            line_items=[{
+                "price_data": {
+                    "currency": currency,
+                    "product_data": {
+                        "name": "Premium Ad" if is_premium else "Ad Payment",
+                        "description": f"Ad payment - Base: €{base_cost:.2f}, Extra images: {extra_images}"
+                    },
+                    "unit_amount": int(total_amount * 100),  # Stripe uses cents
+                },
+                "quantity": 1,
+            }],
+            mode="payment",
+            success_url=success_url,
+            cancel_url=cancel_url,
+            metadata=metadata
+        )
+        session_id = session.id
+        session_url = session.url
     
     # Create payment transaction record
     transaction_id = f"txn_{uuid.uuid4().hex[:12]}"
@@ -610,7 +647,7 @@ async def create_payment_session(request: Request, authorization: Optional[str] 
         "transaction_id": transaction_id,
         "user_id": user["user_id"],
         "ad_id": ad_id,
-        "session_id": session.session_id,
+        "session_id": session_id,
         "amount": total_amount,
         "base_cost": base_cost,
         "extra_images": extra_images,
@@ -623,8 +660,8 @@ async def create_payment_session(request: Request, authorization: Optional[str] 
     await db.payment_transactions.insert_one(transaction_doc)
     
     return {
-        "url": session.url, 
-        "session_id": session.session_id,
+        "url": session_url, 
+        "session_id": session_id,
         "amount": total_amount,
         "breakdown": {
             "base_cost": base_cost,
@@ -650,18 +687,29 @@ async def get_payment_status(session_id: str, request: Request, authorization: O
     if transaction["payment_status"] in ["paid", "complete"]:
         return transaction
     
-    # Check with Stripe
     stripe_api_key = os.environ.get("STRIPE_API_KEY")
-    origin_url = str(request.base_url).rstrip("/")
-    webhook_url = f"{origin_url}/api/webhook/stripe"
-    stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url=webhook_url)
     
-    status_response = await stripe_checkout.get_checkout_status(session_id)
+    if USE_EMERGENT_STRIPE:
+        # Use Emergent integrations library
+        origin_url = str(request.base_url).rstrip("/")
+        webhook_url = f"{origin_url}/api/webhook/stripe"
+        stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url=webhook_url)
+        
+        status_response = await stripe_checkout.get_checkout_status(session_id)
+        payment_status = status_response.payment_status
+        status = status_response.status
+    else:
+        # Use standard Stripe library
+        stripe.api_key = stripe_api_key
+        
+        session = stripe.checkout.Session.retrieve(session_id)
+        payment_status = session.payment_status or "unpaid"
+        status = session.status
     
     # Update transaction
     update_data = {
-        "payment_status": status_response.payment_status,
-        "status": status_response.status
+        "payment_status": payment_status,
+        "status": status
     }
     
     await db.payment_transactions.update_one(
@@ -670,7 +718,7 @@ async def get_payment_status(session_id: str, request: Request, authorization: O
     )
     
     # If paid and ad_id exists, upgrade ad to premium
-    if status_response.payment_status == "paid" and transaction.get("ad_id"):
+    if payment_status == "paid" and transaction.get("ad_id"):
         await db.ads.update_one(
             {"ad_id": transaction["ad_id"]},
             {"$set": {"is_paid": True}}
@@ -699,34 +747,70 @@ async def stripe_webhook(request: Request):
     signature = request.headers.get("Stripe-Signature")
     
     stripe_api_key = os.environ.get("STRIPE_API_KEY")
-    origin_url = str(request.base_url).rstrip("/")
-    webhook_url = f"{origin_url}/api/webhook/stripe"
-    stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url=webhook_url)
     
     try:
-        webhook_response = await stripe_checkout.handle_webhook(body, signature)
-        
-        # Update transaction based on webhook
-        if webhook_response.event_type == "checkout.session.completed":
-            await db.payment_transactions.update_one(
-                {"session_id": webhook_response.session_id},
-                {"$set": {
-                    "payment_status": webhook_response.payment_status,
-                    "status": "complete"
-                }}
-            )
+        if USE_EMERGENT_STRIPE:
+            # Use Emergent integrations library
+            origin_url = str(request.base_url).rstrip("/")
+            webhook_url = f"{origin_url}/api/webhook/stripe"
+            stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url=webhook_url)
             
-            # Upgrade ad to premium if applicable
-            transaction = await db.payment_transactions.find_one(
-                {"session_id": webhook_response.session_id},
-                {"_id": 0}
-            )
+            webhook_response = await stripe_checkout.handle_webhook(body, signature)
             
-            if transaction and transaction.get("ad_id"):
-                await db.ads.update_one(
-                    {"ad_id": transaction["ad_id"]},
-                    {"$set": {"is_paid": True}}
+            if webhook_response.event_type == "checkout.session.completed":
+                await db.payment_transactions.update_one(
+                    {"session_id": webhook_response.session_id},
+                    {"$set": {
+                        "payment_status": webhook_response.payment_status,
+                        "status": "complete"
+                    }}
                 )
+                
+                transaction = await db.payment_transactions.find_one(
+                    {"session_id": webhook_response.session_id},
+                    {"_id": 0}
+                )
+                
+                if transaction and transaction.get("ad_id"):
+                    await db.ads.update_one(
+                        {"ad_id": transaction["ad_id"]},
+                        {"$set": {"is_paid": True}}
+                    )
+        else:
+            # Use standard Stripe library
+            stripe.api_key = stripe_api_key
+            webhook_secret = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
+            
+            if webhook_secret and signature:
+                event = stripe.Webhook.construct_event(body, signature, webhook_secret)
+            else:
+                # For local testing without webhook secret
+                import json
+                event = stripe.Event.construct_from(json.loads(body), stripe.api_key)
+            
+            if event.type == "checkout.session.completed":
+                session = event.data.object
+                session_id = session.id
+                payment_status = session.payment_status or "paid"
+                
+                await db.payment_transactions.update_one(
+                    {"session_id": session_id},
+                    {"$set": {
+                        "payment_status": payment_status,
+                        "status": "complete"
+                    }}
+                )
+                
+                transaction = await db.payment_transactions.find_one(
+                    {"session_id": session_id},
+                    {"_id": 0}
+                )
+                
+                if transaction and transaction.get("ad_id"):
+                    await db.ads.update_one(
+                        {"ad_id": transaction["ad_id"]},
+                        {"$set": {"is_paid": True}}
+                    )
         
         return {"status": "success"}
     except Exception as e:
