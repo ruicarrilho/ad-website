@@ -115,31 +115,60 @@ const AdDetail = () => {
           <div>
             {ad.images && ad.images.length > 0 ? (
               ad.images.length === 1 ? (
-                <div className="rounded-2xl overflow-hidden" data-testid="ad-image">
-                  <img
+                <div 
+                  className="rounded-2xl overflow-hidden cursor-pointer" 
+                  data-testid="ad-image"
+                  onClick={() => openLightbox(0)}
+                >
+                  <ImageMagnifier
                     src={ad.images[0]}
                     alt={ad.title}
-                    className="w-full h-auto object-cover"
+                    magnifierSize={200}
+                    zoomLevel={2.5}
                   />
                 </div>
               ) : (
-                <Carousel className="w-full">
-                  <CarouselContent>
+                <>
+                  <Carousel className="w-full">
+                    <CarouselContent>
+                      {ad.images.map((image, index) => (
+                        <CarouselItem key={index} data-testid={`carousel-image-${index}`}>
+                          <div 
+                            className="rounded-2xl overflow-hidden cursor-pointer"
+                            onClick={() => openLightbox(index)}
+                          >
+                            <ImageMagnifier
+                              src={image}
+                              alt={`${ad.title} - ${index + 1}`}
+                              magnifierSize={200}
+                              zoomLevel={2.5}
+                            />
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                  </Carousel>
+                  
+                  {/* Thumbnail strip */}
+                  <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
                     {ad.images.map((image, index) => (
-                      <CarouselItem key={index} data-testid={`carousel-image-${index}`}>
-                        <div className="rounded-2xl overflow-hidden">
-                          <img
-                            src={image}
-                            alt={`${ad.title} - ${index + 1}`}
-                            className="w-full h-auto object-cover"
-                          />
-                        </div>
-                      </CarouselItem>
+                      <button
+                        key={index}
+                        onClick={() => openLightbox(index)}
+                        className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 border-transparent hover:border-accent transition-colors"
+                        data-testid={`thumbnail-${index}`}
+                      >
+                        <img
+                          src={image}
+                          alt={`Thumbnail ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </button>
                     ))}
-                  </CarouselContent>
-                  <CarouselPrevious />
-                  <CarouselNext />
-                </Carousel>
+                  </div>
+                </>
               )
             ) : (
               <div className="w-full h-96 bg-slate-100 rounded-2xl flex items-center justify-center">
