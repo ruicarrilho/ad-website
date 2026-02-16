@@ -14,6 +14,8 @@ import Browse from './pages/Browse';
 import AdDetail from './pages/AdDetail';
 import PaymentSuccess from './pages/PaymentSuccess';
 import BumpSuccess from './pages/BumpSuccess';
+import Favorites from './pages/Favorites';
+import HiddenAds from './pages/HiddenAds';
 import '@/App.css';
 
 const ProtectedRoute = ({ children }) => {
