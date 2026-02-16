@@ -537,6 +537,143 @@ async def delete_ad(ad_id: str, request: Request, authorization: Optional[str] =
     
     return {"message": "Ad deleted successfully"}
 
+@api_router.post("/ads/{ad_id}/bump")
+async def bump_ad(ad_id: str, request: Request, authorization: Optional[str] = Header(None)):
+    """Bump an ad to the top of search results. Costs €2."""
+    user = await get_current_user(request, authorization)
+    
+    # Find ad
+    ad = await db.ads.find_one({"ad_id": ad_id}, {"_id": 0})
+    
+    if not ad:
+        raise HTTPException(status_code=404, detail="Ad not found")
+    
+    # Check ownership
+    if ad["user_id"] != user["user_id"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    # Check if ad is active
+    if ad.get("status") != "active":
+        raise HTTPException(status_code=400, detail="Only active ads can be bumped")
+    
+    # Update bumped_at timestamp
+    bumped_at = datetime.now(timezone.utc)
+    await db.ads.update_one(
+        {"ad_id": ad_id}, 
+        {"$set": {"bumped_at": bumped_at.isoformat()}}
+    )
+    
+    # Get updated ad
+    updated_ad = await db.ads.find_one({"ad_id": ad_id}, {"_id": 0})
+    
+    if isinstance(updated_ad.get("created_at"), str):
+        updated_ad["created_at"] = datetime.fromisoformat(updated_ad["created_at"])
+    if isinstance(updated_ad.get("expires_at"), str):
+        updated_ad["expires_at"] = datetime.fromisoformat(updated_ad["expires_at"])
+    if isinstance(updated_ad.get("bumped_at"), str):
+        updated_ad["bumped_at"] = datetime.fromisoformat(updated_ad["bumped_at"])
+    
+    return updated_ad
+
+@api_router.post("/payment/bump-session")
+async def create_bump_payment_session(request: Request, authorization: Optional[str] = Header(None)):
+    """Create a Stripe payment session for bumping an ad."""
+    user = await get_current_user(request, authorization)
+    body = await request.json()
+    
+    ad_id = body.get("ad_id")
+    origin_url = body.get("origin_url")
+    
+    if not ad_id:
+        raise HTTPException(status_code=400, detail="Ad ID required")
+    if not origin_url:
+        raise HTTPException(status_code=400, detail="Origin URL required")
+    
+    # Verify ad exists and belongs to user
+    ad = await db.ads.find_one({"ad_id": ad_id}, {"_id": 0})
+    if not ad:
+        raise HTTPException(status_code=404, detail="Ad not found")
+    if ad["user_id"] != user["user_id"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    # Bump cost is €2
+    total_amount = 2.00
+    currency = "eur"
+    
+    # Create success and cancel URLs
+    success_url = f"{origin_url}/bump-success?session_id={{{{CHECKOUT_SESSION_ID}}}}&ad_id={ad_id}"
+    cancel_url = f"{origin_url}/dashboard"
+    
+    stripe_api_key = os.environ.get("STRIPE_API_KEY")
+    
+    metadata = {
+        "user_id": user["user_id"],
+        "ad_id": ad_id,
+        "type": "bump_ad"
+    }
+    
+    if USE_EMERGENT_STRIPE:
+        host_url = origin_url
+        webhook_url = f"{host_url}/api/webhook/stripe"
+        stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url=webhook_url)
+        
+        checkout_request = CheckoutSessionRequest(
+            amount=total_amount,
+            currency=currency,
+            success_url=success_url,
+            cancel_url=cancel_url,
+            metadata=metadata
+        )
+        
+        session = await stripe_checkout.create_checkout_session(checkout_request)
+        session_id = session.session_id
+        session_url = session.url
+    else:
+        stripe.api_key = stripe_api_key
+        
+        session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            line_items=[{
+                "price_data": {
+                    "currency": currency,
+                    "product_data": {
+                        "name": "Bump Ad",
+                        "description": f"Bump your ad '{ad['title']}' to the top of search results"
+                    },
+                    "unit_amount": int(total_amount * 100),
+                },
+                "quantity": 1,
+            }],
+            mode="payment",
+            success_url=success_url,
+            cancel_url=cancel_url,
+            metadata=metadata
+        )
+        session_id = session.id
+        session_url = session.url
+    
+    # Create payment transaction record
+    transaction_id = f"txn_{uuid.uuid4().hex[:12]}"
+    transaction_doc = {
+        "transaction_id": transaction_id,
+        "user_id": user["user_id"],
+        "ad_id": ad_id,
+        "session_id": session_id,
+        "amount": total_amount,
+        "currency": currency,
+        "payment_type": "bump_ad",
+        "payment_status": "pending",
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.payment_transactions.insert_one(transaction_doc)
+    
+    return {
+        "url": session_url, 
+        "session_id": session_id,
+        "amount": total_amount
+    }
+
 @api_router.get("/my-ads")
 async def get_my_ads(request: Request, authorization: Optional[str] = Header(None)):
     user = await get_current_user(request, authorization)
