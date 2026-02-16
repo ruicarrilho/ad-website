@@ -84,6 +84,14 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/bump-success"
+          element={
+            <ProtectedRoute>
+              <BumpSuccess />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </>
   );
