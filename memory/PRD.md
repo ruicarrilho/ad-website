@@ -21,14 +21,18 @@ Build a generic classified ads website with the following requirements:
 - [x] **Stripe Payment Integration**: Premium ads and extra image costs
 - [x] **Location Features**: Leaflet.js maps for posting and searching ads
 - [x] **Image Upload**: Multiple file upload with previews and cost calculation
-- [x] **Image Magnifier**: Hover-to-zoom on ad images with fullscreen lightbox (Added: Feb 2026)
+- [x] **Image Magnifier**: Hover-to-zoom on ad images with fullscreen lightbox
+- [x] **Bump Ad Feature**: Pay €2 to bump ad to top of search results (Added: Feb 2026)
+- [x] **Recently Viewed Ads**: Track and display recently viewed ads on homepage (Added: Feb 2026)
+- [x] **Favorite Ads**: Save ads to favorites with localStorage, dedicated Favorites page (Added: Feb 2026)
+- [x] **Exclude/Hide Ads**: Hide unwanted ads from search results, manage via Hidden Ads page (Added: Feb 2026)
 - [x] **Multi-language Support (i18next)**: Full translations for 6 languages
   - Portuguese (default) ✅
   - English ✅
-  - German ✅ (Updated: Feb 2026)
-  - French ✅ (Updated: Feb 2026)
-  - Spanish ✅ (Updated: Feb 2026)
-  - Polish ✅ (Updated: Feb 2026)
+  - German ✅
+  - French ✅
+  - Spanish ✅
+  - Polish ✅
 - [x] **Currency**: Euro (€) across platform
 - [x] **Success Dialogs**: Confirmation after ad creation/update
 - [x] **Local Development Setup**: VSCode launch.json and LOCAL_DEVELOPMENT.md
@@ -48,19 +52,23 @@ Build a generic classified ads website with the following requirements:
 - [ ] (None remaining)
 
 ### P3 - Future/Backlog
-- [ ] **"Bump Ad" Feature**: Allow users to pay to push ad back to top of results
-- [ ] **"Recently Viewed Ads"**: Track and display recently viewed ads
+- [ ] Email notifications when someone views/inquires about an ad
 
 ## Key Files
-- `/app/backend/server.py`: All backend logic
+- `/app/backend/server.py`: All backend logic including bump endpoint
 - `/app/frontend/src/pages/PostAd.js`: Ad creation with payment
-- `/app/frontend/src/pages/AdDetail.js`: Ad detail view with image magnifier
-- `/app/frontend/src/pages/Browse.js`: Ad listing with filters
+- `/app/frontend/src/pages/AdDetail.js`: Ad detail view with image magnifier and favorite button
+- `/app/frontend/src/pages/Browse.js`: Ad listing with filters, favorites, and hide functionality
+- `/app/frontend/src/pages/Favorites.js`: Manage favorite ads
+- `/app/frontend/src/pages/HiddenAds.js`: Manage hidden/excluded ads
+- `/app/frontend/src/pages/Dashboard.js`: User dashboard with bump ad button
+- `/app/frontend/src/pages/BumpSuccess.js`: Bump payment success page
 - `/app/frontend/src/components/ImageMagnifier.js`: Reusable image magnifier component
-- `/app/frontend/src/i18n/config.js`: i18next configuration
+- `/app/frontend/src/components/RecentlyViewedAds.js`: Recently viewed section
+- `/app/frontend/src/utils/favorites.js`: Favorites localStorage utility
+- `/app/frontend/src/utils/excludedAds.js`: Excluded ads localStorage utility
+- `/app/frontend/src/utils/recentlyViewed.js`: Recently viewed localStorage utility
 - `/app/frontend/src/i18n/locales/*.json`: Translation files
-- `/app/.vscode/launch.json`: VSCode debugging configuration
-- `/app/LOCAL_DEVELOPMENT.md`: Local setup guide
 
 ## API Endpoints
 - `POST /api/register`: Create user
@@ -68,15 +76,17 @@ Build a generic classified ads website with the following requirements:
 - `GET /api/categories`: Get categories/subcategories
 - `POST /api/ads`: Create ad
 - `PUT /api/ads/{ad_id}`: Update ad
-- `GET /api/ads`: List ads with filters
+- `GET /api/ads`: List ads with filters (sorted by bumped_at, then created_at)
 - `GET /api/ads/{ad_id}`: Get single ad
 - `DELETE /api/ads/{ad_id}`: Delete ad
+- `POST /api/ads/{ad_id}/bump`: Bump ad to top (after payment)
 - `GET /api/my-ads`: Get user's ads
-- `POST /api/payment/create-session`: Stripe payment
+- `POST /api/payment/create-session`: Stripe payment for ads
+- `POST /api/payment/bump-session`: Stripe payment for bumping ads
 
 ## Database Schema
 - **users**: `{_id, email, password_hash}`
-- **ads**: `{_id, title, description, price, currency, category, subcategory, images, is_paid, expires_at, user_id, location, country, address}`
+- **ads**: `{_id, title, description, price, currency, category, subcategory, images, is_paid, expires_at, user_id, location, country, address, bumped_at}`
 
 ---
 *Last updated: February 2026*
