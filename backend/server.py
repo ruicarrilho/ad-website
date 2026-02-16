@@ -10,9 +10,17 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 import uuid
 from datetime import datetime, timezone, timedelta
-from emergentintegrations.payments.stripe.checkout import StripeCheckout, CheckoutSessionResponse, CheckoutStatusResponse, CheckoutSessionRequest
 import aiohttp
 import bcrypt
+
+# Try to import emergentintegrations (available in Emergent platform)
+# Fall back to standard stripe library for local development
+try:
+    from emergentintegrations.payments.stripe.checkout import StripeCheckout, CheckoutSessionResponse, CheckoutStatusResponse, CheckoutSessionRequest
+    USE_EMERGENT_STRIPE = True
+except ImportError:
+    import stripe
+    USE_EMERGENT_STRIPE = False
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
