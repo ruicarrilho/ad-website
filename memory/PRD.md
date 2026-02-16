@@ -21,6 +21,7 @@ Build a generic classified ads website with the following requirements:
 - [x] **Stripe Payment Integration**: Premium ads and extra image costs
 - [x] **Location Features**: Leaflet.js maps for posting and searching ads
 - [x] **Image Upload**: Multiple file upload with previews and cost calculation
+- [x] **Image Magnifier**: Hover-to-zoom on ad images with fullscreen lightbox (Added: Feb 2026)
 - [x] **Multi-language Support (i18next)**: Full translations for 6 languages
   - Portuguese (default) ✅
   - English ✅
@@ -44,7 +45,7 @@ Build a generic classified ads website with the following requirements:
 - [ ] **PayPal Integration**: Add PayPal as alternative payment method (originally requested)
 
 ### P2 - Medium Priority
-- [ ] (None remaining - translations completed)
+- [ ] (None remaining)
 
 ### P3 - Future/Backlog
 - [ ] **"Bump Ad" Feature**: Allow users to pay to push ad back to top of results
@@ -53,7 +54,9 @@ Build a generic classified ads website with the following requirements:
 ## Key Files
 - `/app/backend/server.py`: All backend logic
 - `/app/frontend/src/pages/PostAd.js`: Ad creation with payment
+- `/app/frontend/src/pages/AdDetail.js`: Ad detail view with image magnifier
 - `/app/frontend/src/pages/Browse.js`: Ad listing with filters
+- `/app/frontend/src/components/ImageMagnifier.js`: Reusable image magnifier component
 - `/app/frontend/src/i18n/config.js`: i18next configuration
 - `/app/frontend/src/i18n/locales/*.json`: Translation files
 - `/app/.vscode/launch.json`: VSCode debugging configuration
@@ -69,7 +72,7 @@ Build a generic classified ads website with the following requirements:
 - `GET /api/ads/{ad_id}`: Get single ad
 - `DELETE /api/ads/{ad_id}`: Delete ad
 - `GET /api/my-ads`: Get user's ads
-- `POST /api/create-payment-intent`: Stripe payment
+- `POST /api/payment/create-session`: Stripe payment
 
 ## Database Schema
 - **users**: `{_id, email, password_hash}`
