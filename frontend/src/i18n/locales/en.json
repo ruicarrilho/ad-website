@@ -161,5 +161,20 @@
     "save": "Save",
     "close": "Close",
     "required": "Required"
+  },
+  "recentlyViewed": {
+    "title": "Recently Viewed",
+    "clear": "Clear"
+  },
+  "bumpSuccess": {
+    "title": "Ad Bumped Successfully!",
+    "description": "Your ad <strong>\"{{title}}\"</strong> has been bumped to the top of search results.",
+    "descriptionGeneric": "Your ad has been bumped to the top of search results.",
+    "visibility": "It will now appear at the top when users browse or search for similar items.",
+    "viewAd": "View My Ad",
+    "dashboard": "Go to Dashboard",
+    "failed": "Payment Verification Failed",
+    "failedDescription": "We could not verify your payment. Please try again or contact support.",
+    "backToDashboard": "Back to Dashboard"
   }
 }
