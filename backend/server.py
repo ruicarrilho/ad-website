@@ -856,12 +856,22 @@ async def get_payment_status(session_id: str, request: Request, authorization: O
         {"$set": update_data}
     )
     
-    # If paid and ad_id exists, upgrade ad to premium
+    # Handle different payment types
     if payment_status == "paid" and transaction.get("ad_id"):
-        await db.ads.update_one(
-            {"ad_id": transaction["ad_id"]},
-            {"$set": {"is_paid": True}}
-        )
+        payment_type = transaction.get("payment_type", "ad_payment")
+        
+        if payment_type == "bump_ad":
+            # Bump the ad to the top
+            await db.ads.update_one(
+                {"ad_id": transaction["ad_id"]},
+                {"$set": {"bumped_at": datetime.now(timezone.utc).isoformat()}}
+            )
+        else:
+            # Upgrade ad to premium
+            await db.ads.update_one(
+                {"ad_id": transaction["ad_id"]},
+                {"$set": {"is_paid": True}}
+            )
     
     # Get updated transaction
     updated_transaction = await db.payment_transactions.find_one(
