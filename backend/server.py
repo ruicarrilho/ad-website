@@ -687,18 +687,29 @@ async def get_payment_status(session_id: str, request: Request, authorization: O
     if transaction["payment_status"] in ["paid", "complete"]:
         return transaction
     
-    # Check with Stripe
     stripe_api_key = os.environ.get("STRIPE_API_KEY")
-    origin_url = str(request.base_url).rstrip("/")
-    webhook_url = f"{origin_url}/api/webhook/stripe"
-    stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url=webhook_url)
     
-    status_response = await stripe_checkout.get_checkout_status(session_id)
+    if USE_EMERGENT_STRIPE:
+        # Use Emergent integrations library
+        origin_url = str(request.base_url).rstrip("/")
+        webhook_url = f"{origin_url}/api/webhook/stripe"
+        stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url=webhook_url)
+        
+        status_response = await stripe_checkout.get_checkout_status(session_id)
+        payment_status = status_response.payment_status
+        status = status_response.status
+    else:
+        # Use standard Stripe library
+        stripe.api_key = stripe_api_key
+        
+        session = stripe.checkout.Session.retrieve(session_id)
+        payment_status = session.payment_status or "unpaid"
+        status = session.status
     
     # Update transaction
     update_data = {
-        "payment_status": status_response.payment_status,
-        "status": status_response.status
+        "payment_status": payment_status,
+        "status": status
     }
     
     await db.payment_transactions.update_one(
@@ -707,7 +718,7 @@ async def get_payment_status(session_id: str, request: Request, authorization: O
     )
     
     # If paid and ad_id exists, upgrade ad to premium
-    if status_response.payment_status == "paid" and transaction.get("ad_id"):
+    if payment_status == "paid" and transaction.get("ad_id"):
         await db.ads.update_one(
             {"ad_id": transaction["ad_id"]},
             {"$set": {"is_paid": True}}
