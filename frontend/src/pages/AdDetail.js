@@ -3,12 +3,14 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Button } from '../components/ui/button';
-import { ArrowLeft, Calendar, Tag, MapPin, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Calendar, Tag, MapPin, X, ChevronLeft, ChevronRight, Heart } from 'lucide-react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import ImageMagnifier from '../components/ImageMagnifier';
 import { addToRecentlyViewed } from '../utils/recentlyViewed';
+import { isFavorite, toggleFavorite } from '../utils/favorites';
+import { useToast } from '../hooks/use-toast';
 
 // Fix for default marker icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -25,15 +27,22 @@ const API = `${BACKEND_URL}/api`;
 const AdDetail = () => {
   const { adId } = useParams();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { toast } = useToast();
   const [ad, setAd] = useState(null);
   const [loading, setLoading] = useState(true);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [isFav, setIsFav] = useState(false);
 
   useEffect(() => {
     fetchAd();
   }, [adId]);
+
+  useEffect(() => {
+    if (ad) {
+      setIsFav(isFavorite(ad.ad_id));
+    }
+  }, [ad]);
 
   const fetchAd = async () => {
     try {
@@ -80,6 +89,17 @@ const AdDetail = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxOpen, lightboxIndex, ad]);
 
+  const handleToggleFavorite = () => {
+    const newStatus = toggleFavorite(ad);
+    setIsFav(newStatus);
+    toast({
+      title: newStatus ? 'Added to favorites' : 'Removed from favorites',
+      description: newStatus 
+        ? `"${ad.title}" has been saved to your favorites.`
+        : `"${ad.title}" has been removed from your favorites.`
+    });
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -104,16 +124,27 @@ const AdDetail = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Back Button */}
-        <Button
-          data-testid="back-btn"
-          onClick={() => navigate(-1)}
-          variant="ghost"
-          className="mb-6 rounded-full"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          {t('adDetail.back')}
-        </Button>
+        {/* Header with Back Button and Favorite */}
+        <div className="flex items-center justify-between mb-6">
+          <Button
+            data-testid="back-btn"
+            onClick={() => navigate(-1)}
+            variant="ghost"
+            className="rounded-full"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back
+          </Button>
+          <Button
+            data-testid="favorite-ad-btn"
+            onClick={handleToggleFavorite}
+            variant="outline"
+            className={`rounded-full ${isFav ? 'bg-red-50 border-red-200 hover:bg-red-100' : ''}`}
+          >
+            <Heart className={`w-4 h-4 mr-2 ${isFav ? 'text-red-500 fill-red-500' : ''}`} />
+            {isFav ? 'Saved' : 'Save'}
+          </Button>
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Images */}

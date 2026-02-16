@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { ZoomIn } from 'lucide-react';
+import { createPortal } from 'react-dom';
 
 const ImageMagnifier = ({ 
   src, 
@@ -18,14 +19,14 @@ const ImageMagnifier = ({
 
     const { left, top, width, height } = imageRef.current.getBoundingClientRect();
     
-    // Calculate cursor position relative to image
+    // Calculate cursor position relative to image (for background position)
     const x = ((e.clientX - left) / width) * 100;
     const y = ((e.clientY - top) / height) * 100;
     
-    // Set magnifier position (centered on cursor)
+    // Set magnifier position using viewport coordinates (fixed position)
     setMagnifierPosition({
-      x: e.clientX - left - magnifierSize / 2,
-      y: e.clientY - top - magnifierSize / 2
+      x: e.clientX - magnifierSize / 2,
+      y: e.clientY - magnifierSize / 2
     });
     
     // Set background position for zoom effect
@@ -39,6 +40,27 @@ const ImageMagnifier = ({
   const handleMouseLeave = () => {
     setShowMagnifier(false);
   };
+
+  // Render magnifier in a portal to avoid z-index and overflow issues
+  const magnifierLens = showMagnifier && createPortal(
+    <div
+      className="pointer-events-none border-4 border-white shadow-2xl rounded-full"
+      style={{
+        position: 'fixed',
+        width: `${magnifierSize}px`,
+        height: `${magnifierSize}px`,
+        left: `${magnifierPosition.x}px`,
+        top: `${magnifierPosition.y}px`,
+        backgroundImage: `url(${src})`,
+        backgroundSize: `${zoomLevel * 100}%`,
+        backgroundPosition: `${cursorPosition.x}% ${cursorPosition.y}%`,
+        backgroundRepeat: 'no-repeat',
+        zIndex: 9999,
+        boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,255,255,0.2)'
+      }}
+    />,
+    document.body
+  );
 
   return (
     <div 
@@ -62,24 +84,8 @@ const ImageMagnifier = ({
         <span>Hover to zoom</span>
       </div>
 
-      {/* Magnifier lens */}
-      {showMagnifier && (
-        <div
-          className="absolute pointer-events-none border-4 border-white shadow-2xl rounded-full"
-          style={{
-            width: `${magnifierSize}px`,
-            height: `${magnifierSize}px`,
-            left: `${magnifierPosition.x}px`,
-            top: `${magnifierPosition.y}px`,
-            backgroundImage: `url(${src})`,
-            backgroundSize: `${zoomLevel * 100}%`,
-            backgroundPosition: `${cursorPosition.x}% ${cursorPosition.y}%`,
-            backgroundRepeat: 'no-repeat',
-            zIndex: 10,
-            boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,255,255,0.2)'
-          }}
-        />
-      )}
+      {/* Magnifier lens - rendered via portal */}
+      {magnifierLens}
     </div>
   );
 };

@@ -5,9 +5,12 @@ import axios from 'axios';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { Search, SlidersHorizontal, Map } from 'lucide-react';
+import { Search, SlidersHorizontal, Map, Heart, EyeOff } from 'lucide-react';
 import MapSearch from '../components/MapSearch';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../components/ui/collapsible';
+import { isFavorite, toggleFavorite } from '../utils/favorites';
+import { filterExcludedAds, excludeAd, getExcludedCount } from '../utils/excludedAds';
+import { useToast } from '../hooks/use-toast';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -15,7 +18,7 @@ const API = `${BACKEND_URL}/api`;
 const Browse = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { t } = useTranslation();
+  const { toast } = useToast();
   const [ads, setAds] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,6 +28,8 @@ const Browse = () => {
   const [subcategories, setSubcategories] = useState([]);
   const [locationFilter, setLocationFilter] = useState(null);
   const [showMapSearch, setShowMapSearch] = useState(false);
+  const [favoriteIds, setFavoriteIds] = useState(new Set());
+  const [excludedCount, setExcludedCount] = useState(0);
 
   useEffect(() => {
     fetchCategories();
@@ -75,7 +80,19 @@ const Browse = () => {
         url += `&lat=${locationFilter.latitude}&lng=${locationFilter.longitude}&radius=${locationFilter.radius}`;
       }
       const response = await axios.get(url);
-      setAds(response.data);
+      // Filter out excluded ads
+      const filteredAds = filterExcludedAds(response.data);
+      setAds(filteredAds);
+      setExcludedCount(getExcludedCount());
+      
+      // Update favorite status for displayed ads
+      const favIds = new Set();
+      filteredAds.forEach(ad => {
+        if (isFavorite(ad.ad_id)) {
+          favIds.add(ad.ad_id);
+        }
+      });
+      setFavoriteIds(favIds);
     } catch (error) {
       console.error('Failed to fetch ads:', error);
     } finally {
@@ -85,6 +102,48 @@ const Browse = () => {
 
   const handleSearch = () => {
     fetchAds();
+  };
+
+  const handleToggleFavorite = (e, ad) => {
+    e.stopPropagation();
+    const newStatus = toggleFavorite(ad);
+    setFavoriteIds(prev => {
+      const updated = new Set(prev);
+      if (newStatus) {
+        updated.add(ad.ad_id);
+        toast({
+          title: 'Added to favorites',
+          description: `"${ad.title}" has been saved to your favorites.`
+        });
+      } else {
+        updated.delete(ad.ad_id);
+        toast({
+          title: 'Removed from favorites',
+          description: `"${ad.title}" has been removed from your favorites.`
+        });
+      }
+      return updated;
+    });
+  };
+
+  const handleExcludeAd = (e, ad) => {
+    e.stopPropagation();
+    excludeAd(ad.ad_id);
+    setAds(prev => prev.filter(a => a.ad_id !== ad.ad_id));
+    setExcludedCount(getExcludedCount());
+    toast({
+      title: 'Ad hidden',
+      description: `"${ad.title}" will no longer appear in search results.`,
+      action: (
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => navigate('/hidden-ads')}
+        >
+          Manage
+        </Button>
+      )
+    });
   };
 
   return (
@@ -187,12 +246,35 @@ const Browse = () => {
           </div>
         ) : ads.length === 0 ? (
           <div className="bg-white rounded-2xl border border-slate-100 p-12 text-center">
-            <p className="text-slate-600 text-lg">{t('browse.noAdsFound')}</p>
+            <p className="text-slate-600 text-lg">No ads found matching your criteria</p>
+            {excludedCount > 0 && (
+              <p className="text-sm text-slate-500 mt-2">
+                {excludedCount} ads are hidden.{' '}
+                <button 
+                  onClick={() => navigate('/hidden-ads')} 
+                  className="text-primary hover:underline"
+                >
+                  Manage hidden ads
+                </button>
+              </p>
+            )}
           </div>
         ) : (
           <>
-            <div className="mb-6 text-sm text-slate-600">
-              {t('browse.showingResults', { count: ads.length })}
+            <div className="mb-6 flex items-center justify-between">
+              <span className="text-sm text-slate-600">
+                Showing {ads.length} {ads.length === 1 ? 'result' : 'results'}
+              </span>
+              {excludedCount > 0 && (
+                <button 
+                  onClick={() => navigate('/hidden-ads')}
+                  className="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1"
+                  data-testid="manage-hidden-ads-link"
+                >
+                  <EyeOff className="w-4 h-4" />
+                  {excludedCount} hidden
+                </button>
+              )}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {ads.map((ad) => (
@@ -202,6 +284,30 @@ const Browse = () => {
                   onClick={() => navigate(`/ads/${ad.ad_id}`)}
                   className="group relative bg-white rounded-2xl border border-slate-100 overflow-hidden hover:border-slate-300 transition-all duration-300 cursor-pointer hover:shadow-lg"
                 >
+                  {/* Action buttons */}
+                  <div className="absolute top-3 left-3 z-10 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={(e) => handleToggleFavorite(e, ad)}
+                      className={`p-2 rounded-full shadow-sm transition-colors ${
+                        favoriteIds.has(ad.ad_id) 
+                          ? 'bg-red-50 hover:bg-red-100' 
+                          : 'bg-white/90 hover:bg-red-50'
+                      }`}
+                      data-testid={`favorite-btn-${ad.ad_id}`}
+                      title="Add to favorites"
+                    >
+                      <Heart className={`w-4 h-4 ${favoriteIds.has(ad.ad_id) ? 'text-red-500 fill-red-500' : 'text-slate-600'}`} />
+                    </button>
+                    <button
+                      onClick={(e) => handleExcludeAd(e, ad)}
+                      className="p-2 bg-white/90 hover:bg-slate-100 rounded-full shadow-sm transition-colors"
+                      data-testid={`hide-btn-${ad.ad_id}`}
+                      title="Hide this ad"
+                    >
+                      <EyeOff className="w-4 h-4 text-slate-600" />
+                    </button>
+                  </div>
+
                   <div className="aspect-[4/3] overflow-hidden bg-slate-100">
                     {ad.images && ad.images.length > 0 ? (
                       <img

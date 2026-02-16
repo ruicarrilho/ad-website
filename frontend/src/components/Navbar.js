@@ -1,21 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { Button } from './ui/button';
-import { Menu, LogOut, User, PlusCircle, Grid } from 'lucide-react';
+import { Menu, LogOut, User, PlusCircle, Grid, Heart, EyeOff } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
+import { getFavoriteCount } from '../utils/favorites';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from './ui/dropdown-menu';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [favoriteCount, setFavoriteCount] = useState(0);
+
+  useEffect(() => {
+    // Update favorite count on mount and periodically
+    const updateCount = () => setFavoriteCount(getFavoriteCount());
+    updateCount();
+    
+    // Listen for storage changes (when favorites are updated in other tabs/components)
+    window.addEventListener('storage', updateCount);
+    
+    // Also update on focus (when user returns to tab)
+    window.addEventListener('focus', updateCount);
+    
+    return () => {
+      window.removeEventListener('storage', updateCount);
+      window.removeEventListener('focus', updateCount);
+    };
+  }, []);
 
   const handleLogout = async () => {
     await logout();
@@ -35,6 +55,22 @@ const Navbar = () => {
 
           <div className="flex items-center space-x-4">
             <LanguageSwitcher />
+            
+            {/* Favorites button - always visible */}
+            <Button
+              data-testid="favorites-nav-btn"
+              onClick={() => navigate('/favorites')}
+              variant="ghost"
+              className="relative rounded-full p-2"
+              title={t('favorites.title', 'Favorites')}
+            >
+              <Heart className="w-5 h-5" />
+              {favoriteCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-medium">
+                  {favoriteCount > 9 ? '9+' : favoriteCount}
+                </span>
+              )}
+            </Button>
             
             {user ? (
               <>
@@ -67,6 +103,15 @@ const Navbar = () => {
                       <Grid className="w-4 h-4 mr-2" />
                       {t('nav.myDashboard')}
                     </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/favorites')} data-testid="favorites-menu-item">
+                      <Heart className="w-4 h-4 mr-2" />
+                      {t('favorites.title', 'Favorites')}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/hidden-ads')} data-testid="hidden-ads-menu-item">
+                      <EyeOff className="w-4 h-4 mr-2" />
+                      {t('hiddenAds.title', 'Hidden Ads')}
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout} data-testid="logout-menu-item">
                       <LogOut className="w-4 h-4 mr-2" />
                       {t('nav.logout')}
