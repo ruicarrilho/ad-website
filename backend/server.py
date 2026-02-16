@@ -738,34 +738,70 @@ async def stripe_webhook(request: Request):
     signature = request.headers.get("Stripe-Signature")
     
     stripe_api_key = os.environ.get("STRIPE_API_KEY")
-    origin_url = str(request.base_url).rstrip("/")
-    webhook_url = f"{origin_url}/api/webhook/stripe"
-    stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url=webhook_url)
     
     try:
-        webhook_response = await stripe_checkout.handle_webhook(body, signature)
-        
-        # Update transaction based on webhook
-        if webhook_response.event_type == "checkout.session.completed":
-            await db.payment_transactions.update_one(
-                {"session_id": webhook_response.session_id},
-                {"$set": {
-                    "payment_status": webhook_response.payment_status,
-                    "status": "complete"
-                }}
-            )
+        if USE_EMERGENT_STRIPE:
+            # Use Emergent integrations library
+            origin_url = str(request.base_url).rstrip("/")
+            webhook_url = f"{origin_url}/api/webhook/stripe"
+            stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url=webhook_url)
             
-            # Upgrade ad to premium if applicable
-            transaction = await db.payment_transactions.find_one(
-                {"session_id": webhook_response.session_id},
-                {"_id": 0}
-            )
+            webhook_response = await stripe_checkout.handle_webhook(body, signature)
             
-            if transaction and transaction.get("ad_id"):
-                await db.ads.update_one(
-                    {"ad_id": transaction["ad_id"]},
-                    {"$set": {"is_paid": True}}
+            if webhook_response.event_type == "checkout.session.completed":
+                await db.payment_transactions.update_one(
+                    {"session_id": webhook_response.session_id},
+                    {"$set": {
+                        "payment_status": webhook_response.payment_status,
+                        "status": "complete"
+                    }}
                 )
+                
+                transaction = await db.payment_transactions.find_one(
+                    {"session_id": webhook_response.session_id},
+                    {"_id": 0}
+                )
+                
+                if transaction and transaction.get("ad_id"):
+                    await db.ads.update_one(
+                        {"ad_id": transaction["ad_id"]},
+                        {"$set": {"is_paid": True}}
+                    )
+        else:
+            # Use standard Stripe library
+            stripe.api_key = stripe_api_key
+            webhook_secret = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
+            
+            if webhook_secret and signature:
+                event = stripe.Webhook.construct_event(body, signature, webhook_secret)
+            else:
+                # For local testing without webhook secret
+                import json
+                event = stripe.Event.construct_from(json.loads(body), stripe.api_key)
+            
+            if event.type == "checkout.session.completed":
+                session = event.data.object
+                session_id = session.id
+                payment_status = session.payment_status or "paid"
+                
+                await db.payment_transactions.update_one(
+                    {"session_id": session_id},
+                    {"$set": {
+                        "payment_status": payment_status,
+                        "status": "complete"
+                    }}
+                )
+                
+                transaction = await db.payment_transactions.find_one(
+                    {"session_id": session_id},
+                    {"_id": 0}
+                )
+                
+                if transaction and transaction.get("ad_id"):
+                    await db.ads.update_one(
+                        {"ad_id": transaction["ad_id"]},
+                        {"$set": {"is_paid": True}}
+                    )
         
         return {"status": "success"}
     except Exception as e:
