@@ -373,7 +373,7 @@ async def get_ads(
             {"description": {"$regex": search, "$options": "i"}}
         ]
     
-    ads = await db.ads.find(query, {"_id": 0}).sort("created_at", -1).limit(limit).to_list(limit)
+    ads = await db.ads.find(query, {"_id": 0}).sort([("bumped_at", -1), ("created_at", -1)]).limit(limit).to_list(limit)
     
     # Convert datetime strings
     for ad in ads:
@@ -381,6 +381,8 @@ async def get_ads(
             ad["created_at"] = datetime.fromisoformat(ad["created_at"])
         if isinstance(ad.get("expires_at"), str):
             ad["expires_at"] = datetime.fromisoformat(ad["expires_at"])
+        if isinstance(ad.get("bumped_at"), str):
+            ad["bumped_at"] = datetime.fromisoformat(ad["bumped_at"])
     
     return ads
 
