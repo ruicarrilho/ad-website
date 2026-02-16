@@ -17,6 +17,7 @@ const API = `${BACKEND_URL}/api`;
 const Browse = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { toast } = useToast();
   const [ads, setAds] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,6 +27,8 @@ const Browse = () => {
   const [subcategories, setSubcategories] = useState([]);
   const [locationFilter, setLocationFilter] = useState(null);
   const [showMapSearch, setShowMapSearch] = useState(false);
+  const [favoriteIds, setFavoriteIds] = useState(new Set());
+  const [excludedCount, setExcludedCount] = useState(0);
 
   useEffect(() => {
     fetchCategories();
