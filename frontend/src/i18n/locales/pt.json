@@ -161,5 +161,40 @@
     "save": "Guardar",
     "close": "Fechar",
     "required": "Obrigatório"
+  },
+  "recentlyViewed": {
+    "title": "Vistos Recentemente",
+    "clear": "Limpar"
+  },
+  "bumpSuccess": {
+    "title": "Anúncio Promovido com Sucesso!",
+    "description": "O seu anúncio <strong>\"{{title}}\"</strong> foi promovido para o topo dos resultados de pesquisa.",
+    "descriptionGeneric": "O seu anúncio foi promovido para o topo dos resultados de pesquisa.",
+    "visibility": "Agora aparecerá no topo quando os utilizadores pesquisarem itens semelhantes.",
+    "viewAd": "Ver Meu Anúncio",
+    "dashboard": "Ir para o Painel",
+    "failed": "Falha na Verificação do Pagamento",
+    "failedDescription": "Não foi possível verificar o seu pagamento. Por favor, tente novamente ou contacte o suporte.",
+    "backToDashboard": "Voltar ao Painel"
+  },
+  "favorites": {
+    "title": "Meus Favoritos",
+    "subtitle": "{{count}} anúncios guardados",
+    "clearAll": "Limpar Todos",
+    "empty": "Ainda não tem favoritos",
+    "emptyDescription": "Comece a navegar e guarde anúncios que goste clicando no ícone de coração.",
+    "browseAds": "Explorar Anúncios",
+    "clearTitle": "Limpar todos os favoritos?",
+    "clearDescription": "Isto irá remover todos os anúncios da sua lista de favoritos. Esta ação não pode ser desfeita."
+  },
+  "hiddenAds": {
+    "title": "Anúncios Ocultos",
+    "subtitle": "{{count}} anúncios ocultos",
+    "restoreAll": "Restaurar Todos",
+    "empty": "Sem anúncios ocultos",
+    "emptyDescription": "Os anúncios que ocultar dos resultados de pesquisa aparecerão aqui.",
+    "restore": "Restaurar",
+    "restoreTitle": "Restaurar todos os anúncios ocultos?",
+    "restoreDescription": "Isto tornará todos os anúncios ocultos visíveis novamente nos resultados de pesquisa."
   }
 }
