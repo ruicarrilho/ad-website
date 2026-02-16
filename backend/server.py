@@ -682,6 +682,15 @@ async def get_payment_status(session_id: str, request: Request, authorization: O
         {"_id": 0}
     )
     
+    # Get ad details to include in response
+    if updated_transaction.get("ad_id"):
+        ad = await db.ads.find_one(
+            {"ad_id": updated_transaction["ad_id"]},
+            {"_id": 0, "ad_id": 1, "title": 1}
+        )
+        if ad:
+            updated_transaction["ad_title"] = ad.get("title")
+    
     return updated_transaction
 
 @api_router.post("/webhook/stripe")

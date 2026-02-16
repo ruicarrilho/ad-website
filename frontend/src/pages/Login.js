@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -14,6 +15,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -62,13 +64,13 @@ const Login = () => {
       <div className="w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-lg border border-slate-100 p-8">
           <div className="text-center mb-8">
-            <h1 className="font-heading text-3xl font-bold text-primary mb-2">Welcome Back</h1>
-            <p className="text-slate-600">Sign in to your account</p>
+            <h1 className="font-heading text-3xl font-bold text-primary mb-2">{t('auth.welcomeBack')}</h1>
+            <p className="text-slate-600">{t('auth.signInAccount')}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6" data-testid="login-form">
             <div className="space-y-2">
-              <Label htmlFor="email" data-testid="email-label">Email</Label>
+              <Label htmlFor="email" data-testid="email-label">{t('auth.email')}</Label>
               <Input
                 id="email"
                 name="email"
@@ -83,7 +85,7 @@ const Login = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" data-testid="password-label">Password</Label>
+              <Label htmlFor="password" data-testid="password-label">{t('auth.password')}</Label>
               <Input
                 id="password"
                 name="password"
@@ -103,7 +105,7 @@ const Login = () => {
               data-testid="login-submit-btn"
               className="w-full bg-primary text-white hover:bg-primary/90 h-12 rounded-full font-medium transition-all active:scale-95"
             >
-              {loading ? 'Signing In...' : 'Sign In'}
+              {loading ? t('auth.signingIn') : t('auth.signIn')}
             </Button>
           </form>
 
@@ -112,7 +114,7 @@ const Login = () => {
               <div className="w-full border-t border-slate-200"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-slate-500">Or continue with</span>
+              <span className="px-2 bg-white text-slate-500">{t('auth.orContinueWith')}</span>
             </div>
           </div>
 
@@ -129,13 +131,13 @@ const Login = () => {
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
-            Continue with Google
+            {t('auth.continueWithGoogle')}
           </Button>
 
           <p className="text-center text-sm text-slate-600 mt-6">
-            Don't have an account?{' '}
+            {t('auth.noAccount')}{' '}
             <Link to="/register" data-testid="register-link" className="text-primary font-medium hover:underline">
-              Sign up
+              {t('auth.signUp')}
             </Link>
           </p>
         </div>

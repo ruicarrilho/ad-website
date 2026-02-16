@@ -62,7 +62,9 @@
     "postFirst": "Post Your First Ad",
     "edit": "Edit",
     "delete": "Delete",
-    "daysLeft": "days left"
+    "daysLeft": "days left",
+    "premium": "Premium",
+    "noImage": "No image"
   },
   "postAd": {
     "title": "Post an Ad",
@@ -124,7 +126,8 @@
     "showingResults": "Showing {{count}} result",
     "showingResults_plural": "Showing {{count}} results",
     "noAdsFound": "No ads found matching your criteria",
-    "featured": "Featured"
+    "featured": "Featured",
+    "noImage": "No image"
   },
   "adDetail": {
     "back": "Back",
@@ -134,7 +137,8 @@
     "location": "Location",
     "posted": "Posted {{date}}",
     "adNotFound": "Ad not found",
-    "browseAds": "Browse Ads"
+    "browseAds": "Browse Ads",
+    "noImages": "No images available"
   },
   "successDialog": {
     "adPosted": "Ad Posted Successfully!",
@@ -161,5 +165,28 @@
     "save": "Save",
     "close": "Close",
     "required": "Required"
+  },
+  "editAd": {
+    "title": "Edit Ad",
+    "subtitle": "Update your advertisement details",
+    "backToDashboard": "Back to Dashboard",
+    "updating": "Updating...",
+    "updateAd": "Update Ad",
+    "premiumStatus": "Premium Ad",
+    "premiumEnabled": "This ad has premium features enabled"
+  },
+  "payment": {
+    "processing": "Processing Payment",
+    "pleaseWait": "Please wait while we confirm your payment...",
+    "attempt": "Attempt {{current}} of {{max}}",
+    "success": "Payment Successful!",
+    "adUpgraded": "Your ad has been upgraded to premium and is now live.",
+    "viewMyAds": "View My Ads",
+    "pending": "Payment Pending",
+    "pendingMessage": "Your payment is being processed. Check your dashboard in a few minutes.",
+    "goToDashboard": "Go to Dashboard",
+    "error": "Payment Error",
+    "errorMessage": "There was an issue processing your payment. Please contact support.",
+    "backToDashboard": "Back to Dashboard"
   }
 }
