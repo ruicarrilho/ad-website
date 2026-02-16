@@ -82,6 +82,43 @@ const Dashboard = () => {
     return days > 0 ? days : 0;
   };
 
+  const handleBump = async () => {
+    if (!bumpAdId) return;
+    
+    setBumpLoading(true);
+    try {
+      const response = await axios.post(`${API}/payment/bump-session`, {
+        ad_id: bumpAdId,
+        origin_url: window.location.origin
+      }, {
+        withCredentials: true
+      });
+      
+      // Redirect to Stripe checkout
+      window.location.href = response.data.url;
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.response?.data?.detail || 'Failed to create bump session',
+        variant: 'destructive'
+      });
+      setBumpLoading(false);
+    }
+    setBumpAdId(null);
+  };
+
+  const getTimeSinceBump = (bumpedAt) => {
+    if (!bumpedAt) return null;
+    const now = new Date();
+    const bumped = new Date(bumpedAt);
+    const diffHours = Math.floor((now - bumped) / (1000 * 60 * 60));
+    
+    if (diffHours < 1) return 'Just bumped';
+    if (diffHours < 24) return `Bumped ${diffHours}h ago`;
+    const diffDays = Math.floor(diffHours / 24);
+    return `Bumped ${diffDays}d ago`;
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
