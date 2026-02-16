@@ -79,7 +79,19 @@ const Browse = () => {
         url += `&lat=${locationFilter.latitude}&lng=${locationFilter.longitude}&radius=${locationFilter.radius}`;
       }
       const response = await axios.get(url);
-      setAds(response.data);
+      // Filter out excluded ads
+      const filteredAds = filterExcludedAds(response.data);
+      setAds(filteredAds);
+      setExcludedCount(getExcludedCount());
+      
+      // Update favorite status for displayed ads
+      const favIds = new Set();
+      filteredAds.forEach(ad => {
+        if (isFavorite(ad.ad_id)) {
+          favIds.add(ad.ad_id);
+        }
+      });
+      setFavoriteIds(favIds);
     } catch (error) {
       console.error('Failed to fetch ads:', error);
     } finally {
@@ -89,6 +101,48 @@ const Browse = () => {
 
   const handleSearch = () => {
     fetchAds();
+  };
+
+  const handleToggleFavorite = (e, ad) => {
+    e.stopPropagation();
+    const newStatus = toggleFavorite(ad);
+    setFavoriteIds(prev => {
+      const updated = new Set(prev);
+      if (newStatus) {
+        updated.add(ad.ad_id);
+        toast({
+          title: 'Added to favorites',
+          description: `"${ad.title}" has been saved to your favorites.`
+        });
+      } else {
+        updated.delete(ad.ad_id);
+        toast({
+          title: 'Removed from favorites',
+          description: `"${ad.title}" has been removed from your favorites.`
+        });
+      }
+      return updated;
+    });
+  };
+
+  const handleExcludeAd = (e, ad) => {
+    e.stopPropagation();
+    excludeAd(ad.ad_id);
+    setAds(prev => prev.filter(a => a.ad_id !== ad.ad_id));
+    setExcludedCount(getExcludedCount());
+    toast({
+      title: 'Ad hidden',
+      description: `"${ad.title}" will no longer appear in search results.`,
+      action: (
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => navigate('/hidden-ads')}
+        >
+          Manage
+        </Button>
+      )
+    });
   };
 
   return (
