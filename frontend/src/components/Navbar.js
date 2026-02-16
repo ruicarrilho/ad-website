@@ -103,6 +103,15 @@ const Navbar = () => {
                       <Grid className="w-4 h-4 mr-2" />
                       {t('nav.myDashboard')}
                     </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/favorites')} data-testid="favorites-menu-item">
+                      <Heart className="w-4 h-4 mr-2" />
+                      {t('favorites.title', 'Favorites')}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/hidden-ads')} data-testid="hidden-ads-menu-item">
+                      <EyeOff className="w-4 h-4 mr-2" />
+                      {t('hiddenAds.title', 'Hidden Ads')}
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout} data-testid="logout-menu-item">
                       <LogOut className="w-4 h-4 mr-2" />
                       {t('nav.logout')}
