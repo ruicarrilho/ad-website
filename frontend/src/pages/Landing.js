@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Search, ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import RecentlyViewedAds from '../components/RecentlyViewedAds';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -138,6 +139,9 @@ const Landing = () => {
           </div>
         </div>
       </section>
+
+      {/* Recently Viewed Ads Section */}
+      <RecentlyViewedAds />
 
       {/* Categories Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

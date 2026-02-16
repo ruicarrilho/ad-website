@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Button } from '../components/ui/button';
-import { PlusCircle, Edit, Trash2, Clock, DollarSign } from 'lucide-react';
+import { PlusCircle, Edit, Trash2, Clock, DollarSign, Rocket } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import {
   AlertDialog,
@@ -28,6 +28,8 @@ const Dashboard = () => {
   const [ads, setAds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleteAdId, setDeleteAdId] = useState(null);
+  const [bumpAdId, setBumpAdId] = useState(null);
+  const [bumpLoading, setBumpLoading] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -80,6 +82,43 @@ const Dashboard = () => {
     const diff = expiry - now;
     const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
     return days > 0 ? days : 0;
+  };
+
+  const handleBump = async () => {
+    if (!bumpAdId) return;
+    
+    setBumpLoading(true);
+    try {
+      const response = await axios.post(`${API}/payment/bump-session`, {
+        ad_id: bumpAdId,
+        origin_url: window.location.origin
+      }, {
+        withCredentials: true
+      });
+      
+      // Redirect to Stripe checkout
+      window.location.href = response.data.url;
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.response?.data?.detail || 'Failed to create bump session',
+        variant: 'destructive'
+      });
+      setBumpLoading(false);
+    }
+    setBumpAdId(null);
+  };
+
+  const getTimeSinceBump = (bumpedAt) => {
+    if (!bumpedAt) return null;
+    const now = new Date();
+    const bumped = new Date(bumpedAt);
+    const diffHours = Math.floor((now - bumped) / (1000 * 60 * 60));
+    
+    if (diffHours < 1) return 'Just bumped';
+    if (diffHours < 24) return `Bumped ${diffHours}h ago`;
+    const diffDays = Math.floor(diffHours / 24);
+    return `Bumped ${diffDays}d ago`;
   };
 
   if (loading) {
@@ -193,11 +232,19 @@ const Dashboard = () => {
                           <h3 className="font-heading text-xl font-semibold text-slate-900 mb-1">{ad.title}</h3>
                           <p className="text-slate-600 text-sm line-clamp-2">{ad.description}</p>
                         </div>
-                        {ad.is_paid && (
-                          <span className="ml-4 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent/10 text-accent">
-                            {t('dashboard.premium')}
-                          </span>
-                        )}
+                        <div className="flex items-center gap-2 ml-4">
+                          {ad.bumped_at && (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-600">
+                              <Rocket className="w-3 h-3 mr-1" />
+                              {getTimeSinceBump(ad.bumped_at)}
+                            </span>
+                          )}
+                          {ad.is_paid && (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent/10 text-accent">
+                              Premium
+                            </span>
+                          )}
+                        </div>
                       </div>
                       <div className="flex items-center gap-6 text-sm text-slate-600 mb-4 flex-wrap">
                         <span className="font-semibold text-2xl text-accent">€{ad.price}</span>
@@ -207,7 +254,17 @@ const Dashboard = () => {
                         </span>
                         <span>{getDaysRemaining(ad.expires_at)} {t('dashboard.daysLeft')}</span>
                       </div>
-                      <div className="flex gap-3">
+                      <div className="flex gap-3 flex-wrap">
+                        <Button
+                          data-testid={`bump-ad-btn-${ad.ad_id}`}
+                          onClick={() => setBumpAdId(ad.ad_id)}
+                          variant="outline"
+                          size="sm"
+                          className="rounded-full text-blue-600 hover:text-blue-700 hover:bg-blue-50 border-blue-200"
+                        >
+                          <Rocket className="w-4 h-4 mr-2" />
+                          Bump €2
+                        </Button>
                         <Button
                           data-testid={`edit-ad-btn-${ad.ad_id}`}
                           onClick={() => navigate(`/edit-ad/${ad.ad_id}`)}
@@ -255,6 +312,33 @@ const Dashboard = () => {
               className="bg-red-600 hover:bg-red-700"
             >
               {t('deleteDialog.delete')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Bump Confirmation Dialog */}
+      <AlertDialog open={!!bumpAdId} onOpenChange={() => setBumpAdId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <Rocket className="w-5 h-5 text-blue-600" />
+              Bump Your Ad?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-2">
+              <p>Bumping your ad will move it to the top of search results, making it more visible to potential buyers.</p>
+              <p className="font-semibold text-slate-900">Cost: €2.00</p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel data-testid="cancel-bump-btn" disabled={bumpLoading}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              data-testid="confirm-bump-btn"
+              onClick={handleBump}
+              disabled={bumpLoading}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              {bumpLoading ? 'Processing...' : 'Bump for €2'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -13,6 +13,7 @@ import EditAd from './pages/EditAd';
 import Browse from './pages/Browse';
 import AdDetail from './pages/AdDetail';
 import PaymentSuccess from './pages/PaymentSuccess';
+import BumpSuccess from './pages/BumpSuccess';
 import '@/App.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -80,6 +81,14 @@ const AppRouter = () => {
           element={
             <ProtectedRoute>
               <PaymentSuccess />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/bump-success"
+          element={
+            <ProtectedRoute>
+              <BumpSuccess />
             </ProtectedRoute>
           }
         />

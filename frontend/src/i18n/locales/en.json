@@ -166,27 +166,19 @@
     "close": "Close",
     "required": "Required"
   },
-  "editAd": {
-    "title": "Edit Ad",
-    "subtitle": "Update your advertisement details",
-    "backToDashboard": "Back to Dashboard",
-    "updating": "Updating...",
-    "updateAd": "Update Ad",
-    "premiumStatus": "Premium Ad",
-    "premiumEnabled": "This ad has premium features enabled"
+  "recentlyViewed": {
+    "title": "Recently Viewed",
+    "clear": "Clear"
   },
-  "payment": {
-    "processing": "Processing Payment",
-    "pleaseWait": "Please wait while we confirm your payment...",
-    "attempt": "Attempt {{current}} of {{max}}",
-    "success": "Payment Successful!",
-    "adUpgraded": "Your ad has been upgraded to premium and is now live.",
-    "viewMyAds": "View My Ads",
-    "pending": "Payment Pending",
-    "pendingMessage": "Your payment is being processed. Check your dashboard in a few minutes.",
-    "goToDashboard": "Go to Dashboard",
-    "error": "Payment Error",
-    "errorMessage": "There was an issue processing your payment. Please contact support.",
+  "bumpSuccess": {
+    "title": "Ad Bumped Successfully!",
+    "description": "Your ad <strong>\"{{title}}\"</strong> has been bumped to the top of search results.",
+    "descriptionGeneric": "Your ad has been bumped to the top of search results.",
+    "visibility": "It will now appear at the top when users browse or search for similar items.",
+    "viewAd": "View My Ad",
+    "dashboard": "Go to Dashboard",
+    "failed": "Payment Verification Failed",
+    "failedDescription": "We could not verify your payment. Please try again or contact support.",
     "backToDashboard": "Back to Dashboard"
   }
 }

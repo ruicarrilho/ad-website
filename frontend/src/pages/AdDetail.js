@@ -3,10 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Button } from '../components/ui/button';
-import { ArrowLeft, Calendar, Tag, MapPin } from 'lucide-react';
+import { ArrowLeft, Calendar, Tag, MapPin, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import ImageMagnifier from '../components/ImageMagnifier';
+import { addToRecentlyViewed } from '../utils/recentlyViewed';
 
 // Fix for default marker icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -26,6 +28,8 @@ const AdDetail = () => {
   const { t } = useTranslation();
   const [ad, setAd] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   useEffect(() => {
     fetchAd();
@@ -35,6 +39,8 @@ const AdDetail = () => {
     try {
       const response = await axios.get(`${API}/ads/${adId}`);
       setAd(response.data);
+      // Track this ad as recently viewed
+      addToRecentlyViewed(response.data);
     } catch (error) {
       console.error('Failed to fetch ad:', error);
     } finally {
@@ -46,6 +52,33 @@ const AdDetail = () => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   };
+
+  const openLightbox = (index) => {
+    setLightboxIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+  };
+
+  const navigateLightbox = (direction) => {
+    if (!ad?.images) return;
+    const newIndex = (lightboxIndex + direction + ad.images.length) % ad.images.length;
+    setLightboxIndex(newIndex);
+  };
+
+  // Handle keyboard navigation in lightbox
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!lightboxOpen) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navigateLightbox(-1);
+      if (e.key === 'ArrowRight') navigateLightbox(1);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxOpen, lightboxIndex, ad]);
 
   if (loading) {
     return (
@@ -87,31 +120,60 @@ const AdDetail = () => {
           <div>
             {ad.images && ad.images.length > 0 ? (
               ad.images.length === 1 ? (
-                <div className="rounded-2xl overflow-hidden" data-testid="ad-image">
-                  <img
+                <div 
+                  className="rounded-2xl overflow-hidden cursor-pointer" 
+                  data-testid="ad-image"
+                  onClick={() => openLightbox(0)}
+                >
+                  <ImageMagnifier
                     src={ad.images[0]}
                     alt={ad.title}
-                    className="w-full h-auto object-cover"
+                    magnifierSize={200}
+                    zoomLevel={2.5}
                   />
                 </div>
               ) : (
-                <Carousel className="w-full">
-                  <CarouselContent>
+                <>
+                  <Carousel className="w-full">
+                    <CarouselContent>
+                      {ad.images.map((image, index) => (
+                        <CarouselItem key={index} data-testid={`carousel-image-${index}`}>
+                          <div 
+                            className="rounded-2xl overflow-hidden cursor-pointer"
+                            onClick={() => openLightbox(index)}
+                          >
+                            <ImageMagnifier
+                              src={image}
+                              alt={`${ad.title} - ${index + 1}`}
+                              magnifierSize={200}
+                              zoomLevel={2.5}
+                            />
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                  </Carousel>
+                  
+                  {/* Thumbnail strip */}
+                  <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
                     {ad.images.map((image, index) => (
-                      <CarouselItem key={index} data-testid={`carousel-image-${index}`}>
-                        <div className="rounded-2xl overflow-hidden">
-                          <img
-                            src={image}
-                            alt={`${ad.title} - ${index + 1}`}
-                            className="w-full h-auto object-cover"
-                          />
-                        </div>
-                      </CarouselItem>
+                      <button
+                        key={index}
+                        onClick={() => openLightbox(index)}
+                        className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 border-transparent hover:border-accent transition-colors"
+                        data-testid={`thumbnail-${index}`}
+                      >
+                        <img
+                          src={image}
+                          alt={`Thumbnail ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </button>
                     ))}
-                  </CarouselContent>
-                  <CarouselPrevious />
-                  <CarouselNext />
-                </Carousel>
+                  </div>
+                </>
               )
             ) : (
               <div className="w-full h-96 bg-slate-100 rounded-2xl flex items-center justify-center">
@@ -187,6 +249,84 @@ const AdDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* Fullscreen Lightbox Modal */}
+      {lightboxOpen && ad?.images && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+          data-testid="image-lightbox"
+          onClick={closeLightbox}
+        >
+          {/* Close button */}
+          <button
+            onClick={closeLightbox}
+            className="absolute top-4 right-4 z-50 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+            data-testid="lightbox-close"
+          >
+            <X className="w-6 h-6 text-white" />
+          </button>
+
+          {/* Image counter */}
+          <div className="absolute top-4 left-4 bg-black/50 text-white px-4 py-2 rounded-full text-sm">
+            {lightboxIndex + 1} / {ad.images.length}
+          </div>
+
+          {/* Navigation buttons */}
+          {ad.images.length > 1 && (
+            <>
+              <button
+                onClick={(e) => { e.stopPropagation(); navigateLightbox(-1); }}
+                className="absolute left-4 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                data-testid="lightbox-prev"
+              >
+                <ChevronLeft className="w-8 h-8 text-white" />
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); navigateLightbox(1); }}
+                className="absolute right-4 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                data-testid="lightbox-next"
+              >
+                <ChevronRight className="w-8 h-8 text-white" />
+              </button>
+            </>
+          )}
+
+          {/* Main image with magnifier */}
+          <div 
+            className="max-w-[90vw] max-h-[85vh] overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <ImageMagnifier
+              src={ad.images[lightboxIndex]}
+              alt={`${ad.title} - ${lightboxIndex + 1}`}
+              magnifierSize={250}
+              zoomLevel={3}
+              className="max-h-[85vh]"
+            />
+          </div>
+
+          {/* Thumbnail strip in lightbox */}
+          {ad.images.length > 1 && (
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-black/50 p-2 rounded-lg max-w-[90vw] overflow-x-auto">
+              {ad.images.map((image, index) => (
+                <button
+                  key={index}
+                  onClick={(e) => { e.stopPropagation(); setLightboxIndex(index); }}
+                  className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
+                    index === lightboxIndex ? 'border-white scale-110' : 'border-transparent opacity-60 hover:opacity-100'
+                  }`}
+                >
+                  <img
+                    src={image}
+                    alt={`Thumbnail ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

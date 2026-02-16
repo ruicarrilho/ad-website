@@ -373,7 +373,7 @@ async def get_ads(
             {"description": {"$regex": search, "$options": "i"}}
         ]
     
-    ads = await db.ads.find(query, {"_id": 0}).sort("created_at", -1).limit(limit).to_list(limit)
+    ads = await db.ads.find(query, {"_id": 0}).sort([("bumped_at", -1), ("created_at", -1)]).limit(limit).to_list(limit)
     
     # Convert datetime strings
     for ad in ads:
@@ -381,6 +381,8 @@ async def get_ads(
             ad["created_at"] = datetime.fromisoformat(ad["created_at"])
         if isinstance(ad.get("expires_at"), str):
             ad["expires_at"] = datetime.fromisoformat(ad["expires_at"])
+        if isinstance(ad.get("bumped_at"), str):
+            ad["bumped_at"] = datetime.fromisoformat(ad["bumped_at"])
     
     return ads
 
@@ -534,6 +536,143 @@ async def delete_ad(ad_id: str, request: Request, authorization: Optional[str] =
     await db.ads.update_one({"ad_id": ad_id}, {"$set": {"status": "deleted"}})
     
     return {"message": "Ad deleted successfully"}
+
+@api_router.post("/ads/{ad_id}/bump")
+async def bump_ad(ad_id: str, request: Request, authorization: Optional[str] = Header(None)):
+    """Bump an ad to the top of search results. Costs €2."""
+    user = await get_current_user(request, authorization)
+    
+    # Find ad
+    ad = await db.ads.find_one({"ad_id": ad_id}, {"_id": 0})
+    
+    if not ad:
+        raise HTTPException(status_code=404, detail="Ad not found")
+    
+    # Check ownership
+    if ad["user_id"] != user["user_id"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    # Check if ad is active
+    if ad.get("status") != "active":
+        raise HTTPException(status_code=400, detail="Only active ads can be bumped")
+    
+    # Update bumped_at timestamp
+    bumped_at = datetime.now(timezone.utc)
+    await db.ads.update_one(
+        {"ad_id": ad_id}, 
+        {"$set": {"bumped_at": bumped_at.isoformat()}}
+    )
+    
+    # Get updated ad
+    updated_ad = await db.ads.find_one({"ad_id": ad_id}, {"_id": 0})
+    
+    if isinstance(updated_ad.get("created_at"), str):
+        updated_ad["created_at"] = datetime.fromisoformat(updated_ad["created_at"])
+    if isinstance(updated_ad.get("expires_at"), str):
+        updated_ad["expires_at"] = datetime.fromisoformat(updated_ad["expires_at"])
+    if isinstance(updated_ad.get("bumped_at"), str):
+        updated_ad["bumped_at"] = datetime.fromisoformat(updated_ad["bumped_at"])
+    
+    return updated_ad
+
+@api_router.post("/payment/bump-session")
+async def create_bump_payment_session(request: Request, authorization: Optional[str] = Header(None)):
+    """Create a Stripe payment session for bumping an ad."""
+    user = await get_current_user(request, authorization)
+    body = await request.json()
+    
+    ad_id = body.get("ad_id")
+    origin_url = body.get("origin_url")
+    
+    if not ad_id:
+        raise HTTPException(status_code=400, detail="Ad ID required")
+    if not origin_url:
+        raise HTTPException(status_code=400, detail="Origin URL required")
+    
+    # Verify ad exists and belongs to user
+    ad = await db.ads.find_one({"ad_id": ad_id}, {"_id": 0})
+    if not ad:
+        raise HTTPException(status_code=404, detail="Ad not found")
+    if ad["user_id"] != user["user_id"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    # Bump cost is €2
+    total_amount = 2.00
+    currency = "eur"
+    
+    # Create success and cancel URLs
+    success_url = f"{origin_url}/bump-success?session_id={{{{CHECKOUT_SESSION_ID}}}}&ad_id={ad_id}"
+    cancel_url = f"{origin_url}/dashboard"
+    
+    stripe_api_key = os.environ.get("STRIPE_API_KEY")
+    
+    metadata = {
+        "user_id": user["user_id"],
+        "ad_id": ad_id,
+        "type": "bump_ad"
+    }
+    
+    if USE_EMERGENT_STRIPE:
+        host_url = origin_url
+        webhook_url = f"{host_url}/api/webhook/stripe"
+        stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url=webhook_url)
+        
+        checkout_request = CheckoutSessionRequest(
+            amount=total_amount,
+            currency=currency,
+            success_url=success_url,
+            cancel_url=cancel_url,
+            metadata=metadata
+        )
+        
+        session = await stripe_checkout.create_checkout_session(checkout_request)
+        session_id = session.session_id
+        session_url = session.url
+    else:
+        stripe.api_key = stripe_api_key
+        
+        session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            line_items=[{
+                "price_data": {
+                    "currency": currency,
+                    "product_data": {
+                        "name": "Bump Ad",
+                        "description": f"Bump your ad '{ad['title']}' to the top of search results"
+                    },
+                    "unit_amount": int(total_amount * 100),
+                },
+                "quantity": 1,
+            }],
+            mode="payment",
+            success_url=success_url,
+            cancel_url=cancel_url,
+            metadata=metadata
+        )
+        session_id = session.id
+        session_url = session.url
+    
+    # Create payment transaction record
+    transaction_id = f"txn_{uuid.uuid4().hex[:12]}"
+    transaction_doc = {
+        "transaction_id": transaction_id,
+        "user_id": user["user_id"],
+        "ad_id": ad_id,
+        "session_id": session_id,
+        "amount": total_amount,
+        "currency": currency,
+        "payment_type": "bump_ad",
+        "payment_status": "pending",
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.payment_transactions.insert_one(transaction_doc)
+    
+    return {
+        "url": session_url, 
+        "session_id": session_id,
+        "amount": total_amount
+    }
 
 @api_router.get("/my-ads")
 async def get_my_ads(request: Request, authorization: Optional[str] = Header(None)):
@@ -717,12 +856,22 @@ async def get_payment_status(session_id: str, request: Request, authorization: O
         {"$set": update_data}
     )
     
-    # If paid and ad_id exists, upgrade ad to premium
+    # Handle different payment types
     if payment_status == "paid" and transaction.get("ad_id"):
-        await db.ads.update_one(
-            {"ad_id": transaction["ad_id"]},
-            {"$set": {"is_paid": True}}
-        )
+        payment_type = transaction.get("payment_type", "ad_payment")
+        
+        if payment_type == "bump_ad":
+            # Bump the ad to the top
+            await db.ads.update_one(
+                {"ad_id": transaction["ad_id"]},
+                {"$set": {"bumped_at": datetime.now(timezone.utc).isoformat()}}
+            )
+        else:
+            # Upgrade ad to premium
+            await db.ads.update_one(
+                {"ad_id": transaction["ad_id"]},
+                {"$set": {"is_paid": True}}
+            )
     
     # Get updated transaction
     updated_transaction = await db.payment_transactions.find_one(
@@ -748,6 +897,37 @@ async def stripe_webhook(request: Request):
     
     stripe_api_key = os.environ.get("STRIPE_API_KEY")
     
+    async def process_completed_payment(session_id: str, payment_status: str):
+        """Process a completed payment - handles both ad payments and bump payments."""
+        await db.payment_transactions.update_one(
+            {"session_id": session_id},
+            {"$set": {
+                "payment_status": payment_status,
+                "status": "complete"
+            }}
+        )
+        
+        transaction = await db.payment_transactions.find_one(
+            {"session_id": session_id},
+            {"_id": 0}
+        )
+        
+        if transaction and transaction.get("ad_id"):
+            payment_type = transaction.get("payment_type", "ad_payment")
+            
+            if payment_type == "bump_ad":
+                # Bump the ad to the top
+                await db.ads.update_one(
+                    {"ad_id": transaction["ad_id"]},
+                    {"$set": {"bumped_at": datetime.now(timezone.utc).isoformat()}}
+                )
+            else:
+                # Upgrade ad to premium
+                await db.ads.update_one(
+                    {"ad_id": transaction["ad_id"]},
+                    {"$set": {"is_paid": True}}
+                )
+    
     try:
         if USE_EMERGENT_STRIPE:
             # Use Emergent integrations library
@@ -758,24 +938,7 @@ async def stripe_webhook(request: Request):
             webhook_response = await stripe_checkout.handle_webhook(body, signature)
             
             if webhook_response.event_type == "checkout.session.completed":
-                await db.payment_transactions.update_one(
-                    {"session_id": webhook_response.session_id},
-                    {"$set": {
-                        "payment_status": webhook_response.payment_status,
-                        "status": "complete"
-                    }}
-                )
-                
-                transaction = await db.payment_transactions.find_one(
-                    {"session_id": webhook_response.session_id},
-                    {"_id": 0}
-                )
-                
-                if transaction and transaction.get("ad_id"):
-                    await db.ads.update_one(
-                        {"ad_id": transaction["ad_id"]},
-                        {"$set": {"is_paid": True}}
-                    )
+                await process_completed_payment(webhook_response.session_id, webhook_response.payment_status)
         else:
             # Use standard Stripe library
             stripe.api_key = stripe_api_key
@@ -792,25 +955,7 @@ async def stripe_webhook(request: Request):
                 session = event.data.object
                 session_id = session.id
                 payment_status = session.payment_status or "paid"
-                
-                await db.payment_transactions.update_one(
-                    {"session_id": session_id},
-                    {"$set": {
-                        "payment_status": payment_status,
-                        "status": "complete"
-                    }}
-                )
-                
-                transaction = await db.payment_transactions.find_one(
-                    {"session_id": session_id},
-                    {"_id": 0}
-                )
-                
-                if transaction and transaction.get("ad_id"):
-                    await db.ads.update_one(
-                        {"ad_id": transaction["ad_id"]},
-                        {"$set": {"is_paid": True}}
-                    )
+                await process_completed_payment(session_id, payment_status)
         
         return {"status": "success"}
     except Exception as e:
