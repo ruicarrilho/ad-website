@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Search, ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import RecentlyViewedAds from '../components/RecentlyViewedAds';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
