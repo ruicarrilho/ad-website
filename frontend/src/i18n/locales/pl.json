@@ -1,6 +1,6 @@
 {
   "nav": {
-    "postAd": "Opublikuj Ogłoszenie",
+    "postAd": "Dodaj Ogłoszenie",
     "login": "Zaloguj się",
     "signup": "Zarejestruj się",
     "myDashboard": "Mój Panel",
@@ -23,21 +23,21 @@
     "services": "Usługi"
   },
   "featuredAds": {
-    "title": "Wyróżnione Ogłoszenia",
+    "title": "Polecane Ogłoszenia",
     "viewAll": "Zobacz Wszystkie",
-    "featured": "Wyróżnione",
+    "featured": "Polecane",
     "noImage": "Brak zdjęcia"
   },
   "cta": {
-    "title": "Gotowy do Publikacji Ogłoszenia?",
-    "description": "Dołącz do tysięcy użytkowników kupujących i sprzedających na AdsHub. Opublikuj swoje pierwsze ogłoszenie już dziś!",
-    "button": "Opublikuj Pierwsze Ogłoszenie"
+    "title": "Gotowy do Dodania Ogłoszenia?",
+    "description": "Dołącz do tysięcy użytkowników kupujących i sprzedających na AdsHub. Dodaj swoje pierwsze ogłoszenie już dziś!",
+    "button": "Dodaj Swoje Pierwsze Ogłoszenie"
   },
   "auth": {
     "welcomeBack": "Witaj Ponownie",
     "signInAccount": "Zaloguj się na swoje konto",
     "createAccount": "Utwórz Konto",
-    "signUpStart": "Zarejestruj się, aby zacząć publikować ogłoszenia",
+    "signUpStart": "Zarejestruj się, aby zacząć dodawać ogłoszenia",
     "email": "E-mail",
     "password": "Hasło",
     "fullName": "Imię i Nazwisko",
@@ -58,16 +58,14 @@
     "premiumAds": "Ogłoszenia Premium",
     "createNew": "Utwórz Nowe Ogłoszenie",
     "yourAds": "Twoje Ogłoszenia",
-    "noAds": "Nie opublikowałeś jeszcze żadnych ogłoszeń",
-    "postFirst": "Opublikuj Pierwsze Ogłoszenie",
+    "noAds": "Nie dodałeś jeszcze żadnych ogłoszeń",
+    "postFirst": "Dodaj Swoje Pierwsze Ogłoszenie",
     "edit": "Edytuj",
     "delete": "Usuń",
-    "daysLeft": "dni pozostało",
-    "premium": "Premium",
-    "noImage": "Brak zdjęcia"
+    "daysLeft": "dni pozostało"
   },
   "postAd": {
-    "title": "Opublikuj Ogłoszenie",
+    "title": "Dodaj Ogłoszenie",
     "subtitle": "Wypełnij szczegóły, aby utworzyć ogłoszenie",
     "titleLabel": "Tytuł",
     "titlePlaceholder": "np. iPhone 15 Pro Max",
@@ -85,37 +83,28 @@
     "address": "Adres/Lokalizacja",
     "addressPlaceholder": "np. Lizbona, Porto, Faro",
     "pinLocation": "Zaznacz Lokalizację na Mapie",
-    "clickMap": "Kliknij na mapie, aby ustawić dokładną lokalizację ogłoszenia",
-    "useCurrentLocation": "Użyj Obecnej Lokalizacji",
+    "clickMap": "Kliknij na mapę, aby ustawić dokładną lokalizację ogłoszenia",
+    "useCurrentLocation": "Użyj Bieżącej Lokalizacji",
     "images": "Zdjęcia",
-    "imagesFree": "Pierwsze 5 zdjęć za darmo, potem 1€ za dodatkowe zdjęcie (maks. 20)",
-    "imagesPremium": "Pierwsze 15 zdjęć za darmo, potem 1€ za dodatkowe zdjęcie (maks. 20)",
+    "imagesFree": "Pierwsze 5 zdjęć bezpłatnie, potem 1€ za każde dodatkowe (maks. 20)",
+    "imagesPremium": "Pierwsze 15 zdjęć bezpłatnie, potem 1€ za każde dodatkowe (maks. 20)",
     "uploadImages": "Prześlij Zdjęcia",
-    "noImages": "Brak przesłanych zdjęć",
-    "clickUpload": "Kliknij \"Prześlij Zdjęcia\" aby dodać fotografie",
+    "noImages": "Nie przesłano jeszcze zdjęć",
+    "clickUpload": "Kliknij \"Prześlij Zdjęcia\", aby dodać fotografie",
     "acceptedFormats": "Akceptowane formaty: JPG, PNG, GIF, WebP. Maks. rozmiar: 5MB na zdjęcie",
-    "premiumAd": "Ogłoszenie Premium - 10,00€",
-    "premiumDescription": "Ogłoszenia premium mają priorytetowe umiejscowienie, rozszerzoną widoczność i 15 darmowych zdjęć zamiast 5.",
+    "premiumAd": "Utwórz Ogłoszenie Premium - 10,00€",
+    "premiumDescription": "Ogłoszenia premium mają priorytetowe wyświetlanie, rozszerzoną widoczność i 15 bezpłatnych zdjęć zamiast 5.",
     "costSummary": "Podsumowanie Kosztów",
     "imagesCount": "Zdjęcia ({{count}} łącznie)",
-    "free": "Za darmo",
-    "freeExtra": "{{free}} za darmo + {{extra}} dodatkowe",
+    "free": "Bezpłatnie",
+    "freeExtra": "{{free}} bezpłatnych + {{extra}} dodatkowych",
     "premiumAdCost": "Ogłoszenie Premium",
     "extraImages": "Dodatkowe Zdjęcia ({{count}} × 1€)",
     "totalCost": "Koszt Całkowity",
     "cancel": "Anuluj",
-    "postFree": "Opublikuj Za Darmo",
-    "postPay": "Opublikuj i Zapłać {{amount}}€",
-    "posting": "Publikowanie..."
-  },
-  "editAd": {
-    "title": "Edytuj Ogłoszenie",
-    "subtitle": "Zaktualizuj szczegóły swojego ogłoszenia",
-    "backToDashboard": "Powrót do Panelu",
-    "updating": "Aktualizowanie...",
-    "updateAd": "Zaktualizuj Ogłoszenie",
-    "premiumStatus": "Ogłoszenie Premium",
-    "premiumEnabled": "To ogłoszenie ma włączone funkcje premium"
+    "postFree": "Dodaj Bezpłatnie",
+    "postPay": "Dodaj i Zapłać {{amount}}€",
+    "posting": "Dodawanie..."
   },
   "browse": {
     "title": "Przeglądaj Ogłoszenia",
@@ -128,58 +117,42 @@
     "searchPlaceholder": "Szukaj ogłoszeń...",
     "search": "Szukaj",
     "searchByLocation": "Szukaj według Lokalizacji",
-    "locationSearch": "Szukaj Lokalizacji",
+    "locationSearch": "Wyszukiwanie Lokalizacji",
     "locationPlaceholder": "np. Lizbona, Porto, Faro, Coimbra",
     "searching": "Wyszukiwanie...",
     "searchRadius": "Promień Wyszukiwania: {{radius}} km",
     "showingResults": "Wyświetlanie {{count}} wyniku",
     "showingResults_plural": "Wyświetlanie {{count}} wyników",
     "noAdsFound": "Nie znaleziono ogłoszeń spełniających kryteria",
-    "featured": "Wyróżnione",
-    "noImage": "Brak zdjęcia"
+    "featured": "Polecane"
   },
   "adDetail": {
     "back": "Wstecz",
-    "featuredAd": "Wyróżnione Ogłoszenie",
+    "featuredAd": "Polecane Ogłoszenie",
     "price": "Cena",
     "description": "Opis",
     "location": "Lokalizacja",
     "posted": "Opublikowano {{date}}",
     "adNotFound": "Ogłoszenie nie znalezione",
-    "browseAds": "Przeglądaj Ogłoszenia",
-    "noImages": "Brak dostępnych zdjęć"
+    "browseAds": "Przeglądaj Ogłoszenia"
   },
   "successDialog": {
-    "adPosted": "Ogłoszenie Opublikowane Pomyślnie!",
+    "adPosted": "Ogłoszenie Dodane Pomyślnie!",
     "adUpdated": "Ogłoszenie Zaktualizowane Pomyślnie!",
     "adPublished": "Twoje ogłoszenie <strong>\"{{title}}\"</strong> zostało opublikowane i jest teraz aktywne.",
     "adUpdatedText": "Twoje zmiany w <strong>\"{{title}}\"</strong> zostały zapisane.",
-    "visiblePortugal": "Będzie widoczne dla tysięcy potencjalnych kupujących w Portugalii!",
+    "visiblePortugal": "Będzie widoczne dla tysięcy potencjalnych kupujących w całej Portugalii!",
     "updatedLive": "Zaktualizowane ogłoszenie jest teraz aktywne i widoczne dla wszystkich użytkowników.",
     "viewAd": "Zobacz Moje Ogłoszenie",
     "viewUpdated": "Zobacz Zaktualizowane Ogłoszenie",
     "goToDashboard": "Przejdź do Mojego Panelu",
-    "postAnother": "Opublikuj Kolejne Ogłoszenie"
+    "postAnother": "Dodaj Kolejne Ogłoszenie"
   },
   "deleteDialog": {
     "title": "Usunąć Ogłoszenie?",
-    "description": "Tej akcji nie można cofnąć. Spowoduje to trwałe usunięcie ogłoszenia.",
+    "description": "Tej akcji nie można cofnąć. Twoje ogłoszenie zostanie trwale usunięte.",
     "cancel": "Anuluj",
     "delete": "Usuń"
-  },
-  "payment": {
-    "processing": "Przetwarzanie Płatności",
-    "pleaseWait": "Proszę czekać, potwierdzamy Twoją płatność...",
-    "attempt": "Próba {{current}} z {{max}}",
-    "success": "Płatność Udana!",
-    "adUpgraded": "Twoje ogłoszenie zostało zaktualizowane do premium i jest teraz aktywne.",
-    "viewMyAds": "Zobacz Moje Ogłoszenia",
-    "pending": "Płatność Oczekująca",
-    "pendingMessage": "Twoja płatność jest przetwarzana. Sprawdź swój panel za kilka minut.",
-    "goToDashboard": "Przejdź do Panelu",
-    "error": "Błąd Płatności",
-    "errorMessage": "Wystąpił problem z przetwarzaniem Twojej płatności. Proszę skontaktować się z pomocą techniczną.",
-    "backToDashboard": "Powrót do Panelu"
   },
   "common": {
     "loading": "Ładowanie...",

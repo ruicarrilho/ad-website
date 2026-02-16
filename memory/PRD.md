@@ -1,148 +1,79 @@
-# AdsHub - Classified Ads Platform
+# Classified Ads Website - Product Requirements Document
 
 ## Original Problem Statement
-Create a generic classified ads website for the Portuguese market with:
-- User registration and authentication
-- Ad posting with categories/subcategories
-- Payment system (Stripe for credit cards, PayPal requested but not yet implemented)
-- Location-based features using interactive maps
-- Image uploads with flexible pricing (€1 per extra image)
-- Multi-language support (Portuguese default, English, German, French, Spanish, Polish)
+Build a generic classified ads website with the following requirements:
+- User registration and sign-in (JWT-based)
+- Users can post ads (free or paid)
+- Free ads: Limited features (max 5 pictures, displayed for 3 weeks)
+- Paid ads: All features (15 free images, priority placement)
+- Payment integration: Credit Card (Stripe) and PayPal
+- Ad Categories: Jobs, Real Estate (Renting/Selling), Vehicles, Products, Services
+- Location-based features with map integration (Portugal default)
+- Multi-language support (Portuguese default, with English, German, French, Spanish, Polish)
+- Currency: Euros (€)
 
-## Core Requirements
-- **User Management:** Users can register and sign in (JWT-based auth + Google OAuth)
-- **Ad Management:** Full CRUD operations for ads
-- **Ad Tiers:**
-  - Free Ads: 5 free images, 3-week duration
-  - Paid Ads: €10, 15 free images, premium "Featured" status
-- **Payment System:** Stripe integration for premium ads and extra images
-- **Categories:** 6 main categories with subcategories
-- **Location Features:** Map-based ad posting and location search
-- **Localization:** Portuguese language default, Euro currency, Portugal location
+## What's Been Implemented ✅
 
-## Technology Stack
-- **Backend:** FastAPI, Python, MongoDB (motor async)
-- **Frontend:** React, JavaScript, TailwindCSS, Shadcn/UI
-- **Authentication:** JWT + Emergent Google OAuth
-- **Payments:** Stripe Checkout
-- **Maps:** Leaflet.js, OpenStreetMap
-- **Internationalization:** i18next, react-i18next
+### Core Features
+- [x] **JWT-based Authentication**: User registration and login
+- [x] **Ad Management**: Create, view, update, delete ads
+- [x] **Category System**: Dynamic categories and subcategories
+- [x] **Stripe Payment Integration**: Premium ads and extra image costs
+- [x] **Location Features**: Leaflet.js maps for posting and searching ads
+- [x] **Image Upload**: Multiple file upload with previews and cost calculation
+- [x] **Multi-language Support (i18next)**: Full translations for 6 languages
+  - Portuguese (default) ✅
+  - English ✅
+  - German ✅ (Updated: Feb 2026)
+  - French ✅ (Updated: Feb 2026)
+  - Spanish ✅ (Updated: Feb 2026)
+  - Polish ✅ (Updated: Feb 2026)
+- [x] **Currency**: Euro (€) across platform
+- [x] **Success Dialogs**: Confirmation after ad creation/update
+- [x] **Local Development Setup**: VSCode launch.json and LOCAL_DEVELOPMENT.md
 
-## What's Been Implemented
+### Technical Stack
+- **Backend**: FastAPI, Pydantic, MongoDB (Motor), python-jose for JWT
+- **Frontend**: React, React Router, Tailwind CSS, shadcn/ui, i18next, Leaflet.js
+- **Database**: MongoDB with `2dsphere` index for geospatial queries
+- **Payments**: Stripe API
 
-### December 2025 - Initial Build & Core Features
-- Full-stack application foundation (React + FastAPI + MongoDB)
-- JWT-based user authentication with registration/login
-- Emergent-managed Google OAuth integration
-- Category/subcategory system with 6 main categories
-- Location-based ad posting with Leaflet.js maps
-- Location search with configurable radius
-- Stripe payment integration for premium ads
-- Image upload system with base64 encoding
-- Flexible pricing: €1 per extra image beyond free limit
-- Ad editing feature with full form support
-- Default localization for Portugal (map location, EUR currency)
-- Confirmation dialogs for ad posting and editing
-
-### December 2025 - Multi-Language Support (Completed)
-- Integrated i18next with react-i18next
-- Language switcher component in navbar with flags
-- Complete translations for 6 languages:
-  - Portuguese (PT) - Default
-  - English (EN)
-  - German (DE)
-  - French (FR)
-  - Spanish (ES)
-  - Polish (PL)
-- All pages translated:
-  - Landing/Homepage
-  - Login
-  - Register
-  - Browse
-  - Dashboard
-  - Post Ad
-  - Edit Ad
-  - Ad Detail
-  - Payment Success
-- Translation files location: `/app/frontend/src/i18n/locales/`
-- i18n configuration: `/app/frontend/src/i18n/config.js`
-
-## Prioritized Backlog
+## Pending Tasks
 
 ### P1 - High Priority
-1. **PayPal Integration** - User requested alongside Stripe but not yet implemented
-2. **Translate Subcategories** - Subcategory names are hardcoded in English in backend
+- [ ] **PayPal Integration**: Add PayPal as alternative payment method (originally requested)
 
 ### P2 - Medium Priority
-3. **Refactor Translation Helper** - Move `translateCategory` function to shared utility
-4. **Comprehensive E2E Testing** - Full regression test of all features
+- [ ] (None remaining - translations completed)
 
-### P3 - Low Priority / Future
-5. **User profile management**
-6. **Ad favoriting/bookmarks**
-7. **Contact seller feature**
-8. **Search filters (price range, date posted)**
-9. **Pagination for ads**
+### P3 - Future/Backlog
+- [ ] **"Bump Ad" Feature**: Allow users to pay to push ad back to top of results
+- [ ] **"Recently Viewed Ads"**: Track and display recently viewed ads
 
-## Key API Endpoints
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-- `GET /api/categories` - Get all categories with subcategories
-- `POST /api/ads` - Create new ad
-- `GET /api/ads` - Get ads with filters (category, search, location)
-- `GET /api/ads/{ad_id}` - Get single ad details
-- `PUT /api/ads/{ad_id}` - Update ad
-- `DELETE /api/ads/{ad_id}` - Delete ad
-- `GET /api/my-ads` - Get current user's ads
-- `POST /api/payment/create-session` - Create Stripe checkout session
-- `GET /api/payment/status/{session_id}` - Check payment status
+## Key Files
+- `/app/backend/server.py`: All backend logic
+- `/app/frontend/src/pages/PostAd.js`: Ad creation with payment
+- `/app/frontend/src/pages/Browse.js`: Ad listing with filters
+- `/app/frontend/src/i18n/config.js`: i18next configuration
+- `/app/frontend/src/i18n/locales/*.json`: Translation files
+- `/app/.vscode/launch.json`: VSCode debugging configuration
+- `/app/LOCAL_DEVELOPMENT.md`: Local setup guide
+
+## API Endpoints
+- `POST /api/register`: Create user
+- `POST /api/login`: Authenticate user
+- `GET /api/categories`: Get categories/subcategories
+- `POST /api/ads`: Create ad
+- `PUT /api/ads/{ad_id}`: Update ad
+- `GET /api/ads`: List ads with filters
+- `GET /api/ads/{ad_id}`: Get single ad
+- `DELETE /api/ads/{ad_id}`: Delete ad
+- `GET /api/my-ads`: Get user's ads
+- `POST /api/create-payment-intent`: Stripe payment
 
 ## Database Schema
-- **users:** `{username, email, password_hash}`
-- **ads:** `{title, description, price, currency, category, subcategory, images, user_id, is_paid, expires_at, location: { type: "Point", coordinates: [lng, lat] }, country, address}`
+- **users**: `{_id, email, password_hash}`
+- **ads**: `{_id, title, description, price, currency, category, subcategory, images, is_paid, expires_at, user_id, location, country, address}`
 
-## File Structure
-```
-/app/
-├── backend/
-│   ├── .env
-│   ├── requirements.txt
-│   ├── server.py
-│   └── tests/
-└── frontend/
-    ├── .env
-    ├── package.json
-    └── src/
-        ├── components/
-        │   ├── LanguageSwitcher.js
-        │   ├── MapPicker.js
-        │   ├── MapSearch.js
-        │   ├── Navbar.js
-        │   └── ui/
-        ├── contexts/
-        │   └── AuthContext.js
-        ├── i18n/
-        │   ├── config.js
-        │   └── locales/
-        │       ├── en.json
-        │       ├── pt.json
-        │       ├── de.json
-        │       ├── fr.json
-        │       ├── es.json
-        │       └── pl.json
-        ├── pages/
-        │   ├── Landing.js
-        │   ├── Login.js
-        │   ├── Register.js
-        │   ├── Browse.js
-        │   ├── Dashboard.js
-        │   ├── PostAd.js
-        │   ├── EditAd.js
-        │   ├── AdDetail.js
-        │   └── PaymentSuccess.js
-        └── App.js
-```
-
-## Test Reports
-- `/app/test_reports/iteration_1.json` - Initial testing
-- `/app/test_reports/iteration_2.json` - i18n testing (100% pass rate)
+---
+*Last updated: February 2026*

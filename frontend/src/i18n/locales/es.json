@@ -9,7 +9,7 @@
   "hero": {
     "badge": "Tu mercado para todo",
     "title": "Encuentra Lo Que Necesitas, Vende Lo Que Tienes",
-    "description": "Explora miles de anuncios o publica el tuyo en Portugal. Desde empleos hasta inmuebles, vehículos y servicios, todo en un solo lugar.",
+    "description": "Explora miles de anuncios o publica el tuyo en Portugal. Desde empleos hasta inmuebles, vehículos y servicios - todo en un solo lugar.",
     "searchPlaceholder": "Buscar anuncios...",
     "searchButton": "Buscar"
   },
@@ -29,9 +29,9 @@
     "noImage": "Sin imagen"
   },
   "cta": {
-    "title": "¿Listo para Publicar tu Anuncio?",
+    "title": "¿Listo para Publicar Tu Anuncio?",
     "description": "Únete a miles de usuarios que compran y venden en AdsHub. ¡Publica tu primer anuncio hoy!",
-    "button": "Publica tu Primer Anuncio"
+    "button": "Publica Tu Primer Anuncio"
   },
   "auth": {
     "welcomeBack": "Bienvenido de Nuevo",
@@ -59,12 +59,10 @@
     "createNew": "Crear Nuevo Anuncio",
     "yourAds": "Tus Anuncios",
     "noAds": "Aún no has publicado ningún anuncio",
-    "postFirst": "Publica tu Primer Anuncio",
+    "postFirst": "Publica Tu Primer Anuncio",
     "edit": "Editar",
     "delete": "Eliminar",
-    "daysLeft": "días restantes",
-    "premium": "Premium",
-    "noImage": "Sin imagen"
+    "daysLeft": "días restantes"
   },
   "postAd": {
     "title": "Publicar Anuncio",
@@ -94,28 +92,19 @@
     "noImages": "Aún no hay imágenes subidas",
     "clickUpload": "Haz clic en \"Subir Imágenes\" para añadir fotos",
     "acceptedFormats": "Formatos aceptados: JPG, PNG, GIF, WebP. Tamaño máx: 5MB por imagen",
-    "premiumAd": "Anuncio Premium - 10,00€",
-    "premiumDescription": "Los anuncios premium tienen ubicación prioritaria, visibilidad extendida y 15 imágenes gratis en lugar de 5.",
-    "costSummary": "Resumen de Costos",
+    "premiumAd": "Crear Anuncio Premium - 10,00€",
+    "premiumDescription": "Los anuncios premium tienen colocación prioritaria, visibilidad extendida y 15 imágenes gratis en lugar de 5.",
+    "costSummary": "Resumen de Costes",
     "imagesCount": "Imágenes ({{count}} en total)",
     "free": "Gratis",
     "freeExtra": "{{free}} gratis + {{extra}} extra",
     "premiumAdCost": "Anuncio Premium",
     "extraImages": "Imágenes Extra ({{count}} × 1€)",
-    "totalCost": "Costo Total",
+    "totalCost": "Coste Total",
     "cancel": "Cancelar",
     "postFree": "Publicar Gratis",
     "postPay": "Publicar y Pagar {{amount}}€",
     "posting": "Publicando..."
-  },
-  "editAd": {
-    "title": "Editar Anuncio",
-    "subtitle": "Actualiza los detalles de tu anuncio",
-    "backToDashboard": "Volver al Panel",
-    "updating": "Actualizando...",
-    "updateAd": "Actualizar Anuncio",
-    "premiumStatus": "Anuncio Premium",
-    "premiumEnabled": "Este anuncio tiene funciones premium activadas"
   },
   "browse": {
     "title": "Explorar Anuncios",
@@ -128,15 +117,14 @@
     "searchPlaceholder": "Buscar anuncios...",
     "search": "Buscar",
     "searchByLocation": "Buscar por Ubicación",
-    "locationSearch": "Buscar Ubicación",
-    "locationPlaceholder": "ej: Lisboa, Oporto, Faro, Coímbra",
+    "locationSearch": "Búsqueda de Ubicación",
+    "locationPlaceholder": "ej: Lisboa, Oporto, Faro, Coimbra",
     "searching": "Buscando...",
     "searchRadius": "Radio de Búsqueda: {{radius}} km",
     "showingResults": "Mostrando {{count}} resultado",
     "showingResults_plural": "Mostrando {{count}} resultados",
-    "noAdsFound": "No se encontraron anuncios con tus criterios",
-    "featured": "Destacado",
-    "noImage": "Sin imagen"
+    "noAdsFound": "No se encontraron anuncios que coincidan con tus criterios",
+    "featured": "Destacado"
   },
   "adDetail": {
     "back": "Volver",
@@ -144,18 +132,17 @@
     "price": "Precio",
     "description": "Descripción",
     "location": "Ubicación",
-    "posted": "Publicado el {{date}}",
+    "posted": "Publicado {{date}}",
     "adNotFound": "Anuncio no encontrado",
-    "browseAds": "Explorar Anuncios",
-    "noImages": "No hay imágenes disponibles"
+    "browseAds": "Explorar Anuncios"
   },
   "successDialog": {
     "adPosted": "¡Anuncio Publicado con Éxito!",
     "adUpdated": "¡Anuncio Actualizado con Éxito!",
-    "adPublished": "Tu anuncio <strong>\"{{title}}\"</strong> ha sido publicado y está ahora activo.",
+    "adPublished": "Tu anuncio <strong>\"{{title}}\"</strong> ha sido publicado y ya está activo.",
     "adUpdatedText": "Tus cambios en <strong>\"{{title}}\"</strong> han sido guardados.",
-    "visiblePortugal": "¡Será visible para miles de compradores potenciales en Portugal!",
-    "updatedLive": "El anuncio actualizado está ahora activo y visible para todos los usuarios.",
+    "visiblePortugal": "¡Será visible para miles de compradores potenciales en todo Portugal!",
+    "updatedLive": "El anuncio actualizado ya está activo y visible para todos los usuarios.",
     "viewAd": "Ver Mi Anuncio",
     "viewUpdated": "Ver Anuncio Actualizado",
     "goToDashboard": "Ir a Mi Panel",
@@ -163,23 +150,9 @@
   },
   "deleteDialog": {
     "title": "¿Eliminar Anuncio?",
-    "description": "Esta acción no se puede deshacer. Esto eliminará permanentemente tu anuncio.",
+    "description": "Esta acción no se puede deshacer. Tu anuncio será eliminado permanentemente.",
     "cancel": "Cancelar",
     "delete": "Eliminar"
-  },
-  "payment": {
-    "processing": "Procesando Pago",
-    "pleaseWait": "Por favor espera mientras confirmamos tu pago...",
-    "attempt": "Intento {{current}} de {{max}}",
-    "success": "¡Pago Exitoso!",
-    "adUpgraded": "Tu anuncio ha sido actualizado a premium y está ahora activo.",
-    "viewMyAds": "Ver Mis Anuncios",
-    "pending": "Pago Pendiente",
-    "pendingMessage": "Tu pago está siendo procesado. Revisa tu panel en unos minutos.",
-    "goToDashboard": "Ir al Panel",
-    "error": "Error de Pago",
-    "errorMessage": "Hubo un problema al procesar tu pago. Por favor contacta soporte.",
-    "backToDashboard": "Volver al Panel"
   },
   "common": {
     "loading": "Cargando...",

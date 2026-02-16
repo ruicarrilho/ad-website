@@ -9,7 +9,7 @@
   "hero": {
     "badge": "Votre marché pour tout",
     "title": "Trouvez Ce Dont Vous Avez Besoin, Vendez Ce Que Vous Avez",
-    "description": "Parcourez des milliers d'annonces ou publiez la vôtre au Portugal. Des emplois aux biens immobiliers, véhicules et services - tout en un seul endroit.",
+    "description": "Parcourez des milliers d'annonces ou publiez la vôtre au Portugal. Des emplois à l'immobilier, des véhicules aux services - tout en un seul endroit.",
     "searchPlaceholder": "Rechercher des annonces...",
     "searchButton": "Rechercher"
   },
@@ -31,10 +31,10 @@
   "cta": {
     "title": "Prêt à Publier Votre Annonce?",
     "description": "Rejoignez des milliers d'utilisateurs qui achètent et vendent sur AdsHub. Publiez votre première annonce aujourd'hui!",
-    "button": "Publiez Votre Première Annonce"
+    "button": "Publier Votre Première Annonce"
   },
   "auth": {
-    "welcomeBack": "Content de Vous Revoir",
+    "welcomeBack": "Bon Retour",
     "signInAccount": "Connectez-vous à votre compte",
     "createAccount": "Créer un Compte",
     "signUpStart": "Inscrivez-vous pour commencer à publier des annonces",
@@ -47,7 +47,7 @@
     "creatingAccount": "Création du compte...",
     "orContinueWith": "Ou continuer avec",
     "continueWithGoogle": "Continuer avec Google",
-    "noAccount": "Pas de compte?",
+    "noAccount": "Vous n'avez pas de compte?",
     "haveAccount": "Vous avez déjà un compte?"
   },
   "dashboard": {
@@ -59,12 +59,10 @@
     "createNew": "Créer une Nouvelle Annonce",
     "yourAds": "Vos Annonces",
     "noAds": "Vous n'avez pas encore publié d'annonces",
-    "postFirst": "Publiez Votre Première Annonce",
+    "postFirst": "Publier Votre Première Annonce",
     "edit": "Modifier",
     "delete": "Supprimer",
-    "daysLeft": "jours restants",
-    "premium": "Premium",
-    "noImage": "Pas d'image"
+    "daysLeft": "jours restants"
   },
   "postAd": {
     "title": "Publier une Annonce",
@@ -79,12 +77,12 @@
     "selectSubcategory": "Sélectionner une sous-catégorie",
     "selectCategoryFirst": "Sélectionnez d'abord une catégorie",
     "price": "Prix (EUR)",
-    "location": "Localisation",
+    "location": "Emplacement",
     "country": "Pays",
     "countryPlaceholder": "ex: Portugal",
-    "address": "Adresse/Localisation",
+    "address": "Adresse/Emplacement",
     "addressPlaceholder": "ex: Lisbonne, Porto, Faro",
-    "pinLocation": "Marquer la Localisation sur la Carte",
+    "pinLocation": "Marquer l'Emplacement sur la Carte",
     "clickMap": "Cliquez sur la carte pour définir l'emplacement exact de votre annonce",
     "useCurrentLocation": "Utiliser la Position Actuelle",
     "images": "Images",
@@ -94,9 +92,9 @@
     "noImages": "Aucune image téléchargée",
     "clickUpload": "Cliquez sur \"Télécharger des Images\" pour ajouter des photos",
     "acceptedFormats": "Formats acceptés: JPG, PNG, GIF, WebP. Taille max: 5Mo par image",
-    "premiumAd": "Annonce Premium - 10,00€",
+    "premiumAd": "Créer une Annonce Premium - 10,00€",
     "premiumDescription": "Les annonces premium bénéficient d'un placement prioritaire, d'une visibilité étendue et de 15 images gratuites au lieu de 5.",
-    "costSummary": "Récapitulatif des Coûts",
+    "costSummary": "Résumé des Coûts",
     "imagesCount": "Images ({{count}} au total)",
     "free": "Gratuit",
     "freeExtra": "{{free}} gratuites + {{extra}} supplémentaires",
@@ -108,15 +106,6 @@
     "postPay": "Publier & Payer {{amount}}€",
     "posting": "Publication en cours..."
   },
-  "editAd": {
-    "title": "Modifier l'Annonce",
-    "subtitle": "Mettez à jour les détails de votre annonce",
-    "backToDashboard": "Retour au Tableau de Bord",
-    "updating": "Mise à jour en cours...",
-    "updateAd": "Mettre à Jour l'Annonce",
-    "premiumStatus": "Annonce Premium",
-    "premiumEnabled": "Cette annonce a les fonctionnalités premium activées"
-  },
   "browse": {
     "title": "Parcourir les Annonces",
     "subtitle": "Trouvez ce que vous cherchez",
@@ -127,34 +116,32 @@
     "allSubcategories": "Toutes les Sous-catégories",
     "searchPlaceholder": "Rechercher des annonces...",
     "search": "Rechercher",
-    "searchByLocation": "Rechercher par Localisation",
-    "locationSearch": "Rechercher une Localisation",
+    "searchByLocation": "Rechercher par Emplacement",
+    "locationSearch": "Recherche de Lieu",
     "locationPlaceholder": "ex: Lisbonne, Porto, Faro, Coimbra",
     "searching": "Recherche en cours...",
     "searchRadius": "Rayon de Recherche: {{radius}} km",
     "showingResults": "Affichage de {{count}} résultat",
     "showingResults_plural": "Affichage de {{count}} résultats",
-    "noAdsFound": "Aucune annonce correspondant à vos critères",
-    "featured": "En Vedette",
-    "noImage": "Pas d'image"
+    "noAdsFound": "Aucune annonce trouvée correspondant à vos critères",
+    "featured": "En Vedette"
   },
   "adDetail": {
     "back": "Retour",
     "featuredAd": "Annonce en Vedette",
     "price": "Prix",
     "description": "Description",
-    "location": "Localisation",
+    "location": "Emplacement",
     "posted": "Publié le {{date}}",
     "adNotFound": "Annonce non trouvée",
-    "browseAds": "Parcourir les Annonces",
-    "noImages": "Aucune image disponible"
+    "browseAds": "Parcourir les Annonces"
   },
   "successDialog": {
     "adPosted": "Annonce Publiée avec Succès!",
     "adUpdated": "Annonce Mise à Jour avec Succès!",
     "adPublished": "Votre annonce <strong>\"{{title}}\"</strong> a été publiée et est maintenant en ligne.",
     "adUpdatedText": "Vos modifications sur <strong>\"{{title}}\"</strong> ont été enregistrées.",
-    "visiblePortugal": "Elle sera visible par des milliers d'acheteurs potentiels au Portugal!",
+    "visiblePortugal": "Elle sera visible par des milliers d'acheteurs potentiels à travers le Portugal!",
     "updatedLive": "L'annonce mise à jour est maintenant en ligne et visible par tous les utilisateurs.",
     "viewAd": "Voir Mon Annonce",
     "viewUpdated": "Voir l'Annonce Mise à Jour",
@@ -163,23 +150,9 @@
   },
   "deleteDialog": {
     "title": "Supprimer l'Annonce?",
-    "description": "Cette action ne peut pas être annulée. Cela supprimera définitivement votre annonce.",
+    "description": "Cette action est irréversible. Votre annonce sera définitivement supprimée.",
     "cancel": "Annuler",
     "delete": "Supprimer"
-  },
-  "payment": {
-    "processing": "Traitement du Paiement",
-    "pleaseWait": "Veuillez patienter pendant que nous confirmons votre paiement...",
-    "attempt": "Tentative {{current}} sur {{max}}",
-    "success": "Paiement Réussi!",
-    "adUpgraded": "Votre annonce a été mise à niveau en premium et est maintenant en ligne.",
-    "viewMyAds": "Voir Mes Annonces",
-    "pending": "Paiement en Attente",
-    "pendingMessage": "Votre paiement est en cours de traitement. Vérifiez votre tableau de bord dans quelques minutes.",
-    "goToDashboard": "Aller au Tableau de Bord",
-    "error": "Erreur de Paiement",
-    "errorMessage": "Un problème est survenu lors du traitement de votre paiement. Veuillez contacter le support.",
-    "backToDashboard": "Retour au Tableau de Bord"
   },
   "common": {
     "loading": "Chargement...",

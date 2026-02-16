@@ -9,7 +9,7 @@
   "hero": {
     "badge": "Ihr Marktplatz für alles",
     "title": "Finden Sie Was Sie Brauchen, Verkaufen Sie Was Sie Haben",
-    "description": "Durchsuchen Sie Tausende von Anzeigen oder veröffentlichen Sie Ihre eigene in Portugal. Von Jobs bis Immobilien, Fahrzeugen und Dienstleistungen - alles an einem Ort.",
+    "description": "Durchsuchen Sie Tausende von Anzeigen oder veröffentlichen Sie Ihre eigene in Portugal. Von Jobs bis Immobilien, Fahrzeugen bis Dienstleistungen - alles an einem Ort.",
     "searchPlaceholder": "Anzeigen suchen...",
     "searchButton": "Suchen"
   },
@@ -24,13 +24,13 @@
   },
   "featuredAds": {
     "title": "Empfohlene Anzeigen",
-    "viewAll": "Alle Anzeigen",
+    "viewAll": "Alle Ansehen",
     "featured": "Empfohlen",
     "noImage": "Kein Bild"
   },
   "cta": {
     "title": "Bereit, Ihre Anzeige zu Schalten?",
-    "description": "Schließen Sie sich Tausenden von Nutzern an, die auf AdsHub kaufen und verkaufen. Veröffentlichen Sie heute Ihre erste Anzeige!",
+    "description": "Schließen Sie sich Tausenden von Nutzern an, die auf AdsHub kaufen und verkaufen. Schalten Sie noch heute Ihre erste Anzeige!",
     "button": "Erste Anzeige Schalten"
   },
   "auth": {
@@ -48,23 +48,21 @@
     "orContinueWith": "Oder fortfahren mit",
     "continueWithGoogle": "Mit Google fortfahren",
     "noAccount": "Noch kein Konto?",
-    "haveAccount": "Bereits ein Konto?"
+    "haveAccount": "Haben Sie bereits ein Konto?"
   },
   "dashboard": {
     "title": "Mein Dashboard",
     "subtitle": "Verwalten Sie Ihre Anzeigen und Ihr Konto",
-    "totalAds": "Anzeigen Gesamt",
+    "totalAds": "Gesamte Anzeigen",
     "activeAds": "Aktive Anzeigen",
-    "premiumAds": "Premium Anzeigen",
+    "premiumAds": "Premium-Anzeigen",
     "createNew": "Neue Anzeige Erstellen",
     "yourAds": "Ihre Anzeigen",
     "noAds": "Sie haben noch keine Anzeigen geschaltet",
     "postFirst": "Erste Anzeige Schalten",
     "edit": "Bearbeiten",
     "delete": "Löschen",
-    "daysLeft": "Tage übrig",
-    "premium": "Premium",
-    "noImage": "Kein Bild"
+    "daysLeft": "Tage übrig"
   },
   "postAd": {
     "title": "Anzeige Schalten",
@@ -88,38 +86,29 @@
     "clickMap": "Klicken Sie auf die Karte, um den genauen Standort Ihrer Anzeige festzulegen",
     "useCurrentLocation": "Aktuellen Standort Verwenden",
     "images": "Bilder",
-    "imagesFree": "Erste 5 Bilder kostenlos, dann 1€ pro Zusatzbild (max. 20)",
-    "imagesPremium": "Erste 15 Bilder kostenlos, dann 1€ pro Zusatzbild (max. 20)",
+    "imagesFree": "Erste 5 Bilder kostenlos, dann 1€ pro zusätzliches Bild (max. 20)",
+    "imagesPremium": "Erste 15 Bilder kostenlos, dann 1€ pro zusätzliches Bild (max. 20)",
     "uploadImages": "Bilder Hochladen",
     "noImages": "Noch keine Bilder hochgeladen",
-    "clickUpload": "Klicken Sie auf \"Bilder Hochladen\" um Fotos hinzuzufügen",
+    "clickUpload": "Klicken Sie auf \"Bilder Hochladen\", um Fotos hinzuzufügen",
     "acceptedFormats": "Akzeptierte Formate: JPG, PNG, GIF, WebP. Max. Größe: 5MB pro Bild",
-    "premiumAd": "Premium Anzeige - 10,00€",
-    "premiumDescription": "Premium Anzeigen erhalten bevorzugte Platzierung, erweiterte Sichtbarkeit und 15 kostenlose Bilder statt 5.",
+    "premiumAd": "Premium-Anzeige erstellen - 10,00€",
+    "premiumDescription": "Premium-Anzeigen erhalten bevorzugte Platzierung, erweiterte Sichtbarkeit und 15 kostenlose Bilder statt 5.",
     "costSummary": "Kostenübersicht",
     "imagesCount": "Bilder ({{count}} insgesamt)",
     "free": "Kostenlos",
-    "freeExtra": "{{free}} kostenlos + {{extra}} extra",
-    "premiumAdCost": "Premium Anzeige",
-    "extraImages": "Zusatzbilder ({{count}} × 1€)",
+    "freeExtra": "{{free}} kostenlos + {{extra}} zusätzlich",
+    "premiumAdCost": "Premium-Anzeige",
+    "extraImages": "Zusätzliche Bilder ({{count}} × 1€)",
     "totalCost": "Gesamtkosten",
     "cancel": "Abbrechen",
     "postFree": "Kostenlos Schalten",
-    "postPay": "Schalten & {{amount}}€ Zahlen",
+    "postPay": "Schalten & {{amount}}€ Bezahlen",
     "posting": "Wird geschaltet..."
-  },
-  "editAd": {
-    "title": "Anzeige Bearbeiten",
-    "subtitle": "Aktualisieren Sie die Details Ihrer Anzeige",
-    "backToDashboard": "Zurück zum Dashboard",
-    "updating": "Aktualisierung läuft...",
-    "updateAd": "Anzeige Aktualisieren",
-    "premiumStatus": "Premium Anzeige",
-    "premiumEnabled": "Diese Anzeige hat Premium-Funktionen aktiviert"
   },
   "browse": {
     "title": "Anzeigen Durchsuchen",
-    "subtitle": "Finden Sie, was Sie suchen",
+    "subtitle": "Finden Sie, wonach Sie suchen",
     "filters": "Filter",
     "showMapSearch": "Kartensuche Anzeigen",
     "hideMapSearch": "Kartensuche Ausblenden",
@@ -128,15 +117,14 @@
     "searchPlaceholder": "Anzeigen suchen...",
     "search": "Suchen",
     "searchByLocation": "Nach Standort Suchen",
-    "locationSearch": "Standort Suchen",
+    "locationSearch": "Standortsuche",
     "locationPlaceholder": "z.B. Lissabon, Porto, Faro, Coimbra",
     "searching": "Suche läuft...",
     "searchRadius": "Suchradius: {{radius}} km",
-    "showingResults": "{{count}} Ergebnis angezeigt",
-    "showingResults_plural": "{{count}} Ergebnisse angezeigt",
-    "noAdsFound": "Keine Anzeigen mit Ihren Kriterien gefunden",
-    "featured": "Empfohlen",
-    "noImage": "Kein Bild"
+    "showingResults": "{{count}} Ergebnis wird angezeigt",
+    "showingResults_plural": "{{count}} Ergebnisse werden angezeigt",
+    "noAdsFound": "Keine Anzeigen gefunden, die Ihren Kriterien entsprechen",
+    "featured": "Empfohlen"
   },
   "adDetail": {
     "back": "Zurück",
@@ -146,16 +134,15 @@
     "location": "Standort",
     "posted": "Veröffentlicht {{date}}",
     "adNotFound": "Anzeige nicht gefunden",
-    "browseAds": "Anzeigen Durchsuchen",
-    "noImages": "Keine Bilder verfügbar"
+    "browseAds": "Anzeigen Durchsuchen"
   },
   "successDialog": {
     "adPosted": "Anzeige Erfolgreich Geschaltet!",
     "adUpdated": "Anzeige Erfolgreich Aktualisiert!",
-    "adPublished": "Ihre Anzeige <strong>\"{{title}}\"</strong> wurde veröffentlicht und ist jetzt live.",
+    "adPublished": "Ihre Anzeige <strong>\"{{title}}\"</strong> wurde veröffentlicht und ist jetzt aktiv.",
     "adUpdatedText": "Ihre Änderungen an <strong>\"{{title}}\"</strong> wurden gespeichert.",
-    "visiblePortugal": "Sie wird für Tausende von potenziellen Käufern in Portugal sichtbar sein!",
-    "updatedLive": "Die aktualisierte Anzeige ist jetzt live und für alle Nutzer sichtbar.",
+    "visiblePortugal": "Sie wird für Tausende potenzieller Käufer in ganz Portugal sichtbar sein!",
+    "updatedLive": "Die aktualisierte Anzeige ist jetzt aktiv und für alle Nutzer sichtbar.",
     "viewAd": "Meine Anzeige Ansehen",
     "viewUpdated": "Aktualisierte Anzeige Ansehen",
     "goToDashboard": "Zu Meinem Dashboard",
@@ -166,20 +153,6 @@
     "description": "Diese Aktion kann nicht rückgängig gemacht werden. Ihre Anzeige wird dauerhaft gelöscht.",
     "cancel": "Abbrechen",
     "delete": "Löschen"
-  },
-  "payment": {
-    "processing": "Zahlung wird verarbeitet",
-    "pleaseWait": "Bitte warten Sie, während wir Ihre Zahlung bestätigen...",
-    "attempt": "Versuch {{current}} von {{max}}",
-    "success": "Zahlung Erfolgreich!",
-    "adUpgraded": "Ihre Anzeige wurde auf Premium aktualisiert und ist jetzt live.",
-    "viewMyAds": "Meine Anzeigen Ansehen",
-    "pending": "Zahlung Ausstehend",
-    "pendingMessage": "Ihre Zahlung wird verarbeitet. Überprüfen Sie Ihr Dashboard in wenigen Minuten.",
-    "goToDashboard": "Zum Dashboard",
-    "error": "Zahlungsfehler",
-    "errorMessage": "Bei der Verarbeitung Ihrer Zahlung ist ein Problem aufgetreten. Bitte kontaktieren Sie den Support.",
-    "backToDashboard": "Zurück zum Dashboard"
   },
   "common": {
     "loading": "Lädt...",
