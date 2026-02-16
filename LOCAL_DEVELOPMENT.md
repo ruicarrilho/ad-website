@@ -35,14 +35,21 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+> **Note about `emergentintegrations`**: The `emergentintegrations` library is only available in the Emergent platform environment. For local development, the backend automatically falls back to using the standard `stripe` library. You can safely ignore any warnings about `emergentintegrations` not being found - Stripe payments will work using the standard library.
+
 ### 4. Configure environment variables
 Edit `/app/backend/.env`:
 ```env
 MONGO_URL="mongodb://localhost:27017"
 DB_NAME="test_database"
 CORS_ORIGINS="http://localhost:3000"
-STRIPE_API_KEY=sk_test_emergent
+STRIPE_API_KEY=sk_test_your_stripe_key_here
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_here  # Optional for local testing
 ```
+
+> **Getting Stripe Keys**: 
+> - Get your test API key from [Stripe Dashboard](https://dashboard.stripe.com/test/apikeys)
+> - For webhook testing, use [Stripe CLI](https://stripe.com/docs/stripe-cli) to forward webhooks locally
 
 ### 5. Start MongoDB (if not running)
 ```bash
