@@ -56,6 +56,22 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             <LanguageSwitcher />
             
+            {/* Favorites button - always visible */}
+            <Button
+              data-testid="favorites-nav-btn"
+              onClick={() => navigate('/favorites')}
+              variant="ghost"
+              className="relative rounded-full p-2"
+              title={t('favorites.title', 'Favorites')}
+            >
+              <Heart className="w-5 h-5" />
+              {favoriteCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-medium">
+                  {favoriteCount > 9 ? '9+' : favoriteCount}
+                </span>
+              )}
+            </Button>
+            
             {user ? (
               <>
                 <Button
