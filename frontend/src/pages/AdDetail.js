@@ -130,10 +130,20 @@ const AdDetail = () => {
             onClick={() => navigate(-1)}
             variant="ghost"
             className="rounded-full"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back
-        </Button>
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back
+          </Button>
+          <Button
+            data-testid="favorite-ad-btn"
+            onClick={handleToggleFavorite}
+            variant="outline"
+            className={`rounded-full ${isFav ? 'bg-red-50 border-red-200 hover:bg-red-100' : ''}`}
+          >
+            <Heart className={`w-4 h-4 mr-2 ${isFav ? 'text-red-500 fill-red-500' : ''}`} />
+            {isFav ? 'Saved' : 'Save'}
+          </Button>
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Images */}
