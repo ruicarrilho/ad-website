@@ -314,6 +314,33 @@ const Dashboard = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Bump Confirmation Dialog */}
+      <AlertDialog open={!!bumpAdId} onOpenChange={() => setBumpAdId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <Rocket className="w-5 h-5 text-blue-600" />
+              Bump Your Ad?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-2">
+              <p>Bumping your ad will move it to the top of search results, making it more visible to potential buyers.</p>
+              <p className="font-semibold text-slate-900">Cost: €2.00</p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel data-testid="cancel-bump-btn" disabled={bumpLoading}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              data-testid="confirm-bump-btn"
+              onClick={handleBump}
+              disabled={bumpLoading}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              {bumpLoading ? 'Processing...' : 'Bump for €2'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
