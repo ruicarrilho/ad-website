@@ -230,11 +230,19 @@ const Dashboard = () => {
                           <h3 className="font-heading text-xl font-semibold text-slate-900 mb-1">{ad.title}</h3>
                           <p className="text-slate-600 text-sm line-clamp-2">{ad.description}</p>
                         </div>
-                        {ad.is_paid && (
-                          <span className="ml-4 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent/10 text-accent">
-                            Premium
-                          </span>
-                        )}
+                        <div className="flex items-center gap-2 ml-4">
+                          {ad.bumped_at && (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-600">
+                              <Rocket className="w-3 h-3 mr-1" />
+                              {getTimeSinceBump(ad.bumped_at)}
+                            </span>
+                          )}
+                          {ad.is_paid && (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent/10 text-accent">
+                              Premium
+                            </span>
+                          )}
+                        </div>
                       </div>
                       <div className="flex items-center gap-6 text-sm text-slate-600 mb-4 flex-wrap">
                         <span className="font-semibold text-2xl text-accent">€{ad.price}</span>
@@ -244,7 +252,17 @@ const Dashboard = () => {
                         </span>
                         <span>{getDaysRemaining(ad.expires_at)} days left</span>
                       </div>
-                      <div className="flex gap-3">
+                      <div className="flex gap-3 flex-wrap">
+                        <Button
+                          data-testid={`bump-ad-btn-${ad.ad_id}`}
+                          onClick={() => setBumpAdId(ad.ad_id)}
+                          variant="outline"
+                          size="sm"
+                          className="rounded-full text-blue-600 hover:text-blue-700 hover:bg-blue-50 border-blue-200"
+                        >
+                          <Rocket className="w-4 h-4 mr-2" />
+                          Bump €2
+                        </Button>
                         <Button
                           data-testid={`edit-ad-btn-${ad.ad_id}`}
                           onClick={() => navigate(`/edit-ad/${ad.ad_id}`)}
