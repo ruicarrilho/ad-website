@@ -26,6 +26,8 @@ const Dashboard = () => {
   const [ads, setAds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleteAdId, setDeleteAdId] = useState(null);
+  const [bumpAdId, setBumpAdId] = useState(null);
+  const [bumpLoading, setBumpLoading] = useState(false);
 
   useEffect(() => {
     if (!user) {
