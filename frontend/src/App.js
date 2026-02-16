@@ -54,6 +54,8 @@ const AppRouter = () => {
         <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/browse" element={<Browse />} />
         <Route path="/ads/:adId" element={<AdDetail />} />
+        <Route path="/favorites" element={<Favorites />} />
+        <Route path="/hidden-ads" element={<HiddenAds />} />
         <Route
           path="/dashboard"
           element={
