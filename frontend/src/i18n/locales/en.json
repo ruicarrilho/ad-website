@@ -62,7 +62,9 @@
     "postFirst": "Post Your First Ad",
     "edit": "Edit",
     "delete": "Delete",
-    "daysLeft": "days left"
+    "daysLeft": "days left",
+    "premium": "Premium",
+    "noImage": "No image"
   },
   "postAd": {
     "title": "Post an Ad",
@@ -124,7 +126,8 @@
     "showingResults": "Showing {{count}} result",
     "showingResults_plural": "Showing {{count}} results",
     "noAdsFound": "No ads found matching your criteria",
-    "featured": "Featured"
+    "featured": "Featured",
+    "noImage": "No image"
   },
   "adDetail": {
     "back": "Back",
@@ -134,7 +137,8 @@
     "location": "Location",
     "posted": "Posted {{date}}",
     "adNotFound": "Ad not found",
-    "browseAds": "Browse Ads"
+    "browseAds": "Browse Ads",
+    "noImages": "No images available"
   },
   "successDialog": {
     "adPosted": "Ad Posted Successfully!",

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
@@ -150,8 +151,8 @@ const Browse = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="font-heading text-4xl font-bold text-primary mb-2">Browse Ads</h1>
-          <p className="text-slate-600">Find what you're looking for</p>
+          <h1 className="font-heading text-4xl font-bold text-primary mb-2">{t('browse.title')}</h1>
+          <p className="text-slate-600">{t('browse.subtitle')}</p>
         </div>
 
         {/* Filters */}
@@ -159,7 +160,7 @@ const Browse = () => {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <SlidersHorizontal className="w-5 h-5 text-slate-600" />
-              <span className="font-medium text-slate-900">Filters</span>
+              <span className="font-medium text-slate-900">{t('browse.filters')}</span>
             </div>
             <button
               type="button"
@@ -168,17 +169,17 @@ const Browse = () => {
               className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 font-medium"
             >
               <Map className="w-4 h-4" />
-              {showMapSearch ? 'Hide' : 'Show'} Map Search
+              {showMapSearch ? t('browse.hideMapSearch') : t('browse.showMapSearch')}
             </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
             <div className="md:col-span-3">
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                 <SelectTrigger data-testid="category-filter" className="h-12 rounded-lg">
-                  <SelectValue placeholder="All Categories" />
+                  <SelectValue placeholder={t('browse.allCategories')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all" data-testid="category-all">All Categories</SelectItem>
+                  <SelectItem value="all" data-testid="category-all">{t('browse.allCategories')}</SelectItem>
                   {categories.map((cat) => (
                     <SelectItem key={cat.id} value={cat.id} data-testid={`category-filter-${cat.id}`}>
                       {cat.name}
@@ -194,10 +195,10 @@ const Browse = () => {
                 disabled={!selectedCategory || selectedCategory === 'all' || subcategories.length === 0}
               >
                 <SelectTrigger data-testid="subcategory-filter" className="h-12 rounded-lg">
-                  <SelectValue placeholder="All Subcategories" />
+                  <SelectValue placeholder={t('browse.allSubcategories')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all" data-testid="subcategory-all">All Subcategories</SelectItem>
+                  <SelectItem value="all" data-testid="subcategory-all">{t('browse.allSubcategories')}</SelectItem>
                   {subcategories.map((subcat) => (
                     <SelectItem key={subcat} value={subcat} data-testid={`subcategory-filter-${subcat}`}>
                       {subcat}
@@ -211,7 +212,7 @@ const Browse = () => {
               <Input
                 data-testid="search-filter-input"
                 type="text"
-                placeholder="Search ads..."
+                placeholder={t('browse.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
@@ -224,7 +225,7 @@ const Browse = () => {
                 onClick={handleSearch}
                 className="w-full bg-primary text-white hover:bg-primary/90 h-12 rounded-full font-medium"
               >
-                Search
+                {t('browse.search')}
               </Button>
             </div>
           </div>
@@ -232,7 +233,7 @@ const Browse = () => {
           {/* Map Search Section */}
           {showMapSearch && (
             <div className="mt-6 pt-6 border-t border-slate-200">
-              <h3 className="font-medium text-slate-900 mb-4">Search by Location</h3>
+              <h3 className="font-medium text-slate-900 mb-4">{t('browse.searchByLocation')}</h3>
               <MapSearch onLocationChange={setLocationFilter} />
             </div>
           )}
@@ -316,13 +317,13 @@ const Browse = () => {
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-slate-400">
-                        No image
+                        {t('browse.noImage')}
                       </div>
                     )}
                   </div>
                   {ad.is_paid && (
                     <div className="absolute top-3 right-3 bg-accent text-white text-xs font-medium px-3 py-1 rounded-full">
-                      Featured
+                      {t('browse.featured')}
                     </div>
                   )}
                   <div className="p-4 space-y-2">

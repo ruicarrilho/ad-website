@@ -62,7 +62,9 @@
     "postFirst": "Publique o Seu Primeiro Anúncio",
     "edit": "Editar",
     "delete": "Eliminar",
-    "daysLeft": "dias restantes"
+    "daysLeft": "dias restantes",
+    "premium": "Premium",
+    "noImage": "Sem imagem"
   },
   "postAd": {
     "title": "Publicar Anúncio",
@@ -124,7 +126,8 @@
     "showingResults": "A mostrar {{count}} resultado",
     "showingResults_plural": "A mostrar {{count}} resultados",
     "noAdsFound": "Nenhum anúncio encontrado com os seus critérios",
-    "featured": "Destaque"
+    "featured": "Destaque",
+    "noImage": "Sem imagem"
   },
   "adDetail": {
     "back": "Voltar",
@@ -134,7 +137,8 @@
     "location": "Localização",
     "posted": "Publicado {{date}}",
     "adNotFound": "Anúncio não encontrado",
-    "browseAds": "Navegar Anúncios"
+    "browseAds": "Navegar Anúncios",
+    "noImages": "Sem imagens disponíveis"
   },
   "successDialog": {
     "adPosted": "Anúncio Publicado com Sucesso!",
