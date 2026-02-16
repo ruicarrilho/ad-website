@@ -7,6 +7,7 @@ import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import ImageMagnifier from '../components/ImageMagnifier';
+import { addToRecentlyViewed } from '../utils/recentlyViewed';
 
 // Fix for default marker icon
 delete L.Icon.Default.prototype._getIconUrl;
