@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import { Button } from '../components/ui/button';
-import { PlusCircle, Edit, Trash2, Clock, DollarSign } from 'lucide-react';
+import { PlusCircle, Edit, Trash2, Clock, DollarSign, Rocket } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import {
   AlertDialog,
