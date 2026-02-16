@@ -888,6 +888,37 @@ async def stripe_webhook(request: Request):
     
     stripe_api_key = os.environ.get("STRIPE_API_KEY")
     
+    async def process_completed_payment(session_id: str, payment_status: str):
+        """Process a completed payment - handles both ad payments and bump payments."""
+        await db.payment_transactions.update_one(
+            {"session_id": session_id},
+            {"$set": {
+                "payment_status": payment_status,
+                "status": "complete"
+            }}
+        )
+        
+        transaction = await db.payment_transactions.find_one(
+            {"session_id": session_id},
+            {"_id": 0}
+        )
+        
+        if transaction and transaction.get("ad_id"):
+            payment_type = transaction.get("payment_type", "ad_payment")
+            
+            if payment_type == "bump_ad":
+                # Bump the ad to the top
+                await db.ads.update_one(
+                    {"ad_id": transaction["ad_id"]},
+                    {"$set": {"bumped_at": datetime.now(timezone.utc).isoformat()}}
+                )
+            else:
+                # Upgrade ad to premium
+                await db.ads.update_one(
+                    {"ad_id": transaction["ad_id"]},
+                    {"$set": {"is_paid": True}}
+                )
+    
     try:
         if USE_EMERGENT_STRIPE:
             # Use Emergent integrations library
@@ -898,24 +929,7 @@ async def stripe_webhook(request: Request):
             webhook_response = await stripe_checkout.handle_webhook(body, signature)
             
             if webhook_response.event_type == "checkout.session.completed":
-                await db.payment_transactions.update_one(
-                    {"session_id": webhook_response.session_id},
-                    {"$set": {
-                        "payment_status": webhook_response.payment_status,
-                        "status": "complete"
-                    }}
-                )
-                
-                transaction = await db.payment_transactions.find_one(
-                    {"session_id": webhook_response.session_id},
-                    {"_id": 0}
-                )
-                
-                if transaction and transaction.get("ad_id"):
-                    await db.ads.update_one(
-                        {"ad_id": transaction["ad_id"]},
-                        {"$set": {"is_paid": True}}
-                    )
+                await process_completed_payment(webhook_response.session_id, webhook_response.payment_status)
         else:
             # Use standard Stripe library
             stripe.api_key = stripe_api_key
@@ -932,25 +946,7 @@ async def stripe_webhook(request: Request):
                 session = event.data.object
                 session_id = session.id
                 payment_status = session.payment_status or "paid"
-                
-                await db.payment_transactions.update_one(
-                    {"session_id": session_id},
-                    {"$set": {
-                        "payment_status": payment_status,
-                        "status": "complete"
-                    }}
-                )
-                
-                transaction = await db.payment_transactions.find_one(
-                    {"session_id": session_id},
-                    {"_id": 0}
-                )
-                
-                if transaction and transaction.get("ad_id"):
-                    await db.ads.update_one(
-                        {"ad_id": transaction["ad_id"]},
-                        {"$set": {"is_paid": True}}
-                    )
+                await process_completed_payment(session_id, payment_status)
         
         return {"status": "success"}
     except Exception as e:
