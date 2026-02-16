@@ -18,6 +18,24 @@ const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [favoriteCount, setFavoriteCount] = useState(0);
+
+  useEffect(() => {
+    // Update favorite count on mount and periodically
+    const updateCount = () => setFavoriteCount(getFavoriteCount());
+    updateCount();
+    
+    // Listen for storage changes (when favorites are updated in other tabs/components)
+    window.addEventListener('storage', updateCount);
+    
+    // Also update on focus (when user returns to tab)
+    window.addEventListener('focus', updateCount);
+    
+    return () => {
+      window.removeEventListener('storage', updateCount);
+      window.removeEventListener('focus', updateCount);
+    };
+  }, []);
 
   const handleLogout = async () => {
     await logout();
