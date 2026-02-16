@@ -246,11 +246,34 @@ const Browse = () => {
         ) : ads.length === 0 ? (
           <div className="bg-white rounded-2xl border border-slate-100 p-12 text-center">
             <p className="text-slate-600 text-lg">No ads found matching your criteria</p>
+            {excludedCount > 0 && (
+              <p className="text-sm text-slate-500 mt-2">
+                {excludedCount} ads are hidden.{' '}
+                <button 
+                  onClick={() => navigate('/hidden-ads')} 
+                  className="text-primary hover:underline"
+                >
+                  Manage hidden ads
+                </button>
+              </p>
+            )}
           </div>
         ) : (
           <>
-            <div className="mb-6 text-sm text-slate-600">
-              Showing {ads.length} {ads.length === 1 ? 'result' : 'results'}
+            <div className="mb-6 flex items-center justify-between">
+              <span className="text-sm text-slate-600">
+                Showing {ads.length} {ads.length === 1 ? 'result' : 'results'}
+              </span>
+              {excludedCount > 0 && (
+                <button 
+                  onClick={() => navigate('/hidden-ads')}
+                  className="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1"
+                  data-testid="manage-hidden-ads-link"
+                >
+                  <EyeOff className="w-4 h-4" />
+                  {excludedCount} hidden
+                </button>
+              )}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {ads.map((ad) => (
@@ -260,6 +283,30 @@ const Browse = () => {
                   onClick={() => navigate(`/ads/${ad.ad_id}`)}
                   className="group relative bg-white rounded-2xl border border-slate-100 overflow-hidden hover:border-slate-300 transition-all duration-300 cursor-pointer hover:shadow-lg"
                 >
+                  {/* Action buttons */}
+                  <div className="absolute top-3 left-3 z-10 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={(e) => handleToggleFavorite(e, ad)}
+                      className={`p-2 rounded-full shadow-sm transition-colors ${
+                        favoriteIds.has(ad.ad_id) 
+                          ? 'bg-red-50 hover:bg-red-100' 
+                          : 'bg-white/90 hover:bg-red-50'
+                      }`}
+                      data-testid={`favorite-btn-${ad.ad_id}`}
+                      title="Add to favorites"
+                    >
+                      <Heart className={`w-4 h-4 ${favoriteIds.has(ad.ad_id) ? 'text-red-500 fill-red-500' : 'text-slate-600'}`} />
+                    </button>
+                    <button
+                      onClick={(e) => handleExcludeAd(e, ad)}
+                      className="p-2 bg-white/90 hover:bg-slate-100 rounded-full shadow-sm transition-colors"
+                      data-testid={`hide-btn-${ad.ad_id}`}
+                      title="Hide this ad"
+                    >
+                      <EyeOff className="w-4 h-4 text-slate-600" />
+                    </button>
+                  </div>
+
                   <div className="aspect-[4/3] overflow-hidden bg-slate-100">
                     {ad.images && ad.images.length > 0 ? (
                       <img
