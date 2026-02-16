@@ -587,30 +587,59 @@ async def create_payment_session(request: Request, authorization: Optional[str] 
     success_url = f"{origin_url}/payment-success?session_id={{{{CHECKOUT_SESSION_ID}}}}"
     cancel_url = f"{origin_url}/post-ad"
     
-    # Initialize Stripe
     stripe_api_key = os.environ.get("STRIPE_API_KEY")
-    host_url = origin_url
-    webhook_url = f"{host_url}/api/webhook/stripe"
-    stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url=webhook_url)
     
-    # Create checkout session
-    checkout_request = CheckoutSessionRequest(
-        amount=total_amount,
-        currency=currency,
-        success_url=success_url,
-        cancel_url=cancel_url,
-        metadata={
-            "user_id": user["user_id"],
-            "ad_id": ad_id if ad_id else "",
-            "type": "ad_payment",
-            "is_premium": str(is_premium),
-            "image_count": str(image_count),
-            "extra_images": str(extra_images),
-            "extra_images_cost": str(extra_images_cost)
-        }
-    )
+    metadata = {
+        "user_id": user["user_id"],
+        "ad_id": ad_id if ad_id else "",
+        "type": "ad_payment",
+        "is_premium": str(is_premium),
+        "image_count": str(image_count),
+        "extra_images": str(extra_images),
+        "extra_images_cost": str(extra_images_cost)
+    }
     
-    session = await stripe_checkout.create_checkout_session(checkout_request)
+    if USE_EMERGENT_STRIPE:
+        # Use Emergent integrations library (platform environment)
+        host_url = origin_url
+        webhook_url = f"{host_url}/api/webhook/stripe"
+        stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url=webhook_url)
+        
+        checkout_request = CheckoutSessionRequest(
+            amount=total_amount,
+            currency=currency,
+            success_url=success_url,
+            cancel_url=cancel_url,
+            metadata=metadata
+        )
+        
+        session = await stripe_checkout.create_checkout_session(checkout_request)
+        session_id = session.session_id
+        session_url = session.url
+    else:
+        # Use standard Stripe library (local development)
+        stripe.api_key = stripe_api_key
+        
+        session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            line_items=[{
+                "price_data": {
+                    "currency": currency,
+                    "product_data": {
+                        "name": "Premium Ad" if is_premium else "Ad Payment",
+                        "description": f"Ad payment - Base: €{base_cost:.2f}, Extra images: {extra_images}"
+                    },
+                    "unit_amount": int(total_amount * 100),  # Stripe uses cents
+                },
+                "quantity": 1,
+            }],
+            mode="payment",
+            success_url=success_url,
+            cancel_url=cancel_url,
+            metadata=metadata
+        )
+        session_id = session.id
+        session_url = session.url
     
     # Create payment transaction record
     transaction_id = f"txn_{uuid.uuid4().hex[:12]}"
@@ -618,7 +647,7 @@ async def create_payment_session(request: Request, authorization: Optional[str] 
         "transaction_id": transaction_id,
         "user_id": user["user_id"],
         "ad_id": ad_id,
-        "session_id": session.session_id,
+        "session_id": session_id,
         "amount": total_amount,
         "base_cost": base_cost,
         "extra_images": extra_images,
@@ -631,8 +660,8 @@ async def create_payment_session(request: Request, authorization: Optional[str] 
     await db.payment_transactions.insert_one(transaction_doc)
     
     return {
-        "url": session.url, 
-        "session_id": session.session_id,
+        "url": session_url, 
+        "session_id": session_id,
         "amount": total_amount,
         "breakdown": {
             "base_cost": base_cost,
