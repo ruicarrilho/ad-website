@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from '../components/ui/button';
-import { ArrowLeft, Calendar, Tag, MapPin } from 'lucide-react';
+import { ArrowLeft, Calendar, Tag, MapPin, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import ImageMagnifier from '../components/ImageMagnifier';
 
 // Fix for default marker icon
 delete L.Icon.Default.prototype._getIconUrl;
