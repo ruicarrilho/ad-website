@@ -283,21 +283,23 @@ const AdDetail = () => {
       {/* Fullscreen Lightbox Modal */}
       {lightboxOpen && ad?.images && (
         <div 
-          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+          className="fixed inset-0 bg-black/95 flex items-center justify-center"
+          style={{ zIndex: 10000 }}
           data-testid="image-lightbox"
           onClick={closeLightbox}
         >
           {/* Close button */}
           <button
             onClick={closeLightbox}
-            className="absolute top-4 right-4 z-50 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+            className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+            style={{ zIndex: 10001 }}
             data-testid="lightbox-close"
           >
             <X className="w-6 h-6 text-white" />
           </button>
 
           {/* Image counter */}
-          <div className="absolute top-4 left-4 bg-black/50 text-white px-4 py-2 rounded-full text-sm">
+          <div className="absolute top-4 left-4 bg-black/50 text-white px-4 py-2 rounded-full text-sm" style={{ zIndex: 10001 }}>
             {lightboxIndex + 1} / {ad.images.length}
           </div>
 
@@ -307,6 +309,7 @@ const AdDetail = () => {
               <button
                 onClick={(e) => { e.stopPropagation(); navigateLightbox(-1); }}
                 className="absolute left-4 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                style={{ zIndex: 10001 }}
                 data-testid="lightbox-prev"
               >
                 <ChevronLeft className="w-8 h-8 text-white" />
@@ -314,6 +317,7 @@ const AdDetail = () => {
               <button
                 onClick={(e) => { e.stopPropagation(); navigateLightbox(1); }}
                 className="absolute right-4 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                style={{ zIndex: 10001 }}
                 data-testid="lightbox-next"
               >
                 <ChevronRight className="w-8 h-8 text-white" />
@@ -324,6 +328,7 @@ const AdDetail = () => {
           {/* Main image with magnifier */}
           <div 
             className="max-w-[90vw] max-h-[85vh] overflow-hidden"
+            style={{ zIndex: 10001 }}
             onClick={(e) => e.stopPropagation()}
           >
             <ImageMagnifier
@@ -337,7 +342,7 @@ const AdDetail = () => {
 
           {/* Thumbnail strip in lightbox */}
           {ad.images.length > 1 && (
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-black/50 p-2 rounded-lg max-w-[90vw] overflow-x-auto">
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-black/50 p-2 rounded-lg max-w-[90vw] overflow-x-auto" style={{ zIndex: 10001 }}>
               {ad.images.map((image, index) => (
                 <button
                   key={index}
