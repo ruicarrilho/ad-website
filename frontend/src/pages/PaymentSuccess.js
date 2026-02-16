@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Button } from '../components/ui/button';
 import { CheckCircle2, Loader2 } from 'lucide-react';
@@ -12,8 +13,10 @@ const PaymentSuccess = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [status, setStatus] = useState('checking');
   const [attempts, setAttempts] = useState(0);
+  const [adDetails, setAdDetails] = useState(null);
   const maxAttempts = 5;
 
   useEffect(() => {
@@ -33,6 +36,13 @@ const PaymentSuccess = () => {
 
       if (response.data.payment_status === 'paid') {
         setStatus('success');
+        // Store ad details if available
+        if (response.data.ad_id) {
+          setAdDetails({
+            ad_id: response.data.ad_id,
+            title: response.data.ad_title || 'Your ad'
+          });
+        }
       } else if (attempt < maxAttempts) {
         // Retry after 2 seconds
         setTimeout(() => {
@@ -55,36 +65,67 @@ const PaymentSuccess = () => {
           {status === 'checking' ? (
             <>
               <Loader2 className="w-16 h-16 text-primary mx-auto mb-6 animate-spin" data-testid="loading-spinner" />
-              <h1 className="font-heading text-2xl font-bold text-primary mb-2">Processing Payment</h1>
-              <p className="text-slate-600">Please wait while we confirm your payment...</p>
-              <p className="text-sm text-slate-500 mt-4">Attempt {attempts + 1} of {maxAttempts}</p>
+              <h1 className="font-heading text-2xl font-bold text-primary mb-2">{t('payment.processing')}</h1>
+              <p className="text-slate-600">{t('payment.pleaseWait')}</p>
+              <p className="text-sm text-slate-500 mt-4">{t('payment.attempt', { current: attempts + 1, max: maxAttempts })}</p>
             </>
           ) : status === 'success' ? (
             <>
-              <CheckCircle2 className="w-16 h-16 text-green-600 mx-auto mb-6" data-testid="success-icon" />
-              <h1 className="font-heading text-2xl font-bold text-primary mb-2">Payment Successful!</h1>
-              <p className="text-slate-600 mb-8">Your ad has been upgraded to premium and is now live.</p>
-              <Button
-                data-testid="view-dashboard-btn"
-                onClick={() => navigate('/dashboard')}
-                className="w-full bg-accent text-white hover:bg-accent/90 h-12 rounded-full font-medium"
-              >
-                View My Ads
-              </Button>
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <CheckCircle2 className="w-10 h-10 text-green-600" data-testid="success-icon" />
+              </div>
+              <h1 className="font-heading text-2xl font-bold text-primary mb-2">{t('successDialog.adPosted')}</h1>
+              <p className="text-slate-700 mb-2">
+                {adDetails?.title ? (
+                  <>
+                    {t('successDialog.adPublished', { title: adDetails.title }).replace('<strong>', '').replace('</strong>', '')}
+                  </>
+                ) : (
+                  t('payment.adUpgraded')
+                )}
+              </p>
+              <p className="text-sm text-slate-600 mb-8">{t('successDialog.visiblePortugal')}</p>
+              <div className="flex flex-col gap-3">
+                {adDetails?.ad_id && (
+                  <Button
+                    data-testid="view-ad-btn"
+                    onClick={() => navigate(`/ads/${adDetails.ad_id}`)}
+                    className="w-full bg-accent text-white hover:bg-accent/90 h-12 rounded-full font-medium"
+                  >
+                    {t('successDialog.viewAd')}
+                  </Button>
+                )}
+                <Button
+                  data-testid="view-dashboard-btn"
+                  onClick={() => navigate('/dashboard')}
+                  variant={adDetails?.ad_id ? "outline" : "default"}
+                  className={`w-full h-12 rounded-full font-medium ${!adDetails?.ad_id ? 'bg-accent text-white hover:bg-accent/90' : ''}`}
+                >
+                  {t('successDialog.goToDashboard')}
+                </Button>
+                <Button
+                  data-testid="post-another-btn"
+                  onClick={() => navigate('/post-ad')}
+                  variant="ghost"
+                  className="w-full text-primary hover:text-primary/80"
+                >
+                  {t('successDialog.postAnother')}
+                </Button>
+              </div>
             </>
           ) : status === 'pending' ? (
             <>
               <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-3xl">⏳</span>
               </div>
-              <h1 className="font-heading text-2xl font-bold text-primary mb-2">Payment Pending</h1>
-              <p className="text-slate-600 mb-8">Your payment is being processed. Check your dashboard in a few minutes.</p>
+              <h1 className="font-heading text-2xl font-bold text-primary mb-2">{t('payment.pending')}</h1>
+              <p className="text-slate-600 mb-8">{t('payment.pendingMessage')}</p>
               <Button
                 data-testid="goto-dashboard-btn"
                 onClick={() => navigate('/dashboard')}
                 className="w-full bg-primary text-white hover:bg-primary/90 h-12 rounded-full font-medium"
               >
-                Go to Dashboard
+                {t('payment.goToDashboard')}
               </Button>
             </>
           ) : (
@@ -92,14 +133,14 @@ const PaymentSuccess = () => {
               <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-3xl">❌</span>
               </div>
-              <h1 className="font-heading text-2xl font-bold text-primary mb-2">Payment Error</h1>
-              <p className="text-slate-600 mb-8">There was an issue processing your payment. Please contact support.</p>
+              <h1 className="font-heading text-2xl font-bold text-primary mb-2">{t('payment.error')}</h1>
+              <p className="text-slate-600 mb-8">{t('payment.errorMessage')}</p>
               <Button
                 data-testid="back-dashboard-btn"
                 onClick={() => navigate('/dashboard')}
                 className="w-full bg-primary text-white hover:bg-primary/90 h-12 rounded-full font-medium"
               >
-                Back to Dashboard
+                {t('payment.backToDashboard')}
               </Button>
             </>
           )}
