@@ -13,6 +13,7 @@ import EditAd from './pages/EditAd';
 import Browse from './pages/Browse';
 import AdDetail from './pages/AdDetail';
 import PaymentSuccess from './pages/PaymentSuccess';
+import BumpSuccess from './pages/BumpSuccess';
 import '@/App.css';
 
 const ProtectedRoute = ({ children }) => {
