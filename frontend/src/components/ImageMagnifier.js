@@ -75,7 +75,7 @@ const ImageMagnifier = ({
             backgroundSize: `${zoomLevel * 100}%`,
             backgroundPosition: `${cursorPosition.x}% ${cursorPosition.y}%`,
             backgroundRepeat: 'no-repeat',
-            zIndex: 10,
+            zIndex: 1000,
             boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,255,255,0.2)'
           }}
         />
